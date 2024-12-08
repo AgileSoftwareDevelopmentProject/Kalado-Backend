@@ -1,5 +1,6 @@
 package com.kalado.gateway.adapters;
 
+import com.kalado.common.dto.UserDto;
 import com.kalado.common.feign.user.UserApi;
 import com.kalado.gateway.annotation.Authentication;
 import lombok.RequiredArgsConstructor;

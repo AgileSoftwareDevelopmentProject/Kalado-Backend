@@ -35,8 +35,8 @@ public class AuthenticationAspect {
   private final AuthenticationApi authenticationApi;
   private static final Map<String, List<Role>> ROLE_PATH_ACCESS =
       Map.ofEntries(
-          entry("/v1/payment", List.of(Role.USER, Role.User)),
-          entry("/v1/create", List.of(Role.User)));
+          entry("/v1/payment", List.of(Role.USER, Role.USER)),
+          entry("/v1/create", List.of(Role.USER)));
 
   @Around("@annotation(authentication)")
   public Object authentication(ProceedingJoinPoint joinPoint, Authentication authentication)

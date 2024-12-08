@@ -1,13 +1,22 @@
 package com.kalado.common.feign.user;
 
-import static com.kalado.common.util.UrlConstraint.*;
-
-import com.kalado.common.dto.LocationDto;
+import com.kalado.common.dto.AdminDto;
+import com.kalado.common.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "user-service")
 public interface UserApi {
-  @PutMapping(USER + "/{id}")
+
+  @PutMapping("/user/{id}")
   Boolean modifyUserProfile(@PathVariable long id, @RequestBody UserDto userDto);
+
+  @GetMapping("/user/{userId}")
+  UserDto getUserProfile(@PathVariable Long userId);
+
+  @PostMapping("/user")
+  void createUser(@RequestBody UserDto userDto);
+
+  @PostMapping("/admin")
+  void createAdmin(@RequestBody AdminDto adminDto);
 }

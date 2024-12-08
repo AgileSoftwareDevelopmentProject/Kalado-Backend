@@ -3,12 +3,12 @@ package com.kalado.user;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-import com.kalado.common.dto.userDto;
+import com.kalado.common.dto.UserDto;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.authentication.AuthenticationApi;
-import com.kalado.user.adapters.repository.userRepository;
-import com.kalado.user.domain.model.user;
-import com.kalado.user.service.userService;
+import com.kalado.user.adapters.repository.UserRepository;
+import com.kalado.user.domain.model.User;
+import com.kalado.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,24 +17,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-class userServiceIntegrationTest {
+class UserServiceIntegrationTest {
 
   @Autowired
-  private userRepository userRepository;
+  private UserRepository userRepository;
 
   @Autowired
-  private userService userService;
+  private UserService userService;
 
   @MockBean
   private AuthenticationApi authenticationApi;
 
-  private userDto userDto;
+  private UserDto userDto;
 
   @BeforeEach
   void setUp() {
     userRepository.deleteAll();
 
-    userDto = userDto.builder()
+    userDto = UserDto.builder()
             .id(1L)
             .firstName("FIRSTNAME")
             .lastName("LASTNAME")
@@ -46,7 +46,7 @@ class userServiceIntegrationTest {
 
   @Test
   void modifyProfile_ShouldReturnTrue_WhenuserExists() {
-    user initialuser = user.builder()
+    User initialuser = User.builder()
             .id(1L)
             .firstName("OLD_FIRSTNAME")
             .lastName("OLD_LASTNAME")
@@ -57,7 +57,7 @@ class userServiceIntegrationTest {
 
     Boolean result = userService.modifyProfile(1L, userDto);
 
-    user modifieduser = userRepository.findById(1L).orElse(null);
+    User modifieduser = userRepository.findById(1L).orElse(null);
 
     assertTrue(result);
     assertNotNull(modifieduser);
@@ -69,9 +69,9 @@ class userServiceIntegrationTest {
 
   @Test
   void createuser_ShouldSaveuser() {
-    userService.createuser(userDto);
+    userService.createUser(userDto);
 
-    user saveduser = userRepository.findById(1L).orElse(null);
+    User saveduser = userRepository.findById(1L).orElse(null);
 
     assertNotNull(saveduser);
     assertEquals(userDto.getId(), saveduser.getId());
@@ -83,7 +83,7 @@ class userServiceIntegrationTest {
 
   @Test
   void getuserAddress_ShouldReturnAddress_WhenuserExists() {
-    user user = user.builder()
+    User user = User.builder()
             .id(1L)
             .firstName("FIRSTNAME")
             .lastName("LASTNAME")
@@ -92,14 +92,14 @@ class userServiceIntegrationTest {
             .build();
     userRepository.save(user);
 
-    String address = userService.getuserAddress(1L);
+    String address = userService.getUserAddress(1L);
 
     assertEquals("ADDRESS", address);
   }
 
   @Test
   void getUserProfile_ShouldReturnuserDto_WhenuserExists() {
-    user user = user.builder()
+    User user = User.builder()
             .id(1L)
             .firstName("FIRSTNAME")
             .lastName("LASTNAME")
@@ -109,7 +109,7 @@ class userServiceIntegrationTest {
     userRepository.save(user);
     Mockito.when(authenticationApi.getUsername(any())).thenReturn("USERNAME");
 
-    userDto result = userService.getUserProfile(1L);
+    UserDto result = userService.getUserProfile(1L);
 
     assertNotNull(result);
     assertEquals(user.getId(), result.getId());

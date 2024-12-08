@@ -1,6 +1,8 @@
 package com.kalado.authentication.application.service;
 
+import com.kalado.common.dto.AdminDto;
 import com.kalado.common.dto.AuthDto;
+import com.kalado.common.dto.UserDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;

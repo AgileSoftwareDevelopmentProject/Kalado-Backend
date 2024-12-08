@@ -1,30 +1,40 @@
 package com.kalado.user.adapters.controller;
 
-import com.kalado.common.dto.LocationDto;
+import com.kalado.common.dto.AdminDto;
+import com.kalado.common.dto.UserDto;
 import com.kalado.common.feign.user.UserApi;
+import com.kalado.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserController implements UserApi {
 
   private final UserService userService;
 
   @Override
-  public Boolean modifyUserProfile(long id, UserDto userDto) {
-    return UserService.modifyProfile(id, userDto);
+  @PutMapping("/{id}")
+  public Boolean modifyUserProfile(@PathVariable long id, @RequestBody UserDto userDto) {
+    return userService.modifyProfile(id, userDto);
   }
 
   @Override
-  public UserDto getUserProfile(long id) {
-    return UserService.getUserProfile(id);
+  @GetMapping("/{userId}")
+  public UserDto getUserProfile(@PathVariable Long userId) {
+    return userService.getUserProfile(userId);
   }
 
   @Override
-  public void createUser(UserDto UserDto) {
-    UserService.createUser(UserDto);
+  @PostMapping
+  public void createUser(@RequestBody UserDto userDto) {
+    userService.createUser(userDto);
+  }
+
+  @Override
+  @PostMapping("/admin")
+  public void createAdmin(@RequestBody AdminDto adminDto) {
+    userService.createAdmin(adminDto);
   }
 }
