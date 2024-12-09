@@ -17,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
+@AutoConfigureTestDatabase
+@ActiveProfiles("test")
 class UserServiceIntegrationTest {
 
   @Autowired
