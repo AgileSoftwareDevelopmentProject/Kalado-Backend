@@ -7,7 +7,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients(basePackages = "com.kalado.common.feign")
 @SpringBootApplication(scanBasePackages = {"com.kalado.user", "com.kalado.common"})
-@EnableJpaRepositories(basePackages = "com.kalado.user.adapters.repository")
 @EnableEurekaClient
 public class UserApplication {
 
