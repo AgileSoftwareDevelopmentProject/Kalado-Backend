@@ -7,11 +7,11 @@ import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.user.domain.mapper.UserMapper;
 import java.util.Optional;
+import com.kalado.user.adapters.repository.UserRepository;
 
 import com.kalado.user.domain.model.Admin;
 import com.kalado.user.domain.model.User;
 import com.kalado.user.domain.repository.AdminRepository;
-import com.kalado.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
 
-  private final UserRepository<User> userRepository;
+  private final UserRepository userRepository;
   private final AuthenticationApi authenticationApi;
   private final AdminRepository adminRepository;
 

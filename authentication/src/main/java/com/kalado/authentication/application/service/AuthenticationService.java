@@ -37,7 +37,7 @@ public class AuthenticationService {
   private final RedisTemplate<String, Long> redisTemplate;
   private final UserApi userApi;
 
-  private static final String SECRET_KEY = "asdffffffg3Md4Esdafdasff322432PHdtxFzd23543rsafYdnQVNt1mGPJwfdsgsfdgsdflSVLY45csfgsGRyMwmN4";
+  private static final String SECRET_KEY = "aSdFgHjKlQwErTyUiOpZxCvBnMqWeRtYsdfsdfsdfsdfsdfsdf";
 
   private static final long TOKEN_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
