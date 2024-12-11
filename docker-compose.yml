@@ -39,7 +39,7 @@ services:
     depends_on:
       - discovery
     ports:
-      - "8083:8083"
+      - "80:80"
     networks:
       - kalado-net
 
