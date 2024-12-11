@@ -3,9 +3,7 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-ARG JAR_FILE
-
-COPY ${JAR_FILE} app.jar
+COPY target/*.jar app.jar
 
 EXPOSE 8081
 
