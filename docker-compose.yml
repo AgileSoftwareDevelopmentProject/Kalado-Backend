@@ -65,7 +65,7 @@ services:
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
       - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_SECRET_KEY=X71wHJEhg1LQE5DzWcdc/BRAgIvnqHYiZHBbqgrBOZLzwlHlHh/W1ScQGwd1XM8V1c5vtgGlDS8lb64zjZEZXg==
     depends_on:
       - discovery
       - postgres
@@ -275,7 +275,7 @@ services:
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_PASSWORD=kalado_pass
       - xpack.security.enabled=true
     ports:
       - "9200:9200"
