@@ -8,6 +8,8 @@ import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.user.UserApi;
 import com.kalado.authentication.application.service.AuthenticationService;
+import com.kalado.authentication.application.service.EmailService;
+import com.kalado.authentication.application.service.VerificationService;
 import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.authentication.infrastructure.repository.AuthenticationRepository;
 import org.junit.jupiter.api.*;
@@ -21,37 +23,52 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthenticationServiceIntegrationTest {
 
-  @Autowired private AuthenticationService authenticationService;
-  @Autowired private AuthenticationRepository authRepository;
-  @Autowired private RedisTemplate<String, Long> redisTemplate;
-  @Autowired private PasswordEncoder passwordEncoder;
-  @MockBean private UserApi userApi;
+  @Autowired
+  private AuthenticationService authenticationService;
+
+  @Autowired
+  private AuthenticationRepository authRepository;
+
+  @Autowired
+  private RedisTemplate<String, Long> redisTemplate;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  @MockBean
+  private UserApi userApi;
+
+  @MockBean
+  private EmailService emailService;
+
+  @MockBean
+  private VerificationService verificationService;
 
   @BeforeEach
   void setUp() {
     authRepository.deleteAll();
     authRepository.flush();
+    // Mock verification service to return true for tests
+    Mockito.when(verificationService.isEmailVerified(any())).thenReturn(true);
   }
 
   @Test
   void login_ShouldThrowException_WhenCredentialsAreInvalid() {
-    AuthenticationInfo authInfo =
-        AuthenticationInfo.builder()
+    AuthenticationInfo authInfo = AuthenticationInfo.builder()
             .username("invaliduser")
             .password(passwordEncoder.encode("password"))
             .role(Role.USER)
             .build();
     authRepository.save(authInfo);
 
-    CustomException exception =
-        assertThrows(
+    CustomException exception = assertThrows(
             CustomException.class,
             () -> authenticationService.login("invaliduser", "wrongpassword"));
 
     assertEquals(
-        "Invalid username or password",
-        exception.getMessage(),
-        "Exception message should indicate invalid credentials");
+            "Invalid username or password",
+            exception.getMessage(),
+            "Exception message should indicate invalid credentials");
   }
 
   @Test
@@ -69,35 +86,61 @@ public class AuthenticationServiceIntegrationTest {
     String username = "newuser";
     String password = "newpassword";
     Role role = Role.USER;
+
     Mockito.doNothing().when(userApi).createUser(any());
+    Mockito.doNothing().when(verificationService).createVerificationToken(any());
+
     authenticationService.register(username, password, role);
 
     AuthenticationInfo savedUser = authRepository.findByUsername(username);
     assertNotNull(savedUser, "Saved user should not be null");
     assertTrue(
-        passwordEncoder.matches(password, savedUser.getPassword()),
-        "Password should match the encoded password");
+            passwordEncoder.matches(password, savedUser.getPassword()),
+            "Password should match the encoded password");
     assertEquals(role, savedUser.getRole(), "Role should be USER");
+
+    // Verify verification token was created
+    Mockito.verify(verificationService).createVerificationToken(any());
   }
 
   @Test
   void register_ShouldThrowException_WhenUserAlreadyExists() {
-    AuthenticationInfo existingUser =
-        AuthenticationInfo.builder()
+    AuthenticationInfo existingUser = AuthenticationInfo.builder()
             .username("existinguser")
             .password(passwordEncoder.encode("password"))
             .role(Role.USER)
             .build();
     authRepository.save(existingUser);
 
-    CustomException exception =
-        assertThrows(
+    CustomException exception = assertThrows(
             CustomException.class,
             () -> authenticationService.register("existinguser", "newpassword", Role.USER));
 
     assertEquals(
-        "User already exists",
-        exception.getMessage(),
-        "Exception message should indicate user already exists");
+            "User already exists",
+            exception.getMessage(),
+            "Exception message should indicate user already exists");
+  }
+
+  @Test
+  void login_ShouldThrowException_WhenEmailNotVerified() {
+    AuthenticationInfo authInfo = AuthenticationInfo.builder()
+            .username("unverifieduser")
+            .password(passwordEncoder.encode("password"))
+            .role(Role.USER)
+            .build();
+    authRepository.save(authInfo);
+
+    // Mock verification service to return false
+    Mockito.when(verificationService.isEmailVerified(any())).thenReturn(false);
+
+    CustomException exception = assertThrows(
+            CustomException.class,
+            () -> authenticationService.login("unverifieduser", "password"));
+
+    assertEquals(
+            "Email not verified",
+            exception.getMessage(),
+            "Exception message should indicate email not verified");
   }
 }

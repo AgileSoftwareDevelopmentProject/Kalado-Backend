@@ -1,11 +1,16 @@
 package com.kalado.authentication.adapters.controller;
 
+import com.kalado.authentication.application.service.VerificationService;
+import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.common.dto.AuthDto;
+import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
+import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.common.response.LoginResponse;
 import com.kalado.authentication.application.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,10 +18,34 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController implements AuthenticationApi {
 
   private final AuthenticationService authService;
+  private final VerificationService verificationService;
 
   @Override
   public LoginResponse login(String username, String password) {
+    var user = authService.findByUsername(username);
+    if (user != null && !verificationService.isEmailVerified(user)) {
+      throw new CustomException(ErrorCode.UNAUTHORIZED, "Email not verified");
+    }
     return authService.login(username, password);
+  }
+
+  @PostMapping("/auth/verify")
+  public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+    boolean verified = verificationService.verifyEmail(token);
+    if (verified) {
+      return ResponseEntity.ok("Email verified successfully");
+    }
+    return ResponseEntity.badRequest().body("Invalid or expired token");
+  }
+
+  @PostMapping("/auth/resend-verification")
+  public ResponseEntity<String> resendVerificationToken(@RequestParam String username) {
+    var user = authService.findByUsername(username);
+    if (user != null && !verificationService.isEmailVerified(user)) {
+      verificationService.resendVerificationToken(user);
+      return ResponseEntity.ok("Verification code sent");
+    }
+    return ResponseEntity.badRequest().body("Invalid request or email already verified");
   }
 
   @Override

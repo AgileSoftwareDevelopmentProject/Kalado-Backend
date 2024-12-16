@@ -1,7 +1,8 @@
 package com.kalado.authentication.application.service;
 
-import com.kalado.common.dto.AdminDto;
+import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.common.dto.AuthDto;
+import com.kalado.common.dto.AdminDto;
 import com.kalado.common.dto.UserDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
@@ -36,10 +37,15 @@ public class AuthenticationService {
   private final BCryptPasswordEncoder passwordEncoder;
   private final RedisTemplate<String, Long> redisTemplate;
   private final UserApi userApi;
+  private final VerificationService verificationService;
 
-  private static final String SECRET_KEY = "X71wHJEhg1LQE5DzWcdc/BRAgIvnqHYiZHBbqgrBOZLzwlHlHh/W1ScQGwd1XM8V1c5vtgGlDS8lb64zjZEZXg==";
-
+  private static final String SECRET_KEY =
+      "X71wHJEhg1LQE5DzWcdc/BRAgIvnqHYiZHBbqgrBOZLzwlHlHh/W1ScQGwd1XM8V1c5vtgGlDS8lb64zjZEZXg==";
   private static final long TOKEN_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
+
+  public AuthenticationInfo findByUsername(String username) {
+    return authRepository.findByUsername(username);
+  }
 
   public LoginResponse login(String username, String password) {
     validateLoginInput(username, password);
@@ -48,6 +54,11 @@ public class AuthenticationService {
     if (authInfo == null || !passwordEncoder.matches(password, authInfo.getPassword())) {
       log.warn("Invalid login attempt for username: {}", username);
       throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Invalid username or password");
+    }
+
+    if (!verificationService.isEmailVerified(authInfo)) {
+      log.warn("Email not verified for username: {}", username);
+      throw new CustomException(ErrorCode.EMAIL_NOT_VERIFIED, "Email not verified");
     }
 
     String token = generateToken(authInfo.getUserId());
@@ -148,6 +159,9 @@ public class AuthenticationService {
                 .role(role)
                 .build());
 
+    // Send verification email
+    verificationService.createVerificationToken(authenticationInfo);
+
     assignUserRole(authenticationInfo, role);
   }
 
@@ -155,9 +169,7 @@ public class AuthenticationService {
     switch (role) {
       case ADMIN ->
           userApi.createAdmin(AdminDto.builder().id(authenticationInfo.getUserId()).build());
-      case USER ->
-          userApi.createUser(
-              UserDto.builder().id(authenticationInfo.getUserId()).build());
+      case USER -> userApi.createUser(UserDto.builder().id(authenticationInfo.getUserId()).build());
     }
   }
 

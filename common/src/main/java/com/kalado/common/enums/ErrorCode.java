@@ -25,9 +25,7 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, HttpStatus.METHOD_NOT_ALLOWED, 405, "Method_not_allowed"),
     UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, HttpStatus.UNSUPPORTED_MEDIA_TYPE, 415, "Unsupported_media_type"),
     TOO_MANY_REQUESTS(HttpStatus.TOO_MANY_REQUESTS, HttpStatus.TOO_MANY_REQUESTS, 429, "Too_many_requests"),
-    
-    // Single-argument constructor usage
-    EMAIL_SENDING_FAILED("Failed to send email");
+    EMAIL_NOT_VERIFIED(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED, 401, "Email_not_verified");
 
     private final HttpStatus httpStatus;
     private final HttpStatus clientHttpStatus;
