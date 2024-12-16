@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "aff1b4b0-9b26-4602-a123-12aa4f1aaf86",
+		"name": "Kalado",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"id": "308c75ac-29b7-4d1e-b708-d940f47cd5b7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"arabzadehamirhossein888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8083/v1/auth/register/",
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/register \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\r\n    \"username\": \"your_username\",\r\n    \"password\": \"your_password\",\r\n    \"role\": \"USER\"\r\n  }'"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"id": "9262cb38-e5d3-45c1-be9c-2003c2743cf2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n           \"username\": \"arabzadehamirhossein888@gmail.com\",\r\n           \"password\": \"testpass123\"\r\n         }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8083/v1/auth/login",
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/v1/auth/login \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n           \"username\": \"yourUsername\",\r\n           \"password\": \"yourPassword\"\r\n         }'"
+			},
+			"response": []
+		},
+		{
+			"name": "validate",
+			"id": "726ad195-fb01-400a-b8cc-90fc47d4b363",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzMzODY2MjE3LCJleHAiOjE3MzM5NTI2MTcsImp0aSI6IjFhYmYyYTNhLWE1MTEtNDExYS05NTcxLWVjYmYwZTU3ZGEwMyJ9.f6o27B_VxLDPioULzeVHD9pv70Y1GtlfHzHO9ZSagh0"
+					}
+				],
+				"url": "http://localhost:8083/v1/auth/validate",
+				"description": "Generated from cURL: curl -X GET http://localhost:8080/v1/auth/validate \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -H \"Authorization: Bearer yourToken\""
+			},
+			"response": []
+		},
+		{
+			"name": "Verify email",
+			"id": "d944b2f2-e409-4b0d-aabd-d19f0b129c34",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "token",
+							"value": "000349"
+						}
+					]
+				},
+				"url": "http://localhost:8081/auth/verify",
+				"description": "Generated from cURL: curl --location --request POST 'http://localhost:8081/auth/verify' \\\r\n--header 'Content-Type: application/x-www-form-urlencoded' \\\r\n--data-urlencode 'token=123456'\r\n"
+			},
+			"response": []
+		}
+	]
+}
