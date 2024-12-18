@@ -112,6 +112,45 @@
 				"description": "Generated from cURL: curl --location --request POST 'http://localhost:8081/auth/verify' \\\r\n--header 'Content-Type: application/x-www-form-urlencoded' \\\r\n--data-urlencode 'token=123456'\r\n"
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:8082/v1/products",
+			"id": "4e70f0ae-97f6-4b00-9bc7-0d6956e4adcf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <YOUR_TOKEN>"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "product",
+							"value": "{\"title\":\"Laptop\",\"description\":\"High performance laptop\",\"price\":1000000,\"category\":\"Electronics\",\"productionYear\":2023,\"brand\":\"Dell\"}"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "/path/to/image1.jpg"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "/path/to/image2.jpg"
+						}
+					]
+				},
+				"url": "http://localhost:8082/v1/products",
+				"description": "Generated from cURL: curl -X POST http://localhost:8082/v1/products \\\n  -H \"Authorization: Bearer <YOUR_TOKEN>\" \\\n  -F \"product={\\\"title\\\":\\\"Laptop\\\",\\\"description\\\":\\\"High performance laptop\\\",\\\"price\\\":1000000,\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2023,\\\"brand\\\":\\\"Dell\\\"}\" \\\n  -F \"images=@/path/to/image1.jpg\" \\\n  -F \"images=@/path/to/image2.jpg\""
+			},
+			"response": []
 		}
 	]
 }
