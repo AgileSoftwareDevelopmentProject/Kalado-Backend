@@ -151,6 +151,35 @@
 				"description": "Generated from cURL: curl -X POST http://localhost:8082/v1/products \\\n  -H \"Authorization: Bearer <YOUR_TOKEN>\" \\\n  -F \"product={\\\"title\\\":\\\"Laptop\\\",\\\"description\\\":\\\"High performance laptop\\\",\\\"price\\\":1000000,\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2023,\\\"brand\\\":\\\"Dell\\\"}\" \\\n  -F \"images=@/path/to/image1.jpg\" \\\n  -F \"images=@/path/to/image2.jpg\""
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:8082/v1/products",
+			"id": "a54ad128-c9f8-4f59-9865-d756d9e0aa3f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer <YOUR_TOKEN>"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "product",
+							"value": "{\"title\":\"Smartphone\",\"description\":\"Latest model\",\"price\":500000,\"category\":\"Electronics\",\"productionYear\":2023,\"brand\":\"Apple\"}"
+						}
+					]
+				},
+				"url": "http://localhost:8082/v1/products",
+				"description": "Generated from cURL: curl -X POST http://localhost:8082/v1/products \\\n  -H \"Authorization: Bearer <YOUR_TOKEN>\" \\\n  -F \"product={\\\"title\\\":\\\"Smartphone\\\",\\\"description\\\":\\\"Latest model\\\",\\\"price\\\":500000,\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2023,\\\"brand\\\":\\\"Apple\\\"}\""
+			},
+			"response": []
 		}
 	]
 }
