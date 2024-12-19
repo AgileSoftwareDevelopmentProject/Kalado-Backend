@@ -76,7 +76,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzMzODY2MjE3LCJleHAiOjE3MzM5NTI2MTcsImp0aSI6IjFhYmYyYTNhLWE1MTEtNDExYS05NTcxLWVjYmYwZTU3ZGEwMyJ9.f6o27B_VxLDPioULzeVHD9pv70Y1GtlfHzHO9ZSagh0"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjA2NzE0LCJleHAiOjE3MzQ2OTMxMTQsImp0aSI6IjQyN2U1MWRjLTk0YmEtNGQzNS1iZTVmLTkzOTkyY2E3NzVjOSJ9.ewxYqhwiI4k1ywikHhGs77tCiPJVOiPN05Ke8lhPtVE"
 					}
 				],
 				"url": "http://localhost:8083/v1/auth/validate",
