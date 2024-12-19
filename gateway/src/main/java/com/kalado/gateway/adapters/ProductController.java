@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductController {
   private final ProductApi productApi;
 
-  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping()
   @Authentication(userId = "#userId")
   public ProductDto createProduct(
           Long userId,
@@ -44,7 +44,7 @@ public class ProductController {
     productApi.deleteProduct(id, userId);
   }
 
-  @PatchMapping(value = "/{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PatchMapping(value = "/{id}/status")
   @Authentication(userId = "#userId")
   public ProductDto updateProductStatus(
       Long userId, @PathVariable Long id, @RequestBody ProductStatusUpdateDto statusUpdate) {

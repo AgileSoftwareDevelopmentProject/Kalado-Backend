@@ -12,15 +12,15 @@ import java.util.List;
 @FeignClient(name = "product-service", path = "/products")
 public interface ProductApi {
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping()
     ProductDto createProduct(
-            @RequestPart("product") ProductDto productDt
+            @RequestBody ProductDto productDto
     );
 
     @PutMapping(value = "/{id}")
     ProductDto updateProduct(
             @PathVariable Long id,
-            @RequestPart("product") ProductDto productDto
+            @RequestBody ProductDto productDto
     );
 
     @DeleteMapping("/{id}")

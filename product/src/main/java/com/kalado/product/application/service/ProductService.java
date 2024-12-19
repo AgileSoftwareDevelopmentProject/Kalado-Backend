@@ -30,7 +30,7 @@ public class ProductService {
     validateImages(images);
 
     // Process and store images
-    List<String> imageUrls = images.stream().map(imageService::storeImage).toList();
+//    List<String> imageUrls = images.stream().map(imageService::storeImage).toList();
 
 //    product.setImageUrls(imageUrls);
     product.setStatus(ProductStatus.ACTIVE);
