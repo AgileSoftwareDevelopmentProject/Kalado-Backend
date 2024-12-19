@@ -188,7 +188,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODk0LCJleHAiOjE3MzQ3MTIyOTQsImp0aSI6IjUzYTY0ZmViLTBjYmYtNDk2OS1iMjA3LTQ0MzU1OTA0NzRkZCJ9.o6DbhPby9zMGBTZqnAPHrU8KW4wlofTFZTEXACYiDJc"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5MDUxLCJleHAiOjE3MzQ3MTU0NTEsImp0aSI6IjkwMjc3NThkLTZlNjUtNDc0Ny1hZGM2LTEzNTMyMDcwOTA0NCJ9.7Sepx4klhohkJMoRlwwkNLaE3AfK6Qw1OrzWntG0Y4A"
 					},
 					{
 						"key": "Content-Type",
@@ -388,10 +388,10 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5MDUxLCJleHAiOjE3MzQ3MTU0NTEsImp0aSI6IjkwMjc3NThkLTZlNjUtNDc0Ny1hZGM2LTEzNTMyMDcwOTA0NCJ9.7Sepx4klhohkJMoRlwwkNLaE3AfK6Qw1OrzWntG0Y4A"
 					}
 				],
-				"url": "http://localhost:8083/v1/product/4",
+				"url": "http://localhost:8083/v1/product/7",
 				"description": "Generated from cURL: curl -X DELETE 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN'"
 			},
 			"response": [
@@ -474,7 +474,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:8083/v1/product/4/status",
+				"url": "http://localhost:8083/v1/product/7/status",
 				"description": "Generated from cURL: curl -X PATCH 'http://localhost:8083/v1/product/1/status' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"status\": \"RESERVED\"\r\n}'"
 			},
 			"response": [
