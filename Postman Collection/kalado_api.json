@@ -114,8 +114,8 @@
 			"response": []
 		},
 		{
-			"name": "Create a new product listing",
-			"id": "cc1bae1d-f206-47d8-91cf-ec7822d93900",
+			"name": "http://localhost:8083/v1/product",
+			"id": "b7eeaa6d-83f9-4638-9fda-4e1d4628b504",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -124,7 +124,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "$TOKEN"
+						"value": "Bearer YOUR_TOKEN_HERE"
 					}
 				],
 				"body": {
@@ -133,28 +133,28 @@
 						{
 							"type": "text",
 							"key": "product",
-							"value": "{\r\n  \"title\": \"iPhone 12 Pro\",\r\n  \"description\": \"Used iPhone in excellent condition\",\r\n  \"price\": {\r\n    \"amount\": 15000000,\r\n    \"unit\": \"TOMAN\"\r\n  },\r\n  \"category\": \"Electronics\",\r\n  \"productionYear\": 2020,\r\n  \"brand\": \"Apple\"\r\n};"
+							"value": "{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\"\r\n     }"
 						},
 						{
 							"type": "file",
 							"key": "images",
-							"src": "phone1.jpg"
+							"src": "/path/to/image1.jpg"
 						},
 						{
 							"type": "file",
 							"key": "images",
-							"src": "phone2.jpg"
+							"src": "/path/to/image2.jpg"
 						}
 					]
 				},
 				"url": "http://localhost:8083/v1/product",
-				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/product \\\r\n-H \"Authorization: $TOKEN\" \\\r\n-H \"Content-Type: multipart/form-data\" \\\r\n-F \"product={\r\n  \\\"title\\\": \\\"iPhone 12 Pro\\\",\r\n  \\\"description\\\": \\\"Used iPhone in excellent condition\\\",\r\n  \\\"price\\\": {\r\n    \\\"amount\\\": 15000000,\r\n    \\\"unit\\\": \\\"TOMAN\\\"\r\n  },\r\n  \\\"category\\\": \\\"Electronics\\\",\r\n  \\\"productionYear\\\": 2020,\r\n  \\\"brand\\\": \\\"Apple\\\"\r\n};\" \\\r\n-F \"images=@phone1.jpg\" \\\r\n-F \"images=@phone2.jpg\""
+				"description": "Generated from cURL: curl -X POST \"http://localhost:8083/v1/product\" \\\r\n     -H \"Authorization: Bearer YOUR_TOKEN_HERE\" \\\r\n     -F \"product={\r\n         \\\"title\\\":\\\"Test Product\\\",\r\n         \\\"description\\\":\\\"Detailed product description\\\",\r\n         \\\"price\\\":{\r\n             \\\"amount\\\":100000,\r\n             \\\"unit\\\":\\\"TOMAN\\\"\r\n         },\r\n         \\\"category\\\":\\\"Electronics\\\",\r\n         \\\"productionYear\\\":2023,\r\n         \\\"brand\\\":\\\"Test Brand\\\"\r\n     }\" \\\r\n     -F \"images=@/path/to/image1.jpg\" \\\r\n     -F \"images=@/path/to/image2.jpg\""
 			},
 			"response": []
 		},
 		{
 			"name": "http://localhost:8083/v1/product",
-			"id": "acac03e4-7e4c-4780-a9ab-c2640c70099f",
+			"id": "f6d43a0a-0c7e-4bf9-bbc3-c8242e09998b",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -163,7 +163,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjAzMTI5LCJleHAiOjE3MzQ2ODk1MjksImp0aSI6ImVjN2Y5N2RjLTJjNDMtNGE0Zi05MjJjLTI1YTBmNmNmNzJhNSJ9.h5x4cfUBExtGeTR9HKAHukfweJi2gr-qKi30ysKDgMM"
+						"value": "Bearer YOUR_TOKEN_HERE"
 					}
 				],
 				"body": {
@@ -172,51 +172,12 @@
 						{
 							"type": "text",
 							"key": "product",
-							"value": "{\"title\":\"iPhone 12 Pro\",\"description\":\"Used iPhone in excellent condition\",\"price\":{\"amount\":15000000,\"unit\":\"TOMAN\"},\"category\":\"Electronics\",\"productionYear\":2020,\"brand\":\"Apple\"}"
-						},
-						{
-							"type": "file",
-							"key": "images",
-							"src": "phone.jpg"
+							"value": "{\"title\":\"Test Product\",\"description\":\"Description\",\"price\":{\"amount\":100000,\"unit\":\"TOMAN\"},\"category\":\"Electronics\",\"productionYear\":2023,\"brand\":\"Test Brand\"}"
 						}
 					]
 				},
 				"url": "http://localhost:8083/v1/product",
-				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/product \\\r\n-H \"Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjAzMTI5LCJleHAiOjE3MzQ2ODk1MjksImp0aSI6ImVjN2Y5N2RjLTJjNDMtNGE0Zi05MjJjLTI1YTBmNmNmNzJhNSJ9.h5x4cfUBExtGeTR9HKAHukfweJi2gr-qKi30ysKDgMM\" \\\r\n-F \"product={\\\"title\\\":\\\"iPhone 12 Pro\\\",\\\"description\\\":\\\"Used iPhone in excellent condition\\\",\\\"price\\\":{\\\"amount\\\":15000000,\\\"unit\\\":\\\"TOMAN\\\"},\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2020,\\\"brand\\\":\\\"Apple\\\"}\" \\\r\n-F \"images=@phone.jpg\""
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8083/v1/product",
-			"id": "b38c4c9e-ab4d-4445-97d2-7e643433ca76",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjAzMTI5LCJleHAiOjE3MzQ2ODk1MjksImp0aSI6ImVjN2Y5N2RjLTJjNDMtNGE0Zi05MjJjLTI1YTBmNmNmNzJhNSJ9.h5x4cfUBExtGeTR9HKAHukfweJi2gr-qKi30ysKDgMM"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"type": "text",
-							"key": "product",
-							"value": "{\"title\":\"iPhone 12 Pro\",\"description\":\"Used iPhone in excellent condition\",\"price\":{\"amount\":15000000,\"unit\":\"TOMAN\"},\"category\":\"Electronics\",\"productionYear\":2020,\"brand\":\"Apple\"}"
-						},
-						{
-							"type": "file",
-							"key": "images",
-							"src": "phone.jpg"
-						}
-					]
-				},
-				"url": "http://localhost:8083/v1/product",
-				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/product \\\r\n-H \"Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjAzMTI5LCJleHAiOjE3MzQ2ODk1MjksImp0aSI6ImVjN2Y5N2RjLTJjNDMtNGE0Zi05MjJjLTI1YTBmNmNmNzJhNSJ9.h5x4cfUBExtGeTR9HKAHukfweJi2gr-qKi30ysKDgMM\" \\\r\n-F \"product={\\\"title\\\":\\\"iPhone 12 Pro\\\",\\\"description\\\":\\\"Used iPhone in excellent condition\\\",\\\"price\\\":{\\\"amount\\\":15000000,\\\"unit\\\":\\\"TOMAN\\\"},\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2020,\\\"brand\\\":\\\"Apple\\\"}\" \\\r\n-F \"images=@phone.jpg\""
+				"description": "Generated from cURL: curl -X POST \"http://localhost:8083/v1/product\" \\\r\n     -H \"Authorization: Bearer YOUR_TOKEN_HERE\" \\\r\n     -F \"product={\\\"title\\\":\\\"Test Product\\\",\\\"description\\\":\\\"Description\\\",\\\"price\\\":{\\\"amount\\\":100000,\\\"unit\\\":\\\"TOMAN\\\"},\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2023,\\\"brand\\\":\\\"Test Brand\\\"}\""
 			},
 			"response": []
 		}
