@@ -30,22 +30,22 @@ public class AuthenticationController implements AuthenticationApi {
   }
 
   @PostMapping("/auth/verify")
-  public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+  public String verifyEmail(@RequestParam String token) {
     boolean verified = verificationService.verifyEmail(token);
     if (verified) {
-      return ResponseEntity.ok("Email verified successfully");
+      return "Email verified successfully";
     }
-    return ResponseEntity.badRequest().body("Invalid or expired token");
+    return "Invalid or expired token";
   }
 
   @PostMapping("/auth/resend-verification")
-  public ResponseEntity<String> resendVerificationToken(@RequestParam String username) {
+  public String resendVerificationToken(@RequestParam String username) {
     var user = authService.findByUsername(username);
     if (user != null && !verificationService.isEmailVerified(user)) {
       verificationService.resendVerificationToken(user);
-      return ResponseEntity.ok("Verification code sent");
+      return "Verification code sent";
     }
-    return ResponseEntity.badRequest().body("Invalid request or email already verified");
+    return "Invalid request or email already verified";
   }
 
   @Override

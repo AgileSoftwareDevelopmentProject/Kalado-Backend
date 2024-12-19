@@ -27,8 +27,6 @@
         <module>product</module>
         <module>search</module>
         <module>reporting</module>
-        <module>admin</module>
-        <module>notification</module>
     </modules>
 
     <properties>

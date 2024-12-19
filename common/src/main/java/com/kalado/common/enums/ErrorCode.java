@@ -14,7 +14,7 @@ public enum ErrorCode {
     FORBIDDEN(HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN, 403, "Forbidden"),
     INVALID_TOKEN(HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN, 403, "Invalid_token"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST, 400, "Bad_request"),
-    USER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST, 400, "User_already_exists"),
+    USER_ALREADY_EXISTS(HttpStatus.CONFLICT, HttpStatus.CONFLICT, 409, "User_already_exists"),
     NO_CONTENT(HttpStatus.NO_CONTENT, HttpStatus.NO_CONTENT, 204, "No_content"),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED, 401, "Invalid_credentials"),
     NOT_FOUND(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND, 404, "Resource_not_found"),
