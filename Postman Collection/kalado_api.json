@@ -114,8 +114,8 @@
 			"response": []
 		},
 		{
-			"name": "1. Register a new user (seller)",
-			"id": "8f7631c3-45b0-4bb2-a47c-e67869381d30",
+			"name": "Create a new product listing",
+			"id": "cc1bae1d-f206-47d8-91cf-ec7822d93900",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -123,21 +123,32 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Content-Type",
-						"value": "application/json"
+						"key": "Authorization",
+						"value": "$TOKEN"
 					}
 				],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"seller@example.com\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"USER\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "product",
+							"value": "{\r\n  \"title\": \"iPhone 12 Pro\",\r\n  \"description\": \"Used iPhone in excellent condition\",\r\n  \"price\": {\r\n    \"amount\": 15000000,\r\n    \"unit\": \"TOMAN\"\r\n  },\r\n  \"category\": \"Electronics\",\r\n  \"productionYear\": 2020,\r\n  \"brand\": \"Apple\"\r\n};"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "phone1.jpg"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "phone2.jpg"
 						}
-					}
+					]
 				},
-				"url": "http://localhost:8083/v1/auth/register",
-				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/auth/register \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"username\": \"seller@example.com\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"USER\"\r\n}'"
+				"url": "http://localhost:8083/v1/product",
+				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/product \\\r\n-H \"Authorization: $TOKEN\" \\\r\n-H \"Content-Type: multipart/form-data\" \\\r\n-F \"product={\r\n  \\\"title\\\": \\\"iPhone 12 Pro\\\",\r\n  \\\"description\\\": \\\"Used iPhone in excellent condition\\\",\r\n  \\\"price\\\": {\r\n    \\\"amount\\\": 15000000,\r\n    \\\"unit\\\": \\\"TOMAN\\\"\r\n  },\r\n  \\\"category\\\": \\\"Electronics\\\",\r\n  \\\"productionYear\\\": 2020,\r\n  \\\"brand\\\": \\\"Apple\\\"\r\n};\" \\\r\n-F \"images=@phone1.jpg\" \\\r\n-F \"images=@phone2.jpg\""
 			},
 			"response": []
 		}
