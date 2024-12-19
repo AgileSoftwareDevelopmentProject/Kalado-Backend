@@ -22,7 +22,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -32,17 +34,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ProductControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @MockBean
-  private ProductService productService;
+  @MockBean private ProductService productService;
 
-  @MockBean
-  private ProductMapper productMapper;
+  @MockBean private ProductMapper productMapper;
 
   private ProductDto validProductDto;
   private Product validProduct;
@@ -53,7 +51,8 @@ class ProductControllerTest {
 
   @BeforeEach
   void setUp() {
-    productDto = ProductDto.builder()
+    productDto =
+        ProductDto.builder()
             .title("Test Product")
             .description("Test Description")
             .price(new Price(100000, CurrencyUnit.TOMAN))
@@ -63,7 +62,8 @@ class ProductControllerTest {
             .sellerId(TEST_USER_ID)
             .build();
 
-    testProduct = Product.builder()
+    testProduct =
+        Product.builder()
             .id(1L)
             .title(productDto.getTitle())
             .description(productDto.getDescription())
@@ -75,7 +75,8 @@ class ProductControllerTest {
             .status(ProductStatus.ACTIVE)
             .build();
 
-    validProductDto = ProductDto.builder()
+    validProductDto =
+        ProductDto.builder()
             .title("Test Product")
             .description("Test Description")
             .price(new Price(100000, CurrencyUnit.TOMAN))
@@ -85,7 +86,8 @@ class ProductControllerTest {
             .sellerId(1L)
             .build();
 
-    validProduct = Product.builder()
+    validProduct =
+        Product.builder()
             .id(1L)
             .title("Test Product")
             .description("Test Description")
@@ -103,10 +105,12 @@ class ProductControllerTest {
     when(productService.createProduct(any(Product.class), any())).thenReturn(validProduct);
     when(productMapper.toResponseDto(any(Product.class))).thenReturn(validProductDto);
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/products")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(validProductDto)))
-            .andExpect(status().isOk());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(validProductDto)))
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -114,17 +118,20 @@ class ProductControllerTest {
     ProductDto invalidDto = ProductDto.builder().build();
     when(productMapper.toProduct(any(ProductDto.class))).thenReturn(Product.builder().build());
     when(productService.createProduct(any(Product.class), any()))
-            .thenThrow(new CustomException(ErrorCode.BAD_REQUEST, "Invalid product data"));
+        .thenThrow(new CustomException(ErrorCode.BAD_REQUEST, "Invalid product data"));
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/products")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(invalidDto)))
-            .andExpect(status().isBadRequest());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalidDto)))
+        .andExpect(status().isBadRequest());
   }
 
   @Test
   void createProduct_WithNullPrice_ShouldReturnBadRequest() throws Exception {
-    ProductDto invalidDto = ProductDto.builder()
+    ProductDto invalidDto =
+        ProductDto.builder()
             .title("Test Product")
             .description("Test Description")
             .category("Electronics")
@@ -132,45 +139,51 @@ class ProductControllerTest {
             .build();
 
     when(productMapper.toProduct(any(ProductDto.class)))
-            .thenReturn(Product.builder()
-                    .title("Test Product")
-                    .description("Test Description")
-                    .category("Electronics")
-                    .sellerId(1L)
-                    .build());
+        .thenReturn(
+            Product.builder()
+                .title("Test Product")
+                .description("Test Description")
+                .category("Electronics")
+                .sellerId(1L)
+                .build());
 
     when(productService.createProduct(any(Product.class), any()))
-            .thenThrow(new CustomException(ErrorCode.BAD_REQUEST, "Price is required"));
+        .thenThrow(new CustomException(ErrorCode.BAD_REQUEST, "Price is required"));
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/products")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(invalidDto)))
-            .andExpect(status().isBadRequest());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalidDto)))
+        .andExpect(status().isBadRequest());
   }
 
   @Test
   void updateProduct_Success() throws Exception {
     when(productMapper.toProduct(any(ProductDto.class))).thenReturn(testProduct);
-    when(productService.updateProduct(eq(1L), any(Product.class), eq(null))).thenReturn(testProduct);
+    when(productService.updateProduct(eq(1L), any(Product.class), eq(null)))
+        .thenReturn(testProduct);
     when(productMapper.toResponseDto(any(Product.class))).thenReturn(productDto);
 
-    mockMvc.perform(MockMvcRequestBuilders.put("/products/{id}", 1L)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(productDto)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.title").value(productDto.getTitle()));
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.put("/products/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productDto)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.title").value(productDto.getTitle()));
 
     verify(productService).updateProduct(eq(1L), any(Product.class), eq(null));
   }
 
-//  @Test
-//  void deleteProduct_Success() throws Exception {
-//    mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", 1L)
-//                    .requestAttr("userId", TEST_USER_ID))
-//            .andExpect(status().isOk());
-//
-//    verify(productService).deleteProduct(1L, TEST_USER_ID);
-//  }
+  //  @Test
+  //  void deleteProduct_Success() throws Exception {
+  //    mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", 1L)
+  //                    .requestAttr("userId", TEST_USER_ID))
+  //            .andExpect(status().isOk());
+  //
+  //    verify(productService).deleteProduct(1L, TEST_USER_ID);
+  //  }
 
   @Test
   void updateProductStatus_Success() throws Exception {
@@ -178,67 +191,101 @@ class ProductControllerTest {
     testProduct.setStatus(ProductStatus.RESERVED);
 
     when(productService.updateProductStatus(eq(1L), eq(ProductStatus.RESERVED), eq(TEST_USER_ID)))
-            .thenReturn(testProduct);
+        .thenReturn(testProduct);
     when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
 
-    mockMvc.perform(MockMvcRequestBuilders.patch("/products/{id}/status", 1L)
-                    .param("userId", TEST_USER_ID.toString())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(statusUpdate)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.patch("/products/{id}/status", 1L)
+                .param("userId", TEST_USER_ID.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(statusUpdate)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   }
 
-//  @Test
-//  void getSellerProducts_Success() throws Exception {
-//    when(productService.getProductsBySeller(TEST_USER_ID)).thenReturn(Arrays.asList(testProduct));
-//    when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
-//
-//    mockMvc.perform(MockMvcRequestBuilders.get("/products/seller/{sellerId}", TEST_USER_ID))
-//            .andExpect(status().isOk())
-//            .andExpect(jsonPath("$[0].title").value(productDto.getTitle()))
-//            .andExpect(jsonPath("$[0].category").value(productDto.getCategory()));
-//  }
-//
-//  @Test
-//  void getProductsByCategory_Success() throws Exception {
-//    when(productService.getProductsByCategory("Electronics")).thenReturn(Arrays.asList(testProduct));
-//    when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
-//
-//    mockMvc.perform(MockMvcRequestBuilders.get("/products/category/{category}", "Electronics"))
-//            .andExpect(status().isOk())
-//            .andExpect(jsonPath("$[0].title").value(productDto.getTitle()))
-//            .andExpect(jsonPath("$[0].category").value(productDto.getCategory()));
-//  }
+  @Test
+  void getSellerProducts_Success() throws Exception {
+    // Create a list of test products
+    List<Product> testProducts = Arrays.asList(testProduct);
+    when(productService.getProductsBySeller(TEST_USER_ID)).thenReturn(testProducts);
+    when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
 
-//  @Test
-//  void getProduct_Success() throws Exception {
-//    when(productService.getProduct(1L)).thenReturn(testProduct);
-//    when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
-//
-//    mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}", 1L))
-//            .andExpect(status().isOk())
-//            .andExpect(jsonPath("$.title").value(productDto.getTitle()))
-//            .andExpect(jsonPath("$.category").value(productDto.getCategory()));
-//  }
-//
-//  @Test
-//  void getProduct_NotFound() throws Exception {
-//    when(productService.getProduct(999L))
-//            .thenThrow(new CustomException(ErrorCode.NOT_FOUND, "Product not found"));
-//
-//    mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}", 999L))
-//            .andExpect(status().isNotFound());
-//  }
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/products/seller/{sellerId}", TEST_USER_ID))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].title").value(productDto.getTitle()))
+        .andExpect(jsonPath("$[0].description").value(productDto.getDescription()))
+        .andExpect(jsonPath("$[0].category").value(productDto.getCategory()));
+
+    verify(productService).getProductsBySeller(TEST_USER_ID);
+    verify(productMapper).toResponseDto(testProduct);
+  }
+
+  @Test
+  void getProductsByCategory_Success() throws Exception {
+    // Create a list of test products
+    List<Product> testProducts = Arrays.asList(testProduct);
+    String category = "Electronics";
+    when(productService.getProductsByCategory(category)).thenReturn(testProducts);
+    when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/products/category/{category}", category))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].title").value(productDto.getTitle()))
+        .andExpect(jsonPath("$[0].category").value(productDto.getCategory()));
+
+    verify(productService).getProductsByCategory(category);
+    verify(productMapper).toResponseDto(testProduct);
+  }
+
+  @Test
+  void getProduct_Success() throws Exception {
+    Long productId = 1L;
+    when(productService.getProduct(productId)).thenReturn(testProduct);
+    when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/products/{id}", productId))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.title").value(productDto.getTitle()))
+        .andExpect(jsonPath("$.description").value(productDto.getDescription()))
+        .andExpect(jsonPath("$.category").value(productDto.getCategory()));
+
+    verify(productService).getProduct(productId);
+    verify(productMapper).toResponseDto(testProduct);
+  }
+
+  @Test
+  void getProduct_NotFound() throws Exception {
+    Long nonExistentId = 999L;
+    when(productService.getProduct(nonExistentId))
+        .thenThrow(new CustomException(ErrorCode.NOT_FOUND, "Product not found"));
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/products/{id}", nonExistentId))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.errorCode").value(ErrorCode.NOT_FOUND.getErrorCodeValue()));
+
+    verify(productService).getProduct(nonExistentId);
+  }
 
   @Test
   void updateProductStatus_WithInvalidStatus() throws Exception {
     ProductStatusUpdateDto statusUpdate = new ProductStatusUpdateDto(null);
 
-    mockMvc.perform(MockMvcRequestBuilders.patch("/products/{id}/status", 1L)
-                    .param("userId", TEST_USER_ID.toString())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(statusUpdate)))
-            .andExpect(status().isBadRequest());
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.patch("/products/{id}/status", 1L)
+                .param("userId", TEST_USER_ID.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(statusUpdate)))
+        .andExpect(status().isBadRequest());
   }
 }
