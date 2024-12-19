@@ -2,6 +2,7 @@ package com.kalado.product;
 
 import com.kalado.common.Price;
 import com.kalado.common.enums.CurrencyUnit;
+import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.exception.CustomException;
 import com.kalado.product.application.service.ImageService;
 import com.kalado.product.application.service.ProductService;
@@ -31,6 +32,8 @@ class ProductServiceIntegrationTest {
   @Autowired private ProductRepository productRepository;
 
   @MockBean private ImageService imageService;
+
+  private static final Long TEST_USER_ID = 1L;
 
   private Product testProduct;
   private MockMultipartFile testImage;
@@ -150,18 +153,58 @@ class ProductServiceIntegrationTest {
     //        );
   }
 
-  //
-  //    @Test
-  //    void deleteProduct_Success() {
-  //        Product savedProduct = productService.createProduct(testProduct, null);
-  //
-  //        productService.deleteProduct(savedProduct.getId(), savedProduct.getSellerId());
-  //
-  //        Product deletedProduct = productRepository.findById(savedProduct.getId()).orElseThrow();
-  //        assertEquals(ProductStatus.DELETED, deletedProduct.getStatus());
-  ////        verify(imageService, times(1)).deleteImage(any());
-  //    }
-  //
+  @Test
+  void deleteProduct_Success() {
+    // Create and save a product first
+    Product savedProduct = productService.createProduct(testProduct, null);
+    assertNotNull(savedProduct.getId());
+    assertEquals(ProductStatus.ACTIVE, savedProduct.getStatus());
+
+    // Delete the product
+    productService.deleteProduct(savedProduct.getId(), savedProduct.getSellerId());
+
+    // Verify the product's status is changed to DELETED
+    Product deletedProduct = productRepository.findById(savedProduct.getId()).orElseThrow();
+    assertEquals(ProductStatus.DELETED, deletedProduct.getStatus());
+  }
+
+  @Test
+  void deleteProduct_UnauthorizedUser_ShouldThrowException() {
+    // Create and save a product first
+    Product savedProduct = productService.createProduct(testProduct, null);
+    assertNotNull(savedProduct.getId());
+
+    // Try to delete with wrong seller ID
+    Long wrongSellerId = savedProduct.getSellerId() + 1;
+    CustomException exception =
+        assertThrows(
+            CustomException.class,
+            () -> {
+              productService.deleteProduct(savedProduct.getId(), wrongSellerId);
+            });
+
+    assertEquals(ErrorCode.FORBIDDEN, exception.getErrorCode());
+    assertEquals("You don't have permission to modify this product", exception.getMessage());
+
+    // Verify the product status hasn't changed
+    Product unchangedProduct = productRepository.findById(savedProduct.getId()).orElseThrow();
+    assertEquals(ProductStatus.ACTIVE, unchangedProduct.getStatus());
+  }
+
+  @Test
+  void deleteProduct_NonexistentProduct_ShouldThrowException() {
+    Long nonexistentId = 99999L;
+    CustomException exception =
+        assertThrows(
+            CustomException.class,
+            () -> {
+              productService.deleteProduct(nonexistentId, TEST_USER_ID);
+            });
+
+    assertEquals(ErrorCode.NOT_FOUND, exception.getErrorCode());
+    assertEquals("Product not found", exception.getMessage());
+  }
+
   @Test
   void updateProductStatus_Success() {
     Product savedProduct = productService.createProduct(testProduct, null);

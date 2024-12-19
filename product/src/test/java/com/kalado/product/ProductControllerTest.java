@@ -176,14 +176,28 @@ class ProductControllerTest {
     verify(productService).updateProduct(eq(1L), any(Product.class), eq(null));
   }
 
-  //  @Test
-  //  void deleteProduct_Success() throws Exception {
-  //    mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", 1L)
-  //                    .requestAttr("userId", TEST_USER_ID))
-  //            .andExpect(status().isOk());
-  //
-  //    verify(productService).deleteProduct(1L, TEST_USER_ID);
-  //  }
+  @Test
+  void deleteProduct_Success() throws Exception {
+    doNothing().when(productService).deleteProduct(1L, TEST_USER_ID);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", 1L)
+                    .requestAttr("userId", TEST_USER_ID))
+            .andExpect(status().isOk());
+
+    verify(productService).deleteProduct(1L, TEST_USER_ID);
+  }
+
+  @Test
+  void deleteProduct_UnauthorizedUser() throws Exception {
+    doThrow(new CustomException(ErrorCode.FORBIDDEN, "You don't have permission to modify this product"))
+            .when(productService).deleteProduct(1L, 999L);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", 1L)
+                    .requestAttr("userId", 999L))
+            .andExpect(status().isForbidden())
+            .andExpect(jsonPath("$.errorCode").value(ErrorCode.FORBIDDEN.getErrorCodeValue()))
+            .andExpect(jsonPath("$.message").value("You don't have permission to modify this product"));
+  }
 
   @Test
   void updateProductStatus_Success() throws Exception {
