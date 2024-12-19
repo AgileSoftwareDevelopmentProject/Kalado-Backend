@@ -156,7 +156,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
 					},
 					{
 						"key": "Content-Type",
@@ -174,6 +174,25 @@
 				},
 				"url": "http://localhost:8083/v1/product/1",
 				"description": "Generated from cURL: curl -X PUT 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"title\": \"iPhone 13 Pro\",\r\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\r\n    \"price\": {\r\n        \"amount\": 27000000,\r\n        \"unit\": \"TOMAN\"\r\n    },\r\n    \"category\": \"Electronics\",\r\n    \"productionYear\": 2022,\r\n    \"brand\": \"Apple\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Product",
+			"id": "83e1a217-3987-4d59-bac8-9ee0ea114f78",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_AUTH_TOKEN"
+					}
+				],
+				"url": "http://localhost:8083/v1/product/1",
+				"description": "Generated from cURL: curl -X DELETE 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN'"
 			},
 			"response": []
 		}
