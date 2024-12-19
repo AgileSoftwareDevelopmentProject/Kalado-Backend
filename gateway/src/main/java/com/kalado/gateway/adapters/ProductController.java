@@ -33,7 +33,7 @@ public class ProductController {
   public ProductDto updateProduct(
       Long userId,
       @PathVariable Long id,
-      @RequestPart("product") ProductDto productDto) {
+      @RequestBody ProductDto productDto) {
     productDto.setSellerId(userId);
     return productApi.updateProduct(id, productDto);
   }
