@@ -114,8 +114,8 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8082/v1/products",
-			"id": "4e70f0ae-97f6-4b00-9bc7-0d6956e4adcf",
+			"name": "1. Register a new user (seller)",
+			"id": "8f7631c3-45b0-4bb2-a47c-e67869381d30",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -123,61 +123,21 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "Bearer <YOUR_TOKEN>"
+						"key": "Content-Type",
+						"value": "application/json"
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"type": "text",
-							"key": "product",
-							"value": "{\"title\":\"Laptop\",\"description\":\"High performance laptop\",\"price\":1000000,\"category\":\"Electronics\",\"productionYear\":2023,\"brand\":\"Dell\"}"
-						},
-						{
-							"type": "file",
-							"key": "images",
-							"src": "/path/to/image1.jpg"
-						},
-						{
-							"type": "file",
-							"key": "images",
-							"src": "/path/to/image2.jpg"
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"seller@example.com\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
-				},
-				"url": "http://localhost:8082/v1/products",
-				"description": "Generated from cURL: curl -X POST http://localhost:8082/v1/products \\\n  -H \"Authorization: Bearer <YOUR_TOKEN>\" \\\n  -F \"product={\\\"title\\\":\\\"Laptop\\\",\\\"description\\\":\\\"High performance laptop\\\",\\\"price\\\":1000000,\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2023,\\\"brand\\\":\\\"Dell\\\"}\" \\\n  -F \"images=@/path/to/image1.jpg\" \\\n  -F \"images=@/path/to/image2.jpg\""
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8082/v1/products",
-			"id": "a54ad128-c9f8-4f59-9865-d756d9e0aa3f",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer <YOUR_TOKEN>"
 					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"type": "text",
-							"key": "product",
-							"value": "{\"title\":\"Smartphone\",\"description\":\"Latest model\",\"price\":500000,\"category\":\"Electronics\",\"productionYear\":2023,\"brand\":\"Apple\"}"
-						}
-					]
 				},
-				"url": "http://localhost:8082/v1/products",
-				"description": "Generated from cURL: curl -X POST http://localhost:8082/v1/products \\\n  -H \"Authorization: Bearer <YOUR_TOKEN>\" \\\n  -F \"product={\\\"title\\\":\\\"Smartphone\\\",\\\"description\\\":\\\"Latest model\\\",\\\"price\\\":500000,\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2023,\\\"brand\\\":\\\"Apple\\\"}\""
+				"url": "http://localhost:8083/v1/auth/register",
+				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/auth/register \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"username\": \"seller@example.com\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"USER\"\r\n}'"
 			},
 			"response": []
 		}
