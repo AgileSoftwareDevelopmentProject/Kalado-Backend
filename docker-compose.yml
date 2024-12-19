@@ -23,6 +23,7 @@ services:
     networks:
       - kalado-net
 
+
   gateway:
     image: kalado/gateway:latest
     container_name: gateway
