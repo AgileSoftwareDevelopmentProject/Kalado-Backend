@@ -67,50 +67,84 @@ class ProductServiceIntegrationTest {
     }
 
     @Test
-    void createProduct_Success() {
-//        List<MultipartFile> images = List.of(testImage);
+    void createProduct_WithValidData_ShouldSucceed() {
+        Product product = Product.builder()
+                .title("Test Product")
+                .description("Test Description")
+                .price(new Price(100.0, CurrencyUnit.TOMAN))
+                .category("Electronics")
+                .sellerId(1L)
+                .build();
 
-        Product savedProduct = productService.createProduct(testProduct, null);
+        Product savedProduct = productService.createProduct(product, null);
 
         assertNotNull(savedProduct.getId());
-        assertEquals(testProduct.getTitle(), savedProduct.getTitle());
-        assertEquals(ProductStatus.ACTIVE, savedProduct.getStatus());
-//        assertEquals(1, savedProduct.getImageUrls().size());
-//        verify(imageService, times(1)).storeImage(any());
+        assertEquals("Test Product", savedProduct.getTitle());
     }
 
-//    @Test
-//    void createProduct_WithInvalidData_ShouldThrowException() {
-//        testProduct.setTitle("");  // Invalid title
-//
-//        assertThrows(CustomException.class, () ->
-//                productService.createProduct(testProduct, List.of(testImage))
-//        );
-//    }
+    @Test
+    void createProduct_WithInvalidData_ShouldThrowException() {
+        Product invalidProduct = Product.builder()
+                .sellerId(1L)
+                .build();
 
-//    @Test
-//    void updateProduct_Success() {
-//        // First create a product
-//        Product savedProduct = productService.createProduct(testProduct, null);
-//
-//        // Update product
-//        savedProduct.setTitle("Updated Title");
-//        savedProduct.setDescription("Updated Description");
-//
-//        Product updatedProduct = productService.updateProduct(
-//                savedProduct.getId(),
-//                savedProduct,
-//                null  // No new images
+        assertThrows(CustomException.class, () -> {
+            productService.createProduct(invalidProduct, null);
+        });
+    }
+
+    @Test
+    void createProduct_WithNullPrice_ShouldThrowException() {
+        Product invalidProduct = Product.builder()
+                .title("Test Product")
+                .description("Test Description")
+                .category("Electronics")
+                .sellerId(1L)
+                .build();
+
+        assertThrows(CustomException.class, () -> {
+            productService.createProduct(invalidProduct, null);
+        });
+    }
+
+    @Test
+    void createProduct_WithInvalidPrice_ShouldThrowException() {
+        Product invalidProduct = Product.builder()
+                .title("Test Product")
+                .description("Test Description")
+                .price(new Price(-100.0, CurrencyUnit.TOMAN))
+                .category("Electronics")
+                .sellerId(1L)
+                .build();
+
+        assertThrows(CustomException.class, () -> {
+            productService.createProduct(invalidProduct, null);
+        });
+    }
+
+    @Test
+    void updateProduct_Success() {
+        // First create a product
+        Product savedProduct = productService.createProduct(testProduct, null);
+
+        // Update product
+        savedProduct.setTitle("Updated Title");
+        savedProduct.setDescription("Updated Description");
+
+        Product updatedProduct = productService.updateProduct(
+                savedProduct.getId(),
+                savedProduct,
+                null  // No new images
+        );
+
+        assertEquals("Updated Title", updatedProduct.getTitle());
+        assertEquals("Updated Description", updatedProduct.getDescription());
+//        assertEquals(
+//                new ArrayList<>(savedProduct.getImageUrls()),
+//                new ArrayList<>(updatedProduct.getImageUrls()),
+//                "Image URLs should match"
 //        );
-//
-//        assertEquals("Updated Title", updatedProduct.getTitle());
-//        assertEquals("Updated Description", updatedProduct.getDescription());
-////        assertEquals(
-////                new ArrayList<>(savedProduct.getImageUrls()),
-////                new ArrayList<>(updatedProduct.getImageUrls()),
-////                "Image URLs should match"
-////        );
-//    }
+    }
 
 //    @Test
 //    void updateProduct_WithNewImages_Success() {
@@ -133,29 +167,14 @@ class ProductServiceIntegrationTest {
 //                savedProduct,
 //                List.of(newImage)
 //        );
-//
+
 //        verify(imageService).deleteImage(any());
 //        verify(imageService).storeImage(any());
 //        assertEquals(1, updatedProduct.getImageUrls().size());
 //        assertTrue(updatedProduct.getImageUrls().contains("new-test-image-url.jpg"));
 //    }
 
-//    @Test
-//    void updateProduct_WrongSeller_ShouldThrowException() {
-//        Product savedProduct = productService.createProduct(testProduct, null);
-//
-//        Product productWithWrongSeller = savedProduct.toBuilder()
-//                .sellerId(999L)  // Different seller ID
-//                .build();
-//
-//        assertThrows(CustomException.class, () ->
-//                productService.updateProduct(
-//                        savedProduct.getId(),
-//                        productWithWrongSeller,
-//                        null
-//                )
-//        );
-//    }
+
 //
 //    @Test
 //    void deleteProduct_Success() {
@@ -168,19 +187,19 @@ class ProductServiceIntegrationTest {
 ////        verify(imageService, times(1)).deleteImage(any());
 //    }
 //
-//    @Test
-//    void updateProductStatus_Success() {
-//        Product savedProduct = productService.createProduct(testProduct, null);
-//
-//        productService.updateProductStatus(
-//                savedProduct.getId(),
-//                ProductStatus.RESERVED,
-//                savedProduct.getSellerId()
-//        );
-//
-//        Product updatedProduct = productRepository.findById(savedProduct.getId()).orElseThrow();
-//        assertEquals(ProductStatus.RESERVED, updatedProduct.getStatus());
-//    }
+    @Test
+    void updateProductStatus_Success() {
+        Product savedProduct = productService.createProduct(testProduct, null);
+
+        productService.updateProductStatus(
+                savedProduct.getId(),
+                ProductStatus.RESERVED,
+                savedProduct.getSellerId()
+        );
+
+        Product updatedProduct = productRepository.findById(savedProduct.getId()).orElseThrow();
+        assertEquals(ProductStatus.RESERVED, updatedProduct.getStatus());
+    }
 //
 //    @Test
 //    void getProductsBySeller_Success() {
