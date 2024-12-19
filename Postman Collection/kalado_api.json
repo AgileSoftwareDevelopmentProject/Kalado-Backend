@@ -124,7 +124,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer YOUR_TOKEN_HERE"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODk0LCJleHAiOjE3MzQ3MTIyOTQsImp0aSI6IjUzYTY0ZmViLTBjYmYtNDk2OS1iMjA3LTQ0MzU1OTA0NzRkZCJ9.o6DbhPby9zMGBTZqnAPHrU8KW4wlofTFZTEXACYiDJc"
 					},
 					{
 						"key": "Content-Type",
@@ -172,7 +172,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:8083/v1/product/1",
+				"url": "http://localhost:8083/v1/product/4",
 				"description": "Generated from cURL: curl -X PUT 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"title\": \"iPhone 13 Pro\",\r\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\r\n    \"price\": {\r\n        \"amount\": 27000000,\r\n        \"unit\": \"TOMAN\"\r\n    },\r\n    \"category\": \"Electronics\",\r\n    \"productionYear\": 2022,\r\n    \"brand\": \"Apple\"\r\n}'"
 			},
 			"response": []
@@ -188,11 +188,62 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
 					}
 				],
-				"url": "http://localhost:8083/v1/product/1",
+				"url": "http://localhost:8083/v1/product/4",
 				"description": "Generated from cURL: curl -X DELETE 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN'"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product Status",
+			"id": "955c809a-ffce-44cb-bade-fe99c16d3745",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"RESERVED\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8083/v1/product/4/status",
+				"description": "Generated from cURL: curl -X PATCH 'http://localhost:8083/v1/product/1/status' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"status\": \"RESERVED\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Seller's Products",
+			"id": "1b7060d1-f4b9-4276-b2b2-53d9f44fa157",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+					}
+				],
+				"url": "http://localhost:8083/v1/product/seller",
+				"description": "Generated from cURL: curl -X GET 'http://localhost:8083/v1/product/seller' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN'"
 			},
 			"response": []
 		}
