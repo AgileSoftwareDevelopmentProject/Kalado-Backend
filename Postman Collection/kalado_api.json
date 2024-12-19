@@ -185,6 +185,40 @@
 				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/product \\\r\n-H \"Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjAzMTI5LCJleHAiOjE3MzQ2ODk1MjksImp0aSI6ImVjN2Y5N2RjLTJjNDMtNGE0Zi05MjJjLTI1YTBmNmNmNzJhNSJ9.h5x4cfUBExtGeTR9HKAHukfweJi2gr-qKi30ysKDgMM\" \\\r\n-F \"product={\\\"title\\\":\\\"iPhone 12 Pro\\\",\\\"description\\\":\\\"Used iPhone in excellent condition\\\",\\\"price\\\":{\\\"amount\\\":15000000,\\\"unit\\\":\\\"TOMAN\\\"},\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2020,\\\"brand\\\":\\\"Apple\\\"}\" \\\r\n-F \"images=@phone.jpg\""
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:8083/v1/product",
+			"id": "b38c4c9e-ab4d-4445-97d2-7e643433ca76",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjAzMTI5LCJleHAiOjE3MzQ2ODk1MjksImp0aSI6ImVjN2Y5N2RjLTJjNDMtNGE0Zi05MjJjLTI1YTBmNmNmNzJhNSJ9.h5x4cfUBExtGeTR9HKAHukfweJi2gr-qKi30ysKDgMM"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "product",
+							"value": "{\"title\":\"iPhone 12 Pro\",\"description\":\"Used iPhone in excellent condition\",\"price\":{\"amount\":15000000,\"unit\":\"TOMAN\"},\"category\":\"Electronics\",\"productionYear\":2020,\"brand\":\"Apple\"}"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "phone.jpg"
+						}
+					]
+				},
+				"url": "http://localhost:8083/v1/product",
+				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/product \\\r\n-H \"Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjAzMTI5LCJleHAiOjE3MzQ2ODk1MjksImp0aSI6ImVjN2Y5N2RjLTJjNDMtNGE0Zi05MjJjLTI1YTBmNmNmNzJhNSJ9.h5x4cfUBExtGeTR9HKAHukfweJi2gr-qKi30ysKDgMM\" \\\r\n-F \"product={\\\"title\\\":\\\"iPhone 12 Pro\\\",\\\"description\\\":\\\"Used iPhone in excellent condition\\\",\\\"price\\\":{\\\"amount\\\":15000000,\\\"unit\\\":\\\"TOMAN\\\"},\\\"category\\\":\\\"Electronics\\\",\\\"productionYear\\\":2020,\\\"brand\\\":\\\"Apple\\\"}\" \\\r\n-F \"images=@phone.jpg\""
+			},
+			"response": []
 		}
 	]
 }
