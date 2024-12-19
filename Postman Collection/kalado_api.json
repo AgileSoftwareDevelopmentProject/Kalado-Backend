@@ -59,7 +59,71 @@
 				"url": "http://localhost:8083/v1/auth/login",
 				"description": "Generated from cURL: curl -X POST http://localhost:8080/v1/auth/login \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n           \"username\": \"yourUsername\",\r\n           \"password\": \"yourPassword\"\r\n         }'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "d278858c-7225-46d3-894c-1fdf4a03a994",
+					"name": "login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n           \"username\": \"arabzadehamirhossein888@gmail.com\",\r\n           \"password\": \"testpass123\"\r\n         }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/v1/auth/login"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:31:34 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODk0LCJleHAiOjE3MzQ3MTIyOTQsImp0aSI6IjUzYTY0ZmViLTBjYmYtNDk2OS1iMjA3LTQ0MzU1OTA0NzRkZCJ9.o6DbhPby9zMGBTZqnAPHrU8KW4wlofTFZTEXACYiDJc\",\n    \"role\": \"USER\"\n}"
+				}
+			]
 		},
 		{
 			"name": "validate",
@@ -143,7 +207,75 @@
 				"url": "http://localhost:8083/v1/product",
 				"description": "Generated from cURL: curl -X POST \"http://localhost:8083/v1/product\" \\\r\n     -H \"Authorization: Bearer YOUR_TOKEN_HERE\" \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\",\r\n         \"sellerId\":1\r\n     }'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "8412ee8e-625a-4c3d-b5c3-fceb9fa791df",
+					"name": "http://localhost:8083/v1/product",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODk0LCJleHAiOjE3MzQ3MTIyOTQsImp0aSI6IjUzYTY0ZmViLTBjYmYtNDk2OS1iMjA3LTQ0MzU1OTA0NzRkZCJ9.o6DbhPby9zMGBTZqnAPHrU8KW4wlofTFZTEXACYiDJc"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\",\r\n         \"sellerId\":1\r\n     }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/v1/product"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:33:43 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 4,\n    \"title\": \"Test Product\",\n    \"description\": \"Detailed product description\",\n    \"price\": {\n        \"amount\": 100000,\n        \"unit\": \"TOMAN\"\n    },\n    \"category\": \"Electronics\",\n    \"productionYear\": 2023,\n    \"brand\": \"Test Brand\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": 1734626023079,\n    \"sellerId\": 7\n}"
+				}
+			]
 		},
 		{
 			"name": "Update a Product",
@@ -175,7 +307,75 @@
 				"url": "http://localhost:8083/v1/product/4",
 				"description": "Generated from cURL: curl -X PUT 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"title\": \"iPhone 13 Pro\",\r\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\r\n    \"price\": {\r\n        \"amount\": 27000000,\r\n        \"unit\": \"TOMAN\"\r\n    },\r\n    \"category\": \"Electronics\",\r\n    \"productionYear\": 2022,\r\n    \"brand\": \"Apple\"\r\n}'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "78028a2f-57d8-4cf9-8efc-659fa8cfbb04",
+					"name": "Update a Product",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"iPhone 13 Pro\",\r\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\r\n    \"price\": {\r\n        \"amount\": 27000000,\r\n        \"unit\": \"TOMAN\"\r\n    },\r\n    \"category\": \"Electronics\",\r\n    \"productionYear\": 2022,\r\n    \"brand\": \"Apple\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/v1/product/4"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:33:57 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 4,\n    \"title\": \"iPhone 13 Pro\",\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\n    \"price\": {\n        \"amount\": 27000000,\n        \"unit\": \"TOMAN\"\n    },\n    \"category\": \"Electronics\",\n    \"productionYear\": 2022,\n    \"brand\": \"Apple\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": 1734626023079,\n    \"sellerId\": 7\n}"
+				}
+			]
 		},
 		{
 			"name": "Delete a Product",
@@ -194,7 +394,58 @@
 				"url": "http://localhost:8083/v1/product/4",
 				"description": "Generated from cURL: curl -X DELETE 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "0c665c5b-00b2-4257-8c0e-906874cc8f5a",
+					"name": "Delete a Product",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+							}
+						],
+						"url": "http://localhost:8083/v1/product/4"
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:34:06 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"errorCode\": 500,\n    \"message\": \"Internal_server_error\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Update Product Status",
@@ -226,7 +477,71 @@
 				"url": "http://localhost:8083/v1/product/4/status",
 				"description": "Generated from cURL: curl -X PATCH 'http://localhost:8083/v1/product/1/status' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"status\": \"RESERVED\"\r\n}'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "cca65776-538c-4630-9cea-74161e7c2435",
+					"name": "Update Product Status",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"RESERVED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/v1/product/4/status"
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:34:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"timestamp\": 1734626055566,\n    \"status\": 500,\n    \"error\": \"Internal Server Error\",\n    \"path\": \"/v1/product/4/status\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Get Seller's Products",
@@ -245,7 +560,190 @@
 				"url": "http://localhost:8083/v1/product/seller",
 				"description": "Generated from cURL: curl -X GET 'http://localhost:8083/v1/product/seller' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "6da33daf-0857-4631-99c1-6030acd742b1",
+					"name": "Get Seller's Products",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+							}
+						],
+						"url": "http://localhost:8083/v1/product/seller"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:34:34 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "[\n    {\n        \"id\": 1,\n        \"title\": \"iPhone 13 Pro\",\n        \"description\": \"Used iPhone 13 Pro with all accessories\",\n        \"price\": {\n            \"amount\": 27000000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2022,\n        \"brand\": \"Apple\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734617475097,\n        \"sellerId\": 7\n    },\n    {\n        \"id\": 2,\n        \"title\": \"Test Product\",\n        \"description\": \"Detailed product description\",\n        \"price\": {\n            \"amount\": 100000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2023,\n        \"brand\": \"Test Brand\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734625903282,\n        \"sellerId\": 7\n    },\n    {\n        \"id\": 3,\n        \"title\": \"Test Product\",\n        \"description\": \"Detailed product description\",\n        \"price\": {\n            \"amount\": 100000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2023,\n        \"brand\": \"Test Brand\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734626003907,\n        \"sellerId\": 7\n    },\n    {\n        \"id\": 4,\n        \"title\": \"iPhone 13 Pro\",\n        \"description\": \"Used iPhone 13 Pro with all accessories\",\n        \"price\": {\n            \"amount\": 27000000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2022,\n        \"brand\": \"Apple\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734626023079,\n        \"sellerId\": 7\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Products by Category",
+			"id": "e73ff093-306c-423f-8b46-4a38315c4ce8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8083/v1/product/category/Electronics",
+				"description": "Generated from cURL: curl -X GET 'http://localhost:8083/v1/product/category/Electronics'"
+			},
+			"response": [
+				{
+					"id": "1c384fe9-3201-4ed7-acdc-2765ddd97652",
+					"name": "Get Products by Category",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8083/v1/product/category/Electronics"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:35:11 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "[\n    {\n        \"id\": 1,\n        \"title\": \"iPhone 13 Pro\",\n        \"description\": \"Used iPhone 13 Pro with all accessories\",\n        \"price\": {\n            \"amount\": 27000000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2022,\n        \"brand\": \"Apple\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734617475097,\n        \"sellerId\": 7\n    },\n    {\n        \"id\": 2,\n        \"title\": \"Test Product\",\n        \"description\": \"Detailed product description\",\n        \"price\": {\n            \"amount\": 100000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2023,\n        \"brand\": \"Test Brand\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734625903282,\n        \"sellerId\": 7\n    },\n    {\n        \"id\": 3,\n        \"title\": \"Test Product\",\n        \"description\": \"Detailed product description\",\n        \"price\": {\n            \"amount\": 100000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2023,\n        \"brand\": \"Test Brand\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734626003907,\n        \"sellerId\": 7\n    },\n    {\n        \"id\": 4,\n        \"title\": \"iPhone 13 Pro\",\n        \"description\": \"Used iPhone 13 Pro with all accessories\",\n        \"price\": {\n            \"amount\": 27000000,\n            \"unit\": \"TOMAN\"\n        },\n        \"category\": \"Electronics\",\n        \"productionYear\": 2022,\n        \"brand\": \"Apple\",\n        \"status\": \"ACTIVE\",\n        \"createdAt\": 1734626023079,\n        \"sellerId\": 7\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Single Product",
+			"id": "a4066294-34c6-4943-885b-8a01ab91447f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8083/v1/product/1",
+				"description": "Generated from cURL: curl -X GET 'http://localhost:8083/v1/product/1'"
+			},
+			"response": [
+				{
+					"id": "5d466dc1-e2e9-4b17-9254-cde2247f4bc5",
+					"name": "Get Single Product",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8083/v1/product/1"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 19 Dec 2024 16:36:15 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 1,\n    \"title\": \"iPhone 13 Pro\",\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\n    \"price\": {\n        \"amount\": 27000000,\n        \"unit\": \"TOMAN\"\n    },\n    \"category\": \"Electronics\",\n    \"productionYear\": 2022,\n    \"brand\": \"Apple\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": 1734617475097,\n    \"sellerId\": 7\n}"
+				}
+			]
 		}
 	]
 }
