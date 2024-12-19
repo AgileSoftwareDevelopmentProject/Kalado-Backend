@@ -114,7 +114,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8083/v1/product",
+			"name": "Create Product",
 			"id": "433ac4fd-3895-4d36-b749-00e13642a57f",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -142,6 +142,38 @@
 				},
 				"url": "http://localhost:8083/v1/product",
 				"description": "Generated from cURL: curl -X POST \"http://localhost:8083/v1/product\" \\\r\n     -H \"Authorization: Bearer YOUR_TOKEN_HERE\" \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\",\r\n         \"sellerId\":1\r\n     }'"
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Product",
+			"id": "bccead04-273b-4a0c-ab18-58242d89280f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_AUTH_TOKEN"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"iPhone 13 Pro\",\r\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\r\n    \"price\": {\r\n        \"amount\": 27000000,\r\n        \"unit\": \"TOMAN\"\r\n    },\r\n    \"category\": \"Electronics\",\r\n    \"productionYear\": 2022,\r\n    \"brand\": \"Apple\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8083/v1/product/1",
+				"description": "Generated from cURL: curl -X PUT 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"title\": \"iPhone 13 Pro\",\r\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\r\n    \"price\": {\r\n        \"amount\": 27000000,\r\n        \"unit\": \"TOMAN\"\r\n    },\r\n    \"category\": \"Electronics\",\r\n    \"productionYear\": 2022,\r\n    \"brand\": \"Apple\"\r\n}'"
 			},
 			"response": []
 		}
