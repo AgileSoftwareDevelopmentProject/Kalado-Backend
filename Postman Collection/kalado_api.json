@@ -115,38 +115,6 @@
 		},
 		{
 			"name": "http://localhost:8083/v1/product",
-			"id": "37f98c50-623e-4e22-a29a-570d2a4562ef",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer YOUR_TOKEN_HERE"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\"\r\n     }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8083/v1/product",
-				"description": "Generated from cURL: curl -X POST \"http://localhost:8083/v1/product\" \\\r\n     -H \"Authorization: Bearer YOUR_TOKEN_HERE\" \\\r\n     -H \"Content-Type: application/json\" \\\r\n     -d '{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\"\r\n     }'"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8083/v1/product",
 			"id": "433ac4fd-3895-4d36-b749-00e13642a57f",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
