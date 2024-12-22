@@ -78,7 +78,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "docker-compose.yml"
-          target: "/root/dish_dash"
+          target: "/home/kalado/repos/Kalado-Backend"
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.7
@@ -87,7 +87,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd /root/dish_dash
+            cd //home/kalado/repos/Kalado-Backend
             docker compose down
             docker compose pull
             docker compose up -d
