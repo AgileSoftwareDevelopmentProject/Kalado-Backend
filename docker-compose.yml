@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   discovery:
-    image: kalado/discovery:latest
+    image: amiril/kalado_discovery:latest
     container_name: discovery
     build:
       context: ./discovery
@@ -24,7 +24,7 @@ services:
       - kalado-net
 
   gateway:
-    image: kalado/gateway:latest
+    image: amiril/kalado_gateway:latest
     container_name: gateway
     build:
       context: ./gateway
@@ -46,7 +46,7 @@ services:
       - kalado-net
 
   authentication:
-    image: kalado/authentication:latest
+    image: amiril/kalado_authentication:latest
     container_name: authentication
     build:
       context: ./authentication
@@ -76,7 +76,7 @@ services:
       - kalado-net
 
   user:
-    image: kalado/user:latest
+    image: amiril/kalado_user:latest
     container_name: user
     build:
       context: ./user
@@ -100,7 +100,7 @@ services:
       - kalado-net
 
   product:
-    image: kalado/product:latest
+    image: amiril/kalado_product:latest
     container_name: product
     build:
       context: ./product
@@ -128,7 +128,7 @@ services:
       - kalado-net
 
   search:
-    image: kalado/search:latest
+    image: amiril/kalado_search:latest
     container_name: search
     build:
       context: ./search
@@ -151,7 +151,7 @@ services:
       - kalado-net
 
   reporting:
-    image: kalado/reporting:latest
+    image: amiril/kalado_reporting:latest
     container_name: reporting
     build:
       context: ./reporting
@@ -175,7 +175,7 @@ services:
       - kalado-net
 
   admin:
-    image: kalado/admin:latest
+    image: amiril/kalado_admin:latest
     container_name: admin
     build:
       context: ./admin
@@ -199,7 +199,7 @@ services:
       - kalado-net
 
   notification:
-    image: kalado/notification:latest
+    image: amiril/kalado_notification:latest
     container_name: notification
     build:
       context: ./notification
@@ -223,7 +223,7 @@ services:
       - kalado-net
 
   payment:
-    image: kalado/payment:latest
+    image: amiril/kalado_payment:latest
     container_name: payment
     build:
       context: ./payment
