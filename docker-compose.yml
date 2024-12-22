@@ -127,100 +127,100 @@ services:
     networks:
       - kalado-net
 
-  search:
-    image: amiril/kalado_search:latest
-    container_name: search
-    build:
-      context: ./search
-      dockerfile: Dockerfile
-    environment:
-      - SPRING_APPLICATION_NAME=search-service
-      - SERVER_PORT=8084
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-      - ELASTICSEARCH_HOST=elasticsearch
-      - ELASTICSEARCH_PORT=9200
-      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-      - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-    depends_on:
-      - discovery
-      - elasticsearch
-    ports:
-      - "8084:8084"
-    networks:
-      - kalado-net
+  # search:
+  #   image: amiril/kalado_search:latest
+  #   container_name: search
+  #   build:
+  #     context: ./search
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - SPRING_APPLICATION_NAME=search-service
+  #     - SERVER_PORT=8084
+  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
+  #     - ELASTICSEARCH_HOST=elasticsearch
+  #     - ELASTICSEARCH_PORT=9200
+  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
+  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
+  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+  #   depends_on:
+  #     - discovery
+  #     - elasticsearch
+  #   ports:
+  #     - "8084:8084"
+  #   networks:
+  #     - kalado-net
 
-  reporting:
-    image: amiril/kalado_reporting:latest
-    container_name: reporting
-    build:
-      context: ./reporting
-      dockerfile: Dockerfile
-    environment:
-      - SPRING_APPLICATION_NAME=reporting-service
-      - SERVER_PORT=8086
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
-      - SPRING_DATASOURCE_USERNAME=kalado
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-      - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-    depends_on:
-      - discovery
-      - postgres
-    ports:
-      - "8086:8086"
-    networks:
-      - kalado-net
+  # reporting:
+  #   image: amiril/kalado_reporting:latest
+  #   container_name: reporting
+  #   build:
+  #     context: ./reporting
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - SPRING_APPLICATION_NAME=reporting-service
+  #     - SERVER_PORT=8086
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
+  #     - SPRING_DATASOURCE_USERNAME=kalado
+  #     - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
+  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
+  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
+  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+  #   depends_on:
+  #     - discovery
+  #     - postgres
+  #   ports:
+  #     - "8086:8086"
+  #   networks:
+  #     - kalado-net
 
-  admin:
-    image: amiril/kalado_admin:latest
-    container_name: admin
-    build:
-      context: ./admin
-      dockerfile: Dockerfile
-    environment:
-      - SPRING_APPLICATION_NAME=admin-service
-      - SERVER_PORT=8087
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
-      - SPRING_DATASOURCE_USERNAME=kalado
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-      - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-    depends_on:
-      - discovery
-      - postgres
-    ports:
-      - "8087:8087"
-    networks:
-      - kalado-net
+  # admin:
+  #   image: amiril/kalado_admin:latest
+  #   container_name: admin
+  #   build:
+  #     context: ./admin
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - SPRING_APPLICATION_NAME=admin-service
+  #     - SERVER_PORT=8087
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
+  #     - SPRING_DATASOURCE_USERNAME=kalado
+  #     - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
+  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
+  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
+  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+  #   depends_on:
+  #     - discovery
+  #     - postgres
+  #   ports:
+  #     - "8087:8087"
+  #   networks:
+  #     - kalado-net
 
-  notification:
-    image: amiril/kalado_notification:latest
-    container_name: notification
-    build:
-      context: ./notification
-      dockerfile: Dockerfile
-    environment:
-      - SPRING_APPLICATION_NAME=notification-service
-      - SERVER_PORT=8088
-      - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=63179
-      - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-      - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-    depends_on:
-      - discovery
-      - redis
-    ports:
-      - "8088:8088"
-    networks:
-      - kalado-net
+  # notification:
+  #   image: amiril/kalado_notification:latest
+  #   container_name: notification
+  #   build:
+  #     context: ./notification
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - SPRING_APPLICATION_NAME=notification-service
+  #     - SERVER_PORT=8088
+  #     - SPRING_REDIS_HOST=redis
+  #     - SPRING_REDIS_PORT=63179
+  #     - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
+  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
+  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
+  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
+  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+  #   depends_on:
+  #     - discovery
+  #     - redis
+  #   ports:
+  #     - "8088:8088"
+  #   networks:
+  #     - kalado-net
 
   payment:
     image: amiril/kalado_payment:latest
@@ -288,3 +288,5 @@ networks:
 
 volumes:
   postgres-data:
+
+
