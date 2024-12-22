@@ -1,2 +1,93 @@
+name: CI
+
 on:
+  push:
+    branches: [ "main" ]
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build all modules with Maven
+        run: mvn -B install
+
+      - name: Verify JAR files
+        run: |
+          ls discovery/target/*.jar
+          ls authentication/target/*.jar
+          ls gateway/target/*.jar
+          ls user/target/*.jar
+          ls product/target/*.jar
+          ls payment/target/*.jar
+
+      - name: Get JAR names
+        id: get_jars
+        run: |
+          echo "DISCOVERY_JAR_NAME=$(ls discovery/target/*.jar)" >> $GITHUB_ENV
+          echo "AUTHENTICATION_JAR_NAME=$(ls authentication/target/*.jar)" >> $GITHUB_ENV
+          echo "GATEWAY_JAR_NAME=$(ls gateway/target/*.jar)" >> $GITHUB_ENV
+          echo "USER_JAR_NAME=$(ls user/target/*.jar)" >> $GITHUB_ENV
+          echo "PRODUCT_JAR_NAME=$(ls product/target/*.jar)" >> $GITHUB_ENV
+          echo "PAYMENT_JAR_NAME=$(ls payment/target/*.jar)" >> $GITHUB_ENV
+
+      - name: Copy JAR files to build context
+        run: |
+          cp ${{ env.DISCOVERY_JAR_NAME }} ./discovery/app.jar
+          cp ${{ env.AUTHENTICATION_JAR_NAME }} ./authentication/app.jar
+          cp ${{ env.GATEWAY_JAR_NAME }} ./gateway/app.jar
+          cp ${{ env.USER_JAR_NAME }} ./user/app.jar
+          cp ${{ env.PRODUCT_JAR_NAME }} ./product/app.jar
+          cp ${{ env.PAYMENT_JAR_NAME }} ./payment/app.jar
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Images
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_discovery:latest -f ./discovery/DockerFile ./discovery --push
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_authentication:latest -f ./authentication/DockerFile ./authentication --push
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_gateway:latest -f ./gateway/DockerFile ./gateway --push
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_user:latest -f ./user/DockerFile ./user --push
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_product:latest -f ./product/DockerFile ./product --push
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_payment:latest -f ./payment/DockerFile ./payment --push
+
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v0.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "docker-compose.yml"
+          target: "/root/dish_dash"
+
+      - name: Deploy with SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd /root/dish_dash
+            docker compose down
+            docker compose pull
+            docker compose up -d
