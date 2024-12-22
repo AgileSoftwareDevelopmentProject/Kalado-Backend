@@ -270,7 +270,7 @@ services:
       - kalado-net
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    image: elasticsearch:7.17.9
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
@@ -288,5 +288,4 @@ networks:
 
 volumes:
   postgres-data:
-
 
