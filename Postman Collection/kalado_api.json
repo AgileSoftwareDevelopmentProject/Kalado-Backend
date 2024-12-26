@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"arabzadehamirhossein888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"role\": \"USER\"\r\n}",
+					"raw": "{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"role\": \"USER\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
