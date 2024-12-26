@@ -3,6 +3,7 @@ package com.kalado.authentication.application.service;
 import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.common.dto.AuthDto;
 import com.kalado.common.dto.AdminDto;
+import com.kalado.common.dto.RegistrationRequestDto;
 import com.kalado.common.dto.UserDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
@@ -140,36 +141,67 @@ public class AuthenticationService {
         && new Date().before(expiration);
   }
 
-  public void register(String username, String password, Role role) {
-    validateRegistrationInput(username, password, role);
 
-    AuthenticationInfo existingUser = authRepository.findByUsername(username);
+  public AuthenticationInfo register(RegistrationRequestDto request) {
+    validateRegistrationInput(request);
+
+    AuthenticationInfo existingUser = authRepository.findByUsername(request.getUsername());
     if (Objects.nonNull(existingUser)) {
       log.info("User already exists: {}", existingUser);
       throw new CustomException(ErrorCode.USER_ALREADY_EXISTS, "User already exists");
     }
 
-    String encodedPassword = passwordEncoder.encode(password);
+    String encodedPassword = passwordEncoder.encode(request.getPassword());
 
-    AuthenticationInfo authenticationInfo =
-        authRepository.save(
+    AuthenticationInfo authenticationInfo = authRepository.save(
             AuthenticationInfo.builder()
-                .username(username)
-                .password(encodedPassword)
-                .role(role)
-                .build());
+                    .username(request.getUsername())
+                    .password(encodedPassword)
+                    .role(request.getRole())
+                    .build());
+
+    // Create initial user profile
+    UserDto userDto = UserDto.builder()
+            .id(authenticationInfo.getUserId())
+            .username(request.getUsername())
+            .firstName(request.getFirstName())
+            .lastName(request.getLastName())
+            .phoneNumber(request.getPhoneNumber())
+            .build();
+
+    // Create user profile based on role
+    switch (request.getRole()) {
+      case ADMIN -> userApi.createAdmin(AdminDto.builder().id(authenticationInfo.getUserId()).build());
+      case USER -> userApi.createUser(userDto);
+    }
 
     // Send verification email
     verificationService.createVerificationToken(authenticationInfo);
 
-    assignUserRole(authenticationInfo, role);
+    return authenticationInfo;
   }
 
-  private void assignUserRole(AuthenticationInfo authenticationInfo, Role role) {
-    switch (role) {
-      case ADMIN ->
-          userApi.createAdmin(AdminDto.builder().id(authenticationInfo.getUserId()).build());
-      case USER -> userApi.createUser(UserDto.builder().id(authenticationInfo.getUserId()).build());
+  private void validateRegistrationInput(RegistrationRequestDto request) {
+    if (request.getUsername() == null || request.getUsername().isEmpty()) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Username cannot be empty");
+    }
+    if (request.getPassword() == null || request.getPassword().isEmpty()) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Password cannot be empty");
+    }
+    if (request.getFirstName() == null || request.getFirstName().isEmpty()) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "First name cannot be empty");
+    }
+    if (request.getLastName() == null || request.getLastName().isEmpty()) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Last name cannot be empty");
+    }
+    if (request.getPhoneNumber() == null || request.getPhoneNumber().isEmpty()) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Phone number cannot be empty");
+    }
+    if (request.getEmail() == null || request.getEmail().isEmpty()) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Email cannot be empty");
+    }
+    if (request.getRole() == null) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Role cannot be null");
     }
   }
 

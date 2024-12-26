@@ -2,8 +2,12 @@ package com.kalado.authentication;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 
 import com.kalado.common.dto.AuthDto;
+import com.kalado.common.dto.RegistrationRequestDto;
+import com.kalado.common.dto.UserDto;
+import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.user.UserApi;
@@ -13,6 +17,7 @@ import com.kalado.authentication.application.service.VerificationService;
 import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.authentication.infrastructure.repository.AuthenticationRepository;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -83,43 +88,74 @@ public class AuthenticationServiceIntegrationTest {
 
   @Test
   void register_ShouldCreateNewUser_WhenDataIsValid() {
-    String username = "newuser";
-    String password = "newpassword";
-    Role role = Role.USER;
+    // Arrange
+    RegistrationRequestDto request = RegistrationRequestDto.builder()
+            .username("newuser")
+            .password("newpassword")
+            .firstName("John")
+            .lastName("Doe")
+            .phoneNumber("1234567890")
+            .email("john.doe@example.com")
+            .role(Role.USER)
+            .build();
 
     Mockito.doNothing().when(userApi).createUser(any());
     Mockito.doNothing().when(verificationService).createVerificationToken(any());
 
-    authenticationService.register(username, password, role);
+    // Act
+    AuthenticationInfo savedUser = authenticationService.register(request);
 
-    AuthenticationInfo savedUser = authRepository.findByUsername(username);
+    // Assert
     assertNotNull(savedUser, "Saved user should not be null");
+    assertEquals(request.getUsername(), savedUser.getUsername(), "Username should match");
     assertTrue(
-            passwordEncoder.matches(password, savedUser.getPassword()),
-            "Password should match the encoded password");
-    assertEquals(role, savedUser.getRole(), "Role should be USER");
+            passwordEncoder.matches(request.getPassword(), savedUser.getPassword()),
+            "Password should be properly encoded"
+    );
+    assertEquals(request.getRole(), savedUser.getRole(), "Role should match");
 
-    // Verify verification token was created
+    // Verify profile creation
+    ArgumentCaptor<UserDto> userDtoCaptor = ArgumentCaptor.forClass(UserDto.class);
+    Mockito.verify(userApi).createUser(userDtoCaptor.capture());
+
+    UserDto capturedUserDto = userDtoCaptor.getValue();
+    assertEquals(request.getFirstName(), capturedUserDto.getFirstName());
+    assertEquals(request.getLastName(), capturedUserDto.getLastName());
+    assertEquals(request.getPhoneNumber(), capturedUserDto.getPhoneNumber());
+
+    // Verify email verification
     Mockito.verify(verificationService).createVerificationToken(any());
   }
 
   @Test
   void register_ShouldThrowException_WhenUserAlreadyExists() {
-    AuthenticationInfo existingUser = AuthenticationInfo.builder()
+    RegistrationRequestDto request = RegistrationRequestDto.builder()
             .username("existinguser")
-            .password(passwordEncoder.encode("password"))
+            .password("newpassword")
+            .firstName("John")
+            .lastName("Doe")
+            .phoneNumber("1234567890")
+            .email("john.doe@example.com")
+            .role(Role.USER)
+            .build();
+
+    AuthenticationInfo existingUser = AuthenticationInfo.builder()
+            .username(request.getUsername())
+            .password(passwordEncoder.encode("oldpassword"))
             .role(Role.USER)
             .build();
     authRepository.save(existingUser);
 
     CustomException exception = assertThrows(
             CustomException.class,
-            () -> authenticationService.register("existinguser", "newpassword", Role.USER));
+            () -> authenticationService.register(request)
+    );
 
-    assertEquals(
-            "User already exists",
-            exception.getMessage(),
-            "Exception message should indicate user already exists");
+    assertEquals(ErrorCode.USER_ALREADY_EXISTS, exception.getErrorCode());
+    assertEquals("User already exists", exception.getMessage());
+
+    Mockito.verify(userApi, never()).createUser(any());
+    Mockito.verify(verificationService, never()).createVerificationToken(any());
   }
 
   @Test

@@ -1,5 +1,6 @@
 package com.kalado.gateway.adapters;
 
+import com.kalado.common.dto.RegistrationRequestDto;
 import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.common.response.LoginResponse;
 import com.kalado.gateway.annotation.Authentication;
@@ -20,9 +21,8 @@ public class AuthenticationController {
   }
 
   @PostMapping("/register")
-  public void register(@RequestBody RegisterRequest registerRequest) {
-    authenticationApi.register(
-        registerRequest.getUsername(), registerRequest.getPassword(), registerRequest.getRole());
+  public void register(@RequestBody RegistrationRequestDto registrationRequest) {
+    authenticationApi.register(registrationRequest);
   }
 
   @GetMapping("/validate")
@@ -35,5 +35,10 @@ public class AuthenticationController {
   @Authentication(token = "#token")
   public void logout(String token) {
     authenticationApi.logout(token);
+  }
+
+  @PostMapping("/verify")
+  public void verifyEmail(String token) {
+    authenticationApi.verifyEmail(token);
   }
 }

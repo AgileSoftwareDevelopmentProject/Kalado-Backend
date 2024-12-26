@@ -3,6 +3,7 @@ package com.kalado.authentication.adapters.controller;
 import com.kalado.authentication.application.service.VerificationService;
 import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.common.dto.AuthDto;
+import com.kalado.common.dto.RegistrationRequestDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
@@ -64,7 +65,8 @@ public class AuthenticationController implements AuthenticationApi {
   }
 
   @Override
-  public void register(String username, String password, Role role) {
-    authService.register(username, password, role);
+  @PostMapping("/auth/register")
+  public void register(@RequestBody RegistrationRequestDto registrationRequest) {
+    authService.register(registrationRequest);
   }
 }

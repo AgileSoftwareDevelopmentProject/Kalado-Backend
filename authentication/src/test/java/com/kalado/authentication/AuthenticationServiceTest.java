@@ -5,6 +5,8 @@ import com.kalado.authentication.application.service.VerificationService;
 import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.authentication.infrastructure.repository.AuthenticationRepository;
 import com.kalado.common.dto.AuthDto;
+import com.kalado.common.dto.RegistrationRequestDto;
+import com.kalado.common.dto.UserDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
@@ -15,6 +17,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,19 +38,14 @@ class AuthenticationServiceTest {
 
     @Mock
     private AuthenticationRepository authRepository;
-
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
-
     @Mock
     private RedisTemplate<String, Long> redisTemplate;
-
     @Mock
     private ValueOperations<String, Long> valueOperations;
-
     @Mock
     private UserApi userApi;
-
     @Mock
     private VerificationService verificationService;
 
@@ -103,44 +101,78 @@ class AuthenticationServiceTest {
 
     @Test
     void register_WithNewUser_ShouldSucceed() {
-        String username = "newuser";
-        String password = "password";
+        RegistrationRequestDto request = RegistrationRequestDto.builder()
+                .username("newuser")
+                .password("password")
+                .firstName("John")
+                .lastName("Doe")
+                .phoneNumber("1234567890")
+                .email("john.doe@example.com")
+                .role(Role.USER)
+                .build();
+
         String encodedPassword = "encodedpass";
         AuthenticationInfo savedUser = AuthenticationInfo.builder()
                 .userId(1L)
-                .username(username)
+                .username(request.getUsername())
                 .password(encodedPassword)
                 .role(Role.USER)
                 .build();
 
-        when(authRepository.findByUsername(username)).thenReturn(null);
-        when(passwordEncoder.encode(password)).thenReturn(encodedPassword);
+        when(authRepository.findByUsername(request.getUsername())).thenReturn(null);
+        when(passwordEncoder.encode(request.getPassword())).thenReturn(encodedPassword);
         when(authRepository.save(any(AuthenticationInfo.class))).thenReturn(savedUser);
 
-        authService.register(username, password, Role.USER);
+        AuthenticationInfo result = authService.register(request);
+
+        assertNotNull(result);
+        assertEquals(request.getUsername(), result.getUsername());
+        assertEquals(encodedPassword, result.getPassword());
+        assertEquals(request.getRole(), result.getRole());
 
         verify(authRepository).save(any(AuthenticationInfo.class));
-        verify(userApi).createUser(any());
+
+        ArgumentCaptor<UserDto> userDtoCaptor = ArgumentCaptor.forClass(UserDto.class);
+        verify(userApi).createUser(userDtoCaptor.capture());
+
+        UserDto capturedUserDto = userDtoCaptor.getValue();
+        assertEquals(request.getFirstName(), capturedUserDto.getFirstName());
+        assertEquals(request.getLastName(), capturedUserDto.getLastName());
+        assertEquals(request.getPhoneNumber(), capturedUserDto.getPhoneNumber());
+
         verify(verificationService).createVerificationToken(any());
     }
 
     @Test
     void register_WithExistingUsername_ShouldThrowException() {
-        String username = "existinguser";
-        String password = "password";
+        RegistrationRequestDto request = RegistrationRequestDto.builder()
+                .username("existinguser")
+                .password("password")
+                .firstName("John")
+                .lastName("Doe")
+                .phoneNumber("1234567890")
+                .email("john.doe@example.com")
+                .role(Role.USER)
+                .build();
+
         AuthenticationInfo existingUser = AuthenticationInfo.builder()
-                .username(username)
+                .username(request.getUsername())
                 .password("encodedpass")
                 .role(Role.USER)
                 .build();
 
-        when(authRepository.findByUsername(username)).thenReturn(existingUser);
+        when(authRepository.findByUsername(request.getUsername())).thenReturn(existingUser);
 
         CustomException exception = assertThrows(
                 CustomException.class,
-                () -> authService.register(username, password, Role.USER)
+                () -> authService.register(request)
         );
+
         assertEquals(ErrorCode.USER_ALREADY_EXISTS, exception.getErrorCode());
+        assertEquals("User already exists", exception.getMessage());
+
+        verify(userApi, never()).createUser(any());
+        verify(verificationService, never()).createVerificationToken(any());
     }
 
     @Test
@@ -177,6 +209,34 @@ class AuthenticationServiceTest {
         authService.invalidateToken(token);
 
         verify(redisTemplate).delete(token);
+    }
+
+    @Test
+    void register_WithMissingRequiredFields_ShouldThrowException() {
+        // Arrange
+        RegistrationRequestDto request = RegistrationRequestDto.builder()
+                .username("testuser")
+                .password("password")
+                // Missing firstName
+                .lastName("Doe")
+                .phoneNumber("1234567890")
+                .email("test@example.com")
+                .role(Role.USER)
+                .build();
+
+        // Act & Assert
+        CustomException exception = assertThrows(
+                CustomException.class,
+                () -> authService.register(request)
+        );
+
+        assertEquals(ErrorCode.INVALID_CREDENTIALS, exception.getErrorCode());
+        assertEquals("First name cannot be empty", exception.getMessage());
+
+        // Verify no side effects
+        verify(authRepository, never()).save(any());
+        verify(userApi, never()).createUser(any());
+        verify(verificationService, never()).createVerificationToken(any());
     }
 
     @Test
