@@ -31,7 +31,67 @@
 				"url": "http://localhost:8083/v1/auth/register/",
 				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/auth/register/' \\\r\n--header 'Content-Type: application/json' \\\r\n--data-raw '{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "42c9c47a-13a7-4916-9fd6-24f7f2859053",
+					"name": "http://localhost:8083/v1/auth/register/",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"arabzadehamirhossein@outlook.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/v1/auth/register/"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 26 Dec 2024 11:42:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": null
+				}
+			]
 		},
 		{
 			"name": "login",
@@ -168,14 +228,75 @@
 						{
 							"type": "text",
 							"key": "token",
-							"value": "321423"
+							"value": "145506"
 						}
 					]
 				},
-				"url": "http://localhost:8083/auth/verify",
+				"url": "http://localhost:8083/v1/auth/verify/",
 				"description": "Generated from cURL: curl --location --request POST 'http://localhost:8081/auth/verify' \\\r\n--header 'Content-Type: application/x-www-form-urlencoded' \\\r\n--data-urlencode 'token=123456'\r\n"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "d7f4e2bd-9993-436b-968b-61beacc86d0a",
+					"name": "Verify email",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"type": "text",
+									"key": "token",
+									"value": "145506"
+								}
+							]
+						},
+						"url": "http://localhost:8083/v1/auth/verify/"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 26 Dec 2024 11:47:22 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": null
+				}
+			]
 		},
 		{
 			"name": "Create Product",
@@ -288,7 +409,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5NDA0LCJleHAiOjE3MzQ3MTU4MDQsImp0aSI6IjdkZWNiYTdkLTA5ZjMtNDBkYi1hYmVhLThmYzhiYjU1NzMyZiJ9._5L_DwJcg5NiFvJtYzfMyqaSx_EF_4E5ALvw7vAUgCY"
 					},
 					{
 						"key": "Content-Type",
@@ -388,7 +509,13 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5MDUxLCJleHAiOjE3MzQ3MTU0NTEsImp0aSI6IjkwMjc3NThkLTZlNjUtNDc0Ny1hZGM2LTEzNTMyMDcwOTA0NCJ9.7Sepx4klhohkJMoRlwwkNLaE3AfK6Qw1OrzWntG0Y4A"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5NDA0LCJleHAiOjE3MzQ3MTU4MDQsImp0aSI6IjdkZWNiYTdkLTA5ZjMtNDBkYi1hYmVhLThmYzhiYjU1NzMyZiJ9._5L_DwJcg5NiFvJtYzfMyqaSx_EF_4E5ALvw7vAUgCY"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"url": "http://localhost:8083/v1/product/7",
@@ -458,7 +585,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5NDA0LCJleHAiOjE3MzQ3MTU4MDQsImp0aSI6IjdkZWNiYTdkLTA5ZjMtNDBkYi1hYmVhLThmYzhiYjU1NzMyZiJ9._5L_DwJcg5NiFvJtYzfMyqaSx_EF_4E5ALvw7vAUgCY"
 					},
 					{
 						"key": "Content-Type",
