@@ -409,7 +409,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE0MTg4LCJleHAiOjE3MzUzMDA1ODgsImp0aSI6ImM0Nzc3MzU0LTk2YTAtNDFhNy04MmY3LThmYWMzZDFhYjdkOSJ9.UaPBlaR7nYK2p0fEBe4UQDfhT3hIdM3CEaoEQYg5KRs"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE5NDEzLCJleHAiOjE3MzUzMDU4MTMsImp0aSI6ImEwYzBlZDg5LTEwMjgtNGYyNi05NDg5LWRhNzgxZGU2ZmI5ZiJ9.1Xc72pBkYNHfR3yQLGquCaiaigq1Gjj3oiy1Sc7clNU"
 					},
 					{
 						"key": "Content-Type",
@@ -509,7 +509,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE0MTg4LCJleHAiOjE3MzUzMDA1ODgsImp0aSI6ImM0Nzc3MzU0LTk2YTAtNDFhNy04MmY3LThmYWMzZDFhYjdkOSJ9.UaPBlaR7nYK2p0fEBe4UQDfhT3hIdM3CEaoEQYg5KRs"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE5NDEzLCJleHAiOjE3MzUzMDU4MTMsImp0aSI6ImEwYzBlZDg5LTEwMjgtNGYyNi05NDg5LWRhNzgxZGU2ZmI5ZiJ9.1Xc72pBkYNHfR3yQLGquCaiaigq1Gjj3oiy1Sc7clNU"
 					},
 					{
 						"key": "Content-Type",
@@ -523,21 +523,27 @@
 			},
 			"response": [
 				{
-					"id": "0c665c5b-00b2-4257-8c0e-906874cc8f5a",
+					"id": "da8edd2d-afe7-4382-9694-1c56335c11a2",
 					"name": "Delete a Product",
 					"originalRequest": {
-						"method": "DELETE",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE5NDEzLCJleHAiOjE3MzUzMDU4MTMsImp0aSI6ImEwYzBlZDg5LTEwMjgtNGYyNi05NDg5LWRhNzgxZGU2ZmI5ZiJ9.1Xc72pBkYNHfR3yQLGquCaiaigq1Gjj3oiy1Sc7clNU"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
 							}
 						],
-						"url": "http://localhost:8083/v1/product/4"
+						"url": "http://localhost:8083/v1/product/delete/4"
 					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
 					"header": [
 						{
 							"key": "Vary",
@@ -552,25 +558,25 @@
 							"value": "Access-Control-Request-Headers"
 						},
 						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
+							"key": "Content-Length",
+							"value": "0"
 						},
 						{
 							"key": "Date",
-							"value": "Thu, 19 Dec 2024 16:34:06 GMT"
+							"value": "Thu, 26 Dec 2024 13:45:40 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
 						},
 						{
 							"key": "Connection",
-							"value": "close"
+							"value": "keep-alive"
 						}
 					],
 					"cookie": [],
 					"responseTime": null,
-					"body": "{\n    \"errorCode\": 500,\n    \"message\": \"Internal_server_error\"\n}"
+					"body": null
 				}
 			]
 		},
