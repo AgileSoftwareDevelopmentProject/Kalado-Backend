@@ -7,7 +7,7 @@
 	"item": [
 		{
 			"name": "register",
-			"id": "308c75ac-29b7-4d1e-b708-d940f47cd5b7",
+			"id": "07ddf67b-c52f-4e1d-840d-4f86afe5eba9",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"role\": \"USER\"\r\n}",
+					"raw": "{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -29,7 +29,7 @@
 					}
 				},
 				"url": "http://localhost:8083/v1/auth/register/",
-				"description": "Generated from cURL: curl -X POST http://localhost:8080/register \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\r\n    \"username\": \"your_username\",\r\n    \"password\": \"your_password\",\r\n    \"role\": \"USER\"\r\n  }'"
+				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/auth/register/' \\\r\n--header 'Content-Type: application/json' \\\r\n--data-raw '{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}'"
 			},
 			"response": []
 		},
@@ -744,34 +744,6 @@
 					"body": "{\n    \"id\": 1,\n    \"title\": \"iPhone 13 Pro\",\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\n    \"price\": {\n        \"amount\": 27000000,\n        \"unit\": \"TOMAN\"\n    },\n    \"category\": \"Electronics\",\n    \"productionYear\": 2022,\n    \"brand\": \"Apple\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": 1734617475097,\n    \"sellerId\": 7\n}"
 				}
 			]
-		},
-		{
-			"name": "http://localhost:8083/v1/auth/register/",
-			"id": "07ddf67b-c52f-4e1d-840d-4f86afe5eba9",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8083/v1/auth/register/",
-				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/auth/register/' \\\r\n--header 'Content-Type: application/json' \\\r\n--data-raw '{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}'"
-			},
-			"response": []
 		}
 	]
 }
