@@ -172,7 +172,7 @@
 						}
 					]
 				},
-				"url": "http://localhost:8081/auth/verify",
+				"url": "http://localhost:8083/auth/verify",
 				"description": "Generated from cURL: curl --location --request POST 'http://localhost:8081/auth/verify' \\\r\n--header 'Content-Type: application/x-www-form-urlencoded' \\\r\n--data-urlencode 'token=123456'\r\n"
 			},
 			"response": []
