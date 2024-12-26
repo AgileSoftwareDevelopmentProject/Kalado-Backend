@@ -505,11 +505,11 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "DELETE",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5NDA0LCJleHAiOjE3MzQ3MTU4MDQsImp0aSI6IjdkZWNiYTdkLTA5ZjMtNDBkYi1hYmVhLThmYzhiYjU1NzMyZiJ9._5L_DwJcg5NiFvJtYzfMyqaSx_EF_4E5ALvw7vAUgCY"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE0MTg4LCJleHAiOjE3MzUzMDA1ODgsImp0aSI6ImM0Nzc3MzU0LTk2YTAtNDFhNy04MmY3LThmYWMzZDFhYjdkOSJ9.UaPBlaR7nYK2p0fEBe4UQDfhT3hIdM3CEaoEQYg5KRs"
 					},
 					{
 						"key": "Content-Type",
@@ -518,7 +518,7 @@
 						"disabled": true
 					}
 				],
-				"url": "http://localhost:8083/v1/product/7",
+				"url": "http://localhost:8083/v1/product/delete/4",
 				"description": "Generated from cURL: curl -X DELETE 'http://localhost:8083/v1/product/1' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN'"
 			},
 			"response": [
@@ -581,11 +581,11 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "PATCH",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5NDA0LCJleHAiOjE3MzQ3MTU4MDQsImp0aSI6IjdkZWNiYTdkLTA5ZjMtNDBkYi1hYmVhLThmYzhiYjU1NzMyZiJ9._5L_DwJcg5NiFvJtYzfMyqaSx_EF_4E5ALvw7vAUgCY"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE0MTg4LCJleHAiOjE3MzUzMDA1ODgsImp0aSI6ImM0Nzc3MzU0LTk2YTAtNDFhNy04MmY3LThmYWMzZDFhYjdkOSJ9.UaPBlaR7nYK2p0fEBe4UQDfhT3hIdM3CEaoEQYg5KRs"
 					},
 					{
 						"key": "Content-Type",
@@ -601,19 +601,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8083/v1/product/7/status",
+				"url": "http://localhost:8083/v1/product/status/4",
 				"description": "Generated from cURL: curl -X PATCH 'http://localhost:8083/v1/product/1/status' \\\r\n-H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n-H 'Content-Type: application/json' \\\r\n-d '{\r\n    \"status\": \"RESERVED\"\r\n}'"
 			},
 			"response": [
 				{
-					"id": "cca65776-538c-4630-9cea-74161e7c2435",
+					"id": "e1a15e9b-7dd8-446f-8853-9561d2436f82",
 					"name": "Update Product Status",
 					"originalRequest": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE0MTg4LCJleHAiOjE3MzUzMDA1ODgsImp0aSI6ImM0Nzc3MzU0LTk2YTAtNDFhNy04MmY3LThmYWMzZDFhYjdkOSJ9.UaPBlaR7nYK2p0fEBe4UQDfhT3hIdM3CEaoEQYg5KRs"
 							},
 							{
 								"key": "Content-Type",
@@ -629,10 +629,10 @@
 								}
 							}
 						},
-						"url": "http://localhost:8083/v1/product/4/status"
+						"url": "http://localhost:8083/v1/product/status/4"
 					},
-					"status": "Internal Server Error",
-					"code": 500,
+					"status": "OK",
+					"code": 200,
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
@@ -657,16 +657,20 @@
 						},
 						{
 							"key": "Date",
-							"value": "Thu, 19 Dec 2024 16:34:15 GMT"
+							"value": "Thu, 26 Dec 2024 12:33:54 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
 						},
 						{
 							"key": "Connection",
-							"value": "close"
+							"value": "keep-alive"
 						}
 					],
 					"cookie": [],
 					"responseTime": null,
-					"body": "{\n    \"timestamp\": 1734626055566,\n    \"status\": 500,\n    \"error\": \"Internal Server Error\",\n    \"path\": \"/v1/product/4/status\"\n}"
+					"body": "{\n    \"id\": 4,\n    \"title\": \"iPhone 13 Pro\",\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\n    \"price\": {\n        \"amount\": 27000000,\n        \"unit\": \"TOMAN\"\n    },\n    \"category\": \"Electronics\",\n    \"productionYear\": 2022,\n    \"brand\": \"Apple\",\n    \"status\": \"RESERVED\",\n    \"createdAt\": 1734626023079,\n    \"sellerId\": 7\n}"
 				}
 			]
 		},
