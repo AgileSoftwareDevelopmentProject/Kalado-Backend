@@ -8,10 +8,7 @@ import com.kalado.common.feign.product.ProductApi;
 import com.kalado.product.application.service.ProductService;
 import com.kalado.product.domain.model.Product;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,8 +38,8 @@ public class ProductController implements ProductApi {
   }
 
   @Override
-  public void deleteProduct(@PathVariable Long id, @RequestAttribute("userId") Long sellerId) {
-    productService.deleteProduct(id, sellerId);
+  public void deleteProduct(@PathVariable Long id, @RequestParam("userId") Long userId) {
+    productService.deleteProduct(id, userId);
   }
 
   @Override

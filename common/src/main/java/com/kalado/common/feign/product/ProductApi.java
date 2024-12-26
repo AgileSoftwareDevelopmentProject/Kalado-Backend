@@ -23,13 +23,13 @@ public interface ProductApi {
             @RequestBody ProductDto productDto
     );
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/delete/{id}")
     void deleteProduct(
             @PathVariable Long id,
-            @RequestAttribute("userId") Long sellerId
+            @RequestParam("userId") Long sellerId
     );
 
-    @PatchMapping(value = "/{id}/status")
+    @PutMapping(value = "/status/{id}")
     ProductDto updateProductStatus(
             @PathVariable Long id,
             @RequestParam("userId") Long userId,

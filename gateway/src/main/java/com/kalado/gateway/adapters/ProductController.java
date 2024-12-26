@@ -38,13 +38,13 @@ public class ProductController {
     return productApi.updateProduct(id, productDto);
   }
 
-  @DeleteMapping("/{id}")
+  @PutMapping("/delete/{id}")
   @Authentication(userId = "#userId")
   public void deleteProduct(Long userId, @PathVariable Long id) {
     productApi.deleteProduct(id, userId);
   }
 
-  @PatchMapping(value = "/{id}/status")
+  @PutMapping(value = "/status/{id}")
   @Authentication(userId = "#userId")
   public ProductDto updateProductStatus(
       Long userId, @PathVariable Long id, @RequestBody ProductStatusUpdateDto statusUpdate) {
