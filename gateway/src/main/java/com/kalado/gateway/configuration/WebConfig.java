@@ -17,9 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     registry
         .addMapping("/**")
 
-        // .allowedOrigins("http://localhost:3000", "https://kalado.app/", "http://kaladoshop.com")
-        .allowedOrigins("*")
-
+        .allowedOriginPatterns("*")  // Use allowedOriginPatterns instead of allowedOrigins
 
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
 
