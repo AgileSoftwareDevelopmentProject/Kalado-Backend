@@ -883,8 +883,8 @@
 			]
 		},
 		{
-			"name": "API_BASE/reports",
-			"id": "66eb732b-2cc3-4a6f-ba4c-a74e0586a0d4",
+			"name": "http://localhost:8083/v1/reports",
+			"id": "eb90e120-5636-41dc-b2ae-72280f4aaa0e",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -893,7 +893,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "$AUTH_TOKEN"
+						"value": "Bearer your-token-here"
 					}
 				],
 				"body": {
@@ -901,18 +901,14 @@
 					"formdata": [
 						{
 							"type": "text",
+							"contentType": "application/json",
 							"key": "report",
 							"value": "{\"violationType\":\"INAPPROPRIATE_CONTENT\",\"description\":\"Offensive language in product description\",\"reportedUserId\":2}"
-						},
-						{
-							"type": "file",
-							"key": "evidence",
-							"src": "/path/to/screenshot.png"
 						}
 					]
 				},
-				"url": "API_BASE/reports",
-				"description": "Generated from cURL: curl -X POST \"${API_BASE}/reports\" \\\r\n  -H \"Authorization: ${AUTH_TOKEN}\" \\\r\n  -F \"report={\\\"violationType\\\":\\\"INAPPROPRIATE_CONTENT\\\",\\\"description\\\":\\\"Offensive language in product description\\\",\\\"reportedUserId\\\":2}\" \\\r\n  -F \"evidence=@/path/to/screenshot.png\" \\\r\n  -H \"Content-Type: multipart/form-data\""
+				"url": "http://localhost:8083/v1/reports",
+				"description": "Generated from cURL: curl -X POST \"http://localhost:8083/v1/reports\" \\\r\n  -H \"Authorization: Bearer your-token-here\" \\\r\n  -F 'report={\"violationType\":\"INAPPROPRIATE_CONTENT\",\"description\":\"Offensive language in product description\",\"reportedUserId\":2};type=application/json' \\\r\n  -v\r\n"
 			},
 			"response": []
 		}
