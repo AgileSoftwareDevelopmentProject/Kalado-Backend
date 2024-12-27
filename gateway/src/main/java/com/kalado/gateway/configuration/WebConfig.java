@@ -21,6 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
         .allowedOrigins("http://localhost:3000", "https://kalado.app/", "http://kaladoshop.com")
 
 
+
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
 
         .allowedHeaders("*")
