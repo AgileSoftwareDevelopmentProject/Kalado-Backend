@@ -7,8 +7,8 @@ import lombok.Getter;
 public class CustomGatewayException extends RuntimeException {
   private final ErrorCode errorCode;
 
-  public CustomGatewayException(ErrorCode errorCode) {
-    super(errorCode.getErrorMessageValue());
+  public CustomGatewayException(ErrorCode errorCode, String message) {
+    super(message != null ? message : errorCode.getErrorMessageValue());
     this.errorCode = errorCode;
   }
 }

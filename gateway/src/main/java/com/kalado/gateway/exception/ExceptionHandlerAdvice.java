@@ -11,13 +11,33 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
 
-
   @ExceptionHandler(CustomGatewayException.class)
   public ResponseEntity<ErrorResponse> handleCustomGatewayException(CustomGatewayException ex) {
-    ErrorCode errorCode = ex.getErrorCode();
-    ErrorResponse errorResponse =
-        new ErrorResponse(errorCode.getErrorCodeValue(), errorCode.getErrorMessageValue());
+    log.error("Gateway exception occurred: {}", ex.getMessage());
 
-    return new ResponseEntity<>(errorResponse, errorCode.getClientHttpStatus());
+    ErrorResponse errorResponse = new ErrorResponse(
+            ex.getErrorCode().getErrorCodeValue(),
+            ex.getMessage()
+    );
+
+    return new ResponseEntity<>(
+            errorResponse,
+            ex.getErrorCode().getClientHttpStatus()
+    );
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+    log.error("Unexpected error occurred", ex);
+
+    ErrorResponse errorResponse = new ErrorResponse(
+            ErrorCode.INTERNAL_SERVER_ERROR.getErrorCodeValue(),
+            ErrorCode.INTERNAL_SERVER_ERROR.getErrorMessageValue()
+    );
+
+    return new ResponseEntity<>(
+            errorResponse,
+            ErrorCode.INTERNAL_SERVER_ERROR.getClientHttpStatus()
+    );
   }
 }
