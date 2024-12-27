@@ -884,7 +884,7 @@
 		},
 		{
 			"name": "http://localhost:8083/v1/reports",
-			"id": "eb90e120-5636-41dc-b2ae-72280f4aaa0e",
+			"id": "a9b0df25-bc56-4e7f-becb-de70d99fd948",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
