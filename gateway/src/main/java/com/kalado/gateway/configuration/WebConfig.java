@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
         .addMapping("/**")
 
         // .allowedOrigins("*")
-        .allowedOrigins("http://localhost:3000", "https://kalado.app/", "http://kaladoshop.com")
+        .allowedOrigins("http://localhost:3000", "https://kalado.app/", "http://kaladoshop.com", "http://localhost:8083")
 
 
 
