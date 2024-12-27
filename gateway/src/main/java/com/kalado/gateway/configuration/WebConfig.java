@@ -15,20 +15,32 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry
-        .addMapping("/**")
+        // .addMapping("/**")
 
-        // .allowedOrigins("*")
-        .allowedOrigins("http://localhost:8080", "http://kaladoshop.com")
+        // // .allowedOrigins("*")
+        // .allowedOrigins("http://localhost:8080", "http://kaladoshop.com")
 
 
 
-        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+        // .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
 
-        .allowedHeaders("*")
+        // .allowedHeaders("*")
 
-        .allowCredentials(true)
+        // .allowCredentials(true)
 
-        .maxAge(3600);
+        // .maxAge(3600);
+      .addMapping("/**")
+
+      .allowedOrigins(
+          "http://localhost:8080",  
+          "http://kaladoshop.com/"
+      )
+
+      .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+
+      .allowedHeaders("*")
+
+      .maxAge(3600);
   }
 
 //  @Override
