@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -16,27 +14,18 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry
         .addMapping("/**")
-
-        .allowedOriginPatterns("*")  // Use allowedOriginPatterns instead of allowedOrigins
-
+        .allowedOrigins(
+            "http://localhost:3000",
+            "https://kalado.app",
+            "http://kaladoshop.com",
+            "http://192.168.34.152:5173",
+            "http://localhost:5173"
+        )
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-
         .allowedHeaders("*")
-
-        .allowCredentials(true)
-
-        .maxAge(3600);
+        .allowCredentials(true) // Allows cookies/auth headers
+        .maxAge(3600); // Cache preflight response for 1 hour
   }
-
-//  @Override
-//  public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-//    configurer.favorParameter(true)
-//            .parameterName("mediaType")
-//            .defaultContentType(MediaType.APPLICATION_JSON)
-//            .mediaType("json", MediaType.APPLICATION_JSON)
-//            .mediaType("multipart", MediaType.MULTIPART_FORM_DATA);
-//  }
-//
 
   @Bean
   public ObjectMapper objectMapper() {
