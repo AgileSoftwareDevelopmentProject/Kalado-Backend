@@ -881,6 +881,40 @@
 					"body": "{\n    \"id\": 1,\n    \"title\": \"iPhone 13 Pro\",\n    \"description\": \"Used iPhone 13 Pro with all accessories\",\n    \"price\": {\n        \"amount\": 27000000,\n        \"unit\": \"TOMAN\"\n    },\n    \"category\": \"Electronics\",\n    \"productionYear\": 2022,\n    \"brand\": \"Apple\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": 1734617475097,\n    \"sellerId\": 7\n}"
 				}
 			]
+		},
+		{
+			"name": "API_BASE/reports",
+			"id": "66eb732b-2cc3-4a6f-ba4c-a74e0586a0d4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "$AUTH_TOKEN"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "report",
+							"value": "{\"violationType\":\"INAPPROPRIATE_CONTENT\",\"description\":\"Offensive language in product description\",\"reportedUserId\":2}"
+						},
+						{
+							"type": "file",
+							"key": "evidence",
+							"src": "/path/to/screenshot.png"
+						}
+					]
+				},
+				"url": "API_BASE/reports",
+				"description": "Generated from cURL: curl -X POST \"${API_BASE}/reports\" \\\r\n  -H \"Authorization: ${AUTH_TOKEN}\" \\\r\n  -F \"report={\\\"violationType\\\":\\\"INAPPROPRIATE_CONTENT\\\",\\\"description\\\":\\\"Offensive language in product description\\\",\\\"reportedUserId\\\":2}\" \\\r\n  -F \"evidence=@/path/to/screenshot.png\" \\\r\n  -H \"Content-Type: multipart/form-data\""
+			},
+			"response": []
 		}
 	]
 }
