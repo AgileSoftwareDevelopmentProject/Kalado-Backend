@@ -16,9 +16,15 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry
         .addMapping("/**")
-        .allowedOrigins("http://localhost:3000", "https://kalado.app/")
+
+        .allowedOrigins("http://localhost:3000", "https://kalado.app/", "http://kaladoshop.com")
+
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+
         .allowedHeaders("*")
+
+        .allowCredentials(true)
+
         .maxAge(3600);
   }
 
