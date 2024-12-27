@@ -1,4 +1,4 @@
-package com.kalado.product.adapters.controller;
+package com.kalado.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kalado.common.Price;
@@ -7,6 +7,7 @@ import com.kalado.common.dto.ProductStatusUpdateDto;
 import com.kalado.common.enums.CurrencyUnit;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.exception.CustomException;
+import com.kalado.product.adapters.controller.ProductMapper;
 import com.kalado.product.application.service.ProductService;
 import com.kalado.product.domain.model.Product;
 import com.kalado.common.enums.ProductStatus;
@@ -110,7 +111,9 @@ class ProductControllerTest {
             MockMvcRequestBuilders.post("/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validProductDto)))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.title").value(validProductDto.getTitle()));
   }
 
   @Test
@@ -180,23 +183,31 @@ class ProductControllerTest {
   void deleteProduct_Success() throws Exception {
     doNothing().when(productService).deleteProduct(1L, TEST_USER_ID);
 
-    mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", 1L)
-                    .requestAttr("userId", TEST_USER_ID))
+    mockMvc.perform(MockMvcRequestBuilders.put("/products/delete/{id}", 1L)
+                    .param("userId", String.valueOf(TEST_USER_ID))
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
     verify(productService).deleteProduct(1L, TEST_USER_ID);
   }
 
+
   @Test
   void deleteProduct_UnauthorizedUser() throws Exception {
-    doThrow(new CustomException(ErrorCode.FORBIDDEN, "You don't have permission to modify this product"))
-            .when(productService).deleteProduct(1L, 999L);
+    Long unauthorizedUserId = 999L;
+    doThrow(new CustomException(ErrorCode.FORBIDDEN,
+            "You don't have permission to modify this product"))
+            .when(productService).deleteProduct(1L, unauthorizedUserId);
 
-    mockMvc.perform(MockMvcRequestBuilders.delete("/products/{id}", 1L)
-                    .requestAttr("userId", 999L))
+    mockMvc.perform(MockMvcRequestBuilders.put("/products/delete/{id}", 1L)
+                    .param("userId", String.valueOf(unauthorizedUserId))
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isForbidden())
             .andExpect(jsonPath("$.errorCode").value(ErrorCode.FORBIDDEN.getErrorCodeValue()))
-            .andExpect(jsonPath("$.message").value("You don't have permission to modify this product"));
+            .andExpect(jsonPath("$.message")
+                    .value("You don't have permission to modify this product"));
+
+    verify(productService).deleteProduct(1L, unauthorizedUserId);
   }
 
   @Test
@@ -210,7 +221,7 @@ class ProductControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.patch("/products/{id}/status", 1L)
+            MockMvcRequestBuilders.put("/products/status/{id}", 1L)
                 .param("userId", TEST_USER_ID.toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(statusUpdate)))
@@ -220,7 +231,6 @@ class ProductControllerTest {
 
   @Test
   void getSellerProducts_Success() throws Exception {
-    // Create a list of test products
     List<Product> testProducts = Arrays.asList(testProduct);
     when(productService.getProductsBySeller(TEST_USER_ID)).thenReturn(testProducts);
     when(productMapper.toResponseDto(testProduct)).thenReturn(productDto);
@@ -240,7 +250,6 @@ class ProductControllerTest {
 
   @Test
   void getProductsByCategory_Success() throws Exception {
-    // Create a list of test products
     List<Product> testProducts = Arrays.asList(testProduct);
     String category = "Electronics";
     when(productService.getProductsByCategory(category)).thenReturn(testProducts);
@@ -296,10 +305,36 @@ class ProductControllerTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.patch("/products/{id}/status", 1L)
+            MockMvcRequestBuilders.put("/products/status/{id}", 1L)
                 .param("userId", TEST_USER_ID.toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(statusUpdate)))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errorCode").value(ErrorCode.BAD_REQUEST.getErrorCodeValue()))
+        .andExpect(jsonPath("$.message").value("Status cannot be null"));
+
+    verify(productService, never()).updateProductStatus(any(), any(), any());
+  }
+
+  @Test
+  void updateProductStatus_UnauthorizedUser() throws Exception {
+    ProductStatusUpdateDto statusUpdate = new ProductStatusUpdateDto(ProductStatus.RESERVED);
+
+    when(productService.updateProductStatus(eq(1L), eq(ProductStatus.RESERVED), eq(999L)))
+        .thenThrow(
+            new CustomException(
+                ErrorCode.FORBIDDEN, "You don't have permission to modify this product"));
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.put("/products/status/{id}", 1L)
+                .param("userId", "999")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(statusUpdate)))
+        .andExpect(status().isForbidden())
+        .andExpect(jsonPath("$.errorCode").value(ErrorCode.FORBIDDEN.getErrorCodeValue()))
+        .andExpect(jsonPath("$.message").value("You don't have permission to modify this product"));
+
+    verify(productService).updateProductStatus(1L, ProductStatus.RESERVED, 999L);
   }
 }
