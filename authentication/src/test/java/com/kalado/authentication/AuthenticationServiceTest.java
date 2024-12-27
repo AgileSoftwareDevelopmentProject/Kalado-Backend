@@ -102,7 +102,6 @@ class AuthenticationServiceTest {
     @Test
     void register_WithNewUser_ShouldSucceed() {
         RegistrationRequestDto request = RegistrationRequestDto.builder()
-                .username("newuser")
                 .password("password")
                 .firstName("John")
                 .lastName("Doe")
@@ -114,19 +113,19 @@ class AuthenticationServiceTest {
         String encodedPassword = "encodedpass";
         AuthenticationInfo savedUser = AuthenticationInfo.builder()
                 .userId(1L)
-                .username(request.getUsername())
+                .username(request.getEmail())
                 .password(encodedPassword)
                 .role(Role.USER)
                 .build();
 
-        when(authRepository.findByUsername(request.getUsername())).thenReturn(null);
+        when(authRepository.findByUsername(request.getEmail())).thenReturn(null);
         when(passwordEncoder.encode(request.getPassword())).thenReturn(encodedPassword);
         when(authRepository.save(any(AuthenticationInfo.class))).thenReturn(savedUser);
 
         AuthenticationInfo result = authService.register(request);
 
         assertNotNull(result);
-        assertEquals(request.getUsername(), result.getUsername());
+        assertEquals(request.getEmail(), result.getUsername());
         assertEquals(encodedPassword, result.getPassword());
         assertEquals(request.getRole(), result.getRole());
 
@@ -146,7 +145,6 @@ class AuthenticationServiceTest {
     @Test
     void register_WithExistingUsername_ShouldThrowException() {
         RegistrationRequestDto request = RegistrationRequestDto.builder()
-                .username("existinguser")
                 .password("password")
                 .firstName("John")
                 .lastName("Doe")
@@ -156,12 +154,12 @@ class AuthenticationServiceTest {
                 .build();
 
         AuthenticationInfo existingUser = AuthenticationInfo.builder()
-                .username(request.getUsername())
+                .username(request.getEmail())
                 .password("encodedpass")
                 .role(Role.USER)
                 .build();
 
-        when(authRepository.findByUsername(request.getUsername())).thenReturn(existingUser);
+        when(authRepository.findByUsername(request.getEmail())).thenReturn(existingUser);
 
         CustomException exception = assertThrows(
                 CustomException.class,
@@ -215,7 +213,6 @@ class AuthenticationServiceTest {
     void register_WithMissingRequiredFields_ShouldThrowException() {
         // Arrange
         RegistrationRequestDto request = RegistrationRequestDto.builder()
-                .username("testuser")
                 .password("password")
                 // Missing firstName
                 .lastName("Doe")

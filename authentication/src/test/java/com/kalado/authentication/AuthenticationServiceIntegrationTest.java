@@ -90,7 +90,6 @@ public class AuthenticationServiceIntegrationTest {
   void register_ShouldCreateNewUser_WhenDataIsValid() {
     // Arrange
     RegistrationRequestDto request = RegistrationRequestDto.builder()
-            .username("newuser")
             .password("newpassword")
             .firstName("John")
             .lastName("Doe")
@@ -107,7 +106,7 @@ public class AuthenticationServiceIntegrationTest {
 
     // Assert
     assertNotNull(savedUser, "Saved user should not be null");
-    assertEquals(request.getUsername(), savedUser.getUsername(), "Username should match");
+    assertEquals(request.getEmail(), savedUser.getUsername(), "Username should match");
     assertTrue(
             passwordEncoder.matches(request.getPassword(), savedUser.getPassword()),
             "Password should be properly encoded"
@@ -130,7 +129,6 @@ public class AuthenticationServiceIntegrationTest {
   @Test
   void register_ShouldThrowException_WhenUserAlreadyExists() {
     RegistrationRequestDto request = RegistrationRequestDto.builder()
-            .username("existinguser")
             .password("newpassword")
             .firstName("John")
             .lastName("Doe")
@@ -140,7 +138,7 @@ public class AuthenticationServiceIntegrationTest {
             .build();
 
     AuthenticationInfo existingUser = AuthenticationInfo.builder()
-            .username(request.getUsername())
+            .username(request.getEmail())
             .password(passwordEncoder.encode("oldpassword"))
             .role(Role.USER)
             .build();

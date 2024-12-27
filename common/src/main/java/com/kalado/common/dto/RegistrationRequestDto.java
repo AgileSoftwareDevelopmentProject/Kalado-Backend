@@ -11,7 +11,6 @@ import com.kalado.common.enums.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistrationRequestDto {
-    private String username;
     private String password;
     private String firstName;
     private String lastName;
