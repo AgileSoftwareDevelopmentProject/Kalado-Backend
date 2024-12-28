@@ -884,66 +884,6 @@
 		},
 		{
 			"name": "http://localhost:8083/v1/reports",
-			"id": "a9b0df25-bc56-4e7f-becb-de70d99fd948",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer your-token-here"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"type": "text",
-							"contentType": "application/json",
-							"key": "report",
-							"value": "{\"violationType\":\"INAPPROPRIATE_CONTENT\",\"description\":\"Offensive language in product description\",\"reportedUserId\":2}"
-						}
-					]
-				},
-				"url": "http://localhost:8083/v1/reports",
-				"description": "Generated from cURL: curl -X POST \"http://localhost:8083/v1/reports\" \\\r\n  -H \"Authorization: Bearer your-token-here\" \\\r\n  -F 'report={\"violationType\":\"INAPPROPRIATE_CONTENT\",\"description\":\"Offensive language in product description\",\"reportedUserId\":2};type=application/json' \\\r\n  -v\r\n"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8083/v1/reports",
-			"id": "9083c5b3-7540-40a2-bfd4-c9a95620f8e1",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MzIyMTAxLCJleHAiOjE3MzU0MDg1MDEsImp0aSI6ImI2ODc3YmM5LWU1NDItNGQzNS1iNTY5LTg5YWMwMmY0MmVjNCJ9.5ePro20Wjhky44C6Ti_r8-9JRQnXOTZxCYzpSyreiHU"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"type": "text",
-							"contentType": "application/json",
-							"key": "report",
-							"value": "{\"violationType\":\"INAPPROPRIATE_CONTENT\",\"description\":\"Offensive language in product description\",\"reportedUserId\":2}"
-						}
-					]
-				},
-				"url": "http://localhost:8083/v1/reports",
-				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/reports' \\\r\n--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MzIyMTAxLCJleHAiOjE3MzU0MDg1MDEsImp0aSI6ImI2ODc3YmM5LWU1NDItNGQzNS1iNTY5LTg5YWMwMmY0MmVjNCJ9.5ePro20Wjhky44C6Ti_r8-9JRQnXOTZxCYzpSyreiHU' \\\r\n--form 'report={\"violationType\":\"INAPPROPRIATE_CONTENT\",\"description\":\"Offensive language in product description\",\"reportedUserId\":2};type=application/json'\r\n"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8083/v1/reports",
 			"id": "6ded9058-90bb-4cd2-b228-581d9e62d887",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
