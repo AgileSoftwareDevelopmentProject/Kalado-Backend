@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}",
+					"raw": "{\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"arabzadehamirhossein888@gmail.com\",\r\n    \"role\": \"ADMIN\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -109,7 +109,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n           \"username\": \"arabzadehamirhossein888@gmail.com\",\r\n           \"password\": \"testpass123\"\r\n         }",
+					"raw": "{\r\n           \"email\": \"arabzadehamirhossein888@gmail.com\",\r\n           \"password\": \"testpass123\"\r\n         }",
 					"options": {
 						"raw": {
 							"language": "json"
