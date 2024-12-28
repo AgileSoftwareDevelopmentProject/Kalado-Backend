@@ -309,7 +309,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI5MDUxLCJleHAiOjE3MzQ3MTU0NTEsImp0aSI6IjkwMjc3NThkLTZlNjUtNDc0Ny1hZGM2LTEzNTMyMDcwOTA0NCJ9.7Sepx4klhohkJMoRlwwkNLaE3AfK6Qw1OrzWntG0Y4A"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjgxOTE3LCJleHAiOjE3MzUzNjgzMTcsImp0aSI6ImU3OWZiZmI3LTYzOTYtNDgwNy1iMTI4LWYwMWM4MzFkYjc5ZCJ9.No6vIKcOvaVq3HOkzdwpJ9848mDC_jBUI1z8jZ58WF8"
 					},
 					{
 						"key": "Content-Type",
@@ -409,7 +409,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjE5NDEzLCJleHAiOjE3MzUzMDU4MTMsImp0aSI6ImEwYzBlZDg5LTEwMjgtNGYyNi05NDg5LWRhNzgxZGU2ZmI5ZiJ9.1Xc72pBkYNHfR3yQLGquCaiaigq1Gjj3oiy1Sc7clNU"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjgxOTE3LCJleHAiOjE3MzUzNjgzMTcsImp0aSI6ImU3OWZiZmI3LTYzOTYtNDgwNy1iMTI4LWYwMWM4MzFkYjc5ZCJ9.No6vIKcOvaVq3HOkzdwpJ9848mDC_jBUI1z8jZ58WF8"
 					},
 					{
 						"key": "Content-Type",
@@ -691,7 +691,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM0NjI1ODE2LCJleHAiOjE3MzQ3MTIyMTYsImp0aSI6ImI3MjUzZjQxLTY5ZWUtNGUzYi04NzVmLTg2YmYxNDA2MWQ1MSJ9.TxCYaA5WCeb4WbBql4bhulb_g4DaJnnanG9ueDcwMqM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjgxOTE3LCJleHAiOjE3MzUzNjgzMTcsImp0aSI6ImU3OWZiZmI3LTYzOTYtNDgwNy1iMTI4LWYwMWM4MzFkYjc5ZCJ9.No6vIKcOvaVq3HOkzdwpJ9848mDC_jBUI1z8jZ58WF8"
 					}
 				],
 				"url": "http://localhost:8083/v1/product/seller",
