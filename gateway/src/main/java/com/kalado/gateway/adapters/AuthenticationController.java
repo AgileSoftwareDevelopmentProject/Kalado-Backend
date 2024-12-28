@@ -5,7 +5,6 @@ import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.common.response.LoginResponse;
 import com.kalado.gateway.annotation.Authentication;
 import com.kalado.gateway.request.LoginRequest;
-import com.kalado.gateway.request.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,7 @@ public class AuthenticationController {
 
   @PostMapping("/login")
   public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-    return authenticationApi.login(loginRequest.getUsername(), loginRequest.getPassword());
+    return authenticationApi.login(loginRequest.getEmail(), loginRequest.getPassword());
   }
 
   @PostMapping("/register")
