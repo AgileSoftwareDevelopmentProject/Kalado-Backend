@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"username\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}",
+					"raw": "{\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
