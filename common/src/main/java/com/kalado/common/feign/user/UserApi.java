@@ -17,6 +17,6 @@ public interface UserApi {
   @PostMapping("/user")
   void createUser(@RequestBody UserDto userDto);
 
-  @PostMapping("/admin")
+  @PostMapping("/user/admin")
   void createAdmin(@RequestBody AdminDto adminDto);
 }

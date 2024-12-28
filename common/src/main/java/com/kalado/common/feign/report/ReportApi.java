@@ -3,6 +3,7 @@ package com.kalado.common.feign.report;
 import com.kalado.common.dto.ReportCreateRequestDto;
 import com.kalado.common.dto.ReportResponseDto;
 import com.kalado.common.dto.ReportStatusUpdateDto;
+import com.kalado.common.enums.ReportStatus;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,14 +15,14 @@ public interface ReportApi {
     @PostMapping
     ReportResponseDto createReport(
             @RequestBody ReportCreateRequestDto request,
-            @RequestParam("reporterId") Long reporterId
+            @RequestParam("userId") Long reporterId
     );
 
     @PatchMapping("/{reportId}/status")
     ReportResponseDto updateReportStatus(
             @PathVariable Long reportId,
             @RequestBody ReportStatusUpdateDto request,
-            @RequestParam("adminId") Long adminId
+            @RequestParam("userId") Long reporterId
     );
 
     @GetMapping
@@ -33,6 +34,13 @@ public interface ReportApi {
     List<ReportResponseDto> getReportsByUser(
             @RequestParam("userId") Long userId
     );
+
+    List<ReportResponseDto> getAllReports(
+            @RequestParam(required = false) ReportStatus status);
+
+    @GetMapping
+    List<ReportResponseDto> getMyReports(
+            @RequestParam("userId") Long reporterId);
 
     @GetMapping("/{reportId}")
     ReportResponseDto getReport(

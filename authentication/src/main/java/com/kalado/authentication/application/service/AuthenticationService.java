@@ -171,10 +171,14 @@ public class AuthenticationService {
 
     // Create user profile based on role
     switch (request.getRole()) {
-      case ADMIN -> userApi.createAdmin(AdminDto.builder().id(authenticationInfo.getUserId()).build());
+      case ADMIN -> userApi.createAdmin(AdminDto.builder()
+              .id(authenticationInfo.getUserId())
+              .firstName(request.getFirstName())
+              .lastName(request.getLastName())
+              .phoneNumber(request.getPhoneNumber())
+              .build());
       case USER -> userApi.createUser(userDto);
     }
-
     // Send verification email
     verificationService.createVerificationToken(authenticationInfo);
 
