@@ -140,6 +140,10 @@
             <artifactId>flyway-core</artifactId>
             <version>10.15.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
