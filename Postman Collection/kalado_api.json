@@ -925,10 +925,10 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1NDg3ODcxLCJleHAiOjE3MzU1NzQyNzEsImp0aSI6ImU1OTVkNjZlLTY1ODMtNDgyYS1hZTdlLThkNDNhMWQzNDU5NyJ9.Dmy9GTYMtyI9BKe2pzP09MywbNCpI_8YTsbRGlfOaZ4"
 					}
 				],
-				"url": "http://localhost:8083/v1/reports/my-reports",
+				"url": "http://localhost:18083/v1/reports/my-reports",
 				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/my-reports \\\r\n  -H \"Authorization: YOUR_TOKEN\""
 			},
 			"response": []
@@ -944,14 +944,14 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
 					},
 					{
 						"key": "Content-Type",
 						"value": "application/json"
 					}
 				],
-				"url": "http://localhost:8083/v1/reports/admin/all",
+				"url": "http://localhost:18083/v1/reports/admin/all",
 				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/admin/all \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json'"
 			},
 			"response": []
