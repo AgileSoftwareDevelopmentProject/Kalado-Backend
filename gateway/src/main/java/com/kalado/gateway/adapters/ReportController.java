@@ -38,17 +38,17 @@ public class ReportController {
     @Authentication(userId = "#userId")
     public List<ReportResponseDto> getAllReports(
             @RequestParam(required = false) String status,
-            Long adminId) {
-        return reportApi.getAllReports(status, adminId);
+            Long userId) {
+        return reportApi.getAllReports(status, userId);
     }
 
-    @PatchMapping("/admin/{reportId}/status")
+    @PostMapping("/admin/status/{reportId}")
     @Authentication(userId = "#userId")
     public ReportResponseDto updateReportStatus(
             @PathVariable Long reportId,
             @RequestBody ReportStatusUpdateDto request,
-            Long adminId) {
-        return reportApi.updateReportStatus(reportId, request, adminId);
+            Long userId) {
+        return reportApi.updateReportStatus(reportId, request, userId);
     }
 
     @GetMapping("/admin/statistics")
@@ -57,8 +57,8 @@ public class ReportController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
             @RequestParam(required = false) String violationType,
-            Long adminId) {
-        return reportApi.getStatistics(startDate, endDate, violationType, adminId);
+            Long userId) {
+        return reportApi.getStatistics(startDate, endDate, violationType, userId);
     }
 
     @GetMapping("/admin/statistics/export")
@@ -67,7 +67,7 @@ public class ReportController {
             @RequestParam String format,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-            Long adminId) {
-        return reportApi.exportStatistics(format, startDate, endDate, adminId);
+            Long userId) {
+        return reportApi.exportStatistics(format, startDate, endDate, userId);
     }
 }

@@ -29,14 +29,14 @@ public interface ReportApi {
     @GetMapping("/admin/all")
     List<ReportResponseDto> getAllReports(
             @RequestParam(required = false) String status,
-            @RequestParam("adminId") Long adminId
+            @RequestParam("userId") Long adminId
     );
 
-    @PatchMapping("/admin/{reportId}/status")
+    @PostMapping("/admin/status/{reportId}")
     ReportResponseDto updateReportStatus(
             @PathVariable Long reportId,
             @RequestBody ReportStatusUpdateDto request,
-            @RequestParam("adminId") Long adminId
+            @RequestParam("userId") Long adminId
     );
 
     @GetMapping("/admin/statistics")
@@ -44,7 +44,7 @@ public interface ReportApi {
             @RequestParam(required = false) LocalDateTime startDate,
             @RequestParam(required = false) LocalDateTime endDate,
             @RequestParam(required = false) String violationType,
-            @RequestParam("adminId") Long adminId
+            @RequestParam("userId") Long adminId
     );
 
     @GetMapping("/admin/statistics/export")
@@ -52,6 +52,6 @@ public interface ReportApi {
             @RequestParam String format,  // "PDF", "CSV", or "EXCEL"
             @RequestParam(required = false) LocalDateTime startDate,
             @RequestParam(required = false) LocalDateTime endDate,
-            @RequestParam("adminId") Long adminId
+            @RequestParam("userId") Long adminId
     );
 }
