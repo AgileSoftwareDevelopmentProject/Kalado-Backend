@@ -912,7 +912,75 @@
 				"url": "http://localhost:18083/v1/reports",
 				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/reports \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -d '{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 123,\r\n    \"reportedContentId\": 456\r\n  }'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "0f36ffa5-c05d-465f-a1c1-965122d29f19",
+					"name": "http://localhost:8083/v1/reports",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1NDg3ODcxLCJleHAiOjE3MzU1NzQyNzEsImp0aSI6ImU1OTVkNjZlLTY1ODMtNDgyYS1hZTdlLThkNDNhMWQzNDU5NyJ9.Dmy9GTYMtyI9BKe2pzP09MywbNCpI_8YTsbRGlfOaZ4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 2,\r\n    \"reportedContentId\": 456\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:18083/v1/reports"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 29 Dec 2024 15:58:07 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 1,\n    \"violationType\": \"SCAM\",\n    \"description\": \"User is trying to sell fake products\",\n    \"reporterId\": 2,\n    \"reportedUserId\": 2,\n    \"reportedContentId\": 456,\n    \"createdAt\": \"2024-12-29T19:28:07.932994\",\n    \"status\": \"SUBMITTED\",\n    \"adminNotes\": null,\n    \"lastUpdatedAt\": \"2024-12-29T19:28:07.932994\",\n    \"adminId\": null,\n    \"userBlocked\": false\n}"
+				}
+			]
 		},
 		{
 			"name": "Get my reportings",
@@ -931,7 +999,62 @@
 				"url": "http://localhost:18083/v1/reports/my-reports",
 				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/my-reports \\\r\n  -H \"Authorization: YOUR_TOKEN\""
 			},
-			"response": []
+			"response": [
+				{
+					"id": "acc7cf85-f2b9-4c00-9a86-33e5483070ec",
+					"name": "Get my reportings",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1NDg3ODcxLCJleHAiOjE3MzU1NzQyNzEsImp0aSI6ImU1OTVkNjZlLTY1ODMtNDgyYS1hZTdlLThkNDNhMWQzNDU5NyJ9.Dmy9GTYMtyI9BKe2pzP09MywbNCpI_8YTsbRGlfOaZ4"
+							}
+						],
+						"url": "http://localhost:18083/v1/reports/my-reports"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 29 Dec 2024 16:01:24 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "[\n    {\n        \"id\": 1,\n        \"violationType\": \"SCAM\",\n        \"description\": \"User is trying to sell fake products\",\n        \"reporterId\": 2,\n        \"reportedUserId\": 2,\n        \"reportedContentId\": 456,\n        \"createdAt\": \"2024-12-29T19:28:07.932994\",\n        \"status\": \"SUBMITTED\",\n        \"adminNotes\": null,\n        \"lastUpdatedAt\": \"2024-12-29T19:28:07.932994\",\n        \"adminId\": null,\n        \"userBlocked\": false\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "Get all reports",
@@ -954,7 +1077,66 @@
 				"url": "http://localhost:18083/v1/reports/admin/all",
 				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/admin/all \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "402514ce-71ec-4617-8d3d-3170dce52b9b",
+					"name": "http://localhost:8083/v1/reports/admin/all",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": "http://localhost:18083/v1/reports/admin/all"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 29 Dec 2024 16:35:02 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "[\n    {\n        \"id\": 1,\n        \"violationType\": \"SCAM\",\n        \"description\": \"User is trying to sell fake products\",\n        \"reporterId\": 2,\n        \"reportedUserId\": 2,\n        \"reportedContentId\": 456,\n        \"createdAt\": \"2024-12-29T19:28:07.932994\",\n        \"status\": \"SUBMITTED\",\n        \"adminNotes\": null,\n        \"lastUpdatedAt\": \"2024-12-29T19:28:07.932994\",\n        \"adminId\": null,\n        \"userBlocked\": false\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "Update report status",
@@ -985,6 +1167,120 @@
 				},
 				"url": "http://localhost:18083/v1/reports/admin/status/1",
 				"description": "Generated from cURL: curl -X PATCH http://localhost:8083/v1/reports/admin/789/status \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockUser\": false,\r\n    \"blockReason\": null\r\n  }'"
+			},
+			"response": [
+				{
+					"id": "892ee661-5303-453c-acdc-c93df3b824e2",
+					"name": "Update report status",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockUser\": false,\r\n    \"blockReason\": null\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:18083/v1/reports/admin/status/1"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 29 Dec 2024 17:10:06 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 1,\n    \"violationType\": \"SCAM\",\n    \"description\": \"User is trying to sell fake products\",\n    \"reporterId\": 2,\n    \"reportedUserId\": 2,\n    \"reportedContentId\": 456,\n    \"createdAt\": \"2024-12-29T19:28:07.932994\",\n    \"status\": \"RESOLVED\",\n    \"adminNotes\": \"Investigation complete. User warned.\",\n    \"lastUpdatedAt\": \"2024-12-29T20:40:06.1747386\",\n    \"adminId\": 3,\n    \"userBlocked\": false\n}"
+				}
+			]
+		},
+		{
+			"name": "Get report statistics",
+			"id": "5918e1f8-4b7c-48ae-b416-b037830a8075",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_TOKEN"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8083/v1/reports/admin/statistics?startDate=2024-01-01T00:00:00&endDate=2024-12-31T23:59:59",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"reports",
+						"admin",
+						"statistics"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2024-01-01T00:00:00"
+						},
+						{
+							"key": "endDate",
+							"value": "2024-12-31T23:59:59"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X GET 'http://localhost:8083/v1/reports/admin/statistics?startDate=2024-01-01T00:00:00&endDate=2024-12-31T23:59:59' \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json'"
 			},
 			"response": []
 		}
