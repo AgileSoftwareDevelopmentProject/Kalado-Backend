@@ -963,11 +963,11 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "PATCH",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
 					},
 					{
 						"key": "Content-Type",
@@ -983,7 +983,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:8083/v1/reports/admin/789/status",
+				"url": "http://localhost:18083/v1/reports/admin/status/1",
 				"description": "Generated from cURL: curl -X PATCH http://localhost:8083/v1/reports/admin/789/status \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockUser\": false,\r\n    \"blockReason\": null\r\n  }'"
 			},
 			"response": []
