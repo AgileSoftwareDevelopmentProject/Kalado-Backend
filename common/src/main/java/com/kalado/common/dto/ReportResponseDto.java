@@ -1,5 +1,6 @@
 package com.kalado.common.dto;
 
+import com.kalado.common.enums.ReportStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +14,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportResponseDto {
-    private Long id;
-    private String violationType;
-    private String description;
-    private LocalDateTime createdAt;
-    private Long reporterId;
-    private Long reportedUserId;
-    private String status;
-    private List<AdminNoteDto> adminNotes;
+  private Long id;
+  private String violationType;
+  private String description;
+  private Long reporterId;
+  private Long reportedUserId;
+  private Long reportedContentId;
+  private LocalDateTime createdAt;
+  private ReportStatus status;
+  private String adminNotes;
+  private LocalDateTime lastUpdatedAt;
+  private Long adminId;
+  private boolean userBlocked;
 }

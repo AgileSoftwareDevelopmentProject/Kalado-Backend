@@ -37,4 +37,9 @@ public class UserController implements UserApi {
   public void createAdmin(@RequestBody AdminDto adminDto) {
     userService.createAdmin(adminDto);
   }
+
+  @Override
+  public boolean blockUser(@PathVariable Long userId) {
+    return userService.blockUser(userId);
+  }
 }

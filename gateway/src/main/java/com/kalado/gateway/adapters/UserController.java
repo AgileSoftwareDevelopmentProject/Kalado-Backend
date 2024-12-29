@@ -24,4 +24,9 @@ public class UserController {
     return userApi.getUserProfile(userId);
   }
 
+  @PostMapping("/user/block/{userId}")
+  @Authentication(userId = "#userId")
+  boolean blockUser(Long userId) {
+    return userApi.blockUser(userId);
+  }
 }

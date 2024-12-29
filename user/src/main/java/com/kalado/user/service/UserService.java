@@ -25,7 +25,6 @@ public class UserService {
   private final AuthenticationApi authenticationApi;
   private final AdminRepository adminRepository;
 
-
   public Boolean modifyProfile(long id, UserDto userDto) {
     Optional<User> userOptional = userRepository.findById(id);
 
@@ -37,7 +36,8 @@ public class UserService {
           userDto.getLastName(),
           userDto.getAddress(),
           userDto.getPhoneNumber(),
-          user.getId());
+          user.getId(),
+          false);
       log.info("Profile modified successfully for user ID: {}", id);
       return true;
     } else {
@@ -92,5 +92,26 @@ public class UserService {
     Admin newAdmin = UserMapper.INSTANCE.dtoToAdmin(adminDto);
     adminRepository.save(newAdmin);
     log.info("Successfully created admin with ID: {}", newAdmin.getId());
+  }
+
+  public boolean blockUser(Long id) {
+    Optional<User> userOptional = userRepository.findById(id);
+
+    if (userOptional.isPresent()) {
+      log.info("Modifying profile for user ID: {}", id);
+      User user = userOptional.get();
+      userRepository.modify(
+          user.getFirstName(),
+          user.getLastName(),
+          user.getAddress(),
+          user.getPhoneNumber(),
+          user.getId(),
+          true);
+      log.info("User is blocked. user ID: {}", id);
+      return true;
+    } else {
+      log.info("user ID: {} not found, creating new user", id);
+      return false;
+    }
   }
 }

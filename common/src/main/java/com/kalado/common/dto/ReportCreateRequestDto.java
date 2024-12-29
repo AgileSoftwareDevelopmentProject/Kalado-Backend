@@ -9,8 +9,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportCreateRequestDto {
-    private String violationType;
-    private String description;
-    private Long reportedUserId;
+  private String violationType;
+  private String description;
+  private Long reportedUserId;
+  private Long reportedContentId;
 }
-
