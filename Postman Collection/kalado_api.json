@@ -955,6 +955,38 @@
 				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/admin/all \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json'"
 			},
 			"response": []
+		},
+		{
+			"name": "Update report status",
+			"id": "0d03ea9f-7813-4245-946f-7c417ed5bc13",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_TOKEN"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockUser\": false,\r\n    \"blockReason\": null\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8083/v1/reports/admin/789/status",
+				"description": "Generated from cURL: curl -X PATCH http://localhost:8083/v1/reports/admin/789/status \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockUser\": false,\r\n    \"blockReason\": null\r\n  }'"
+			},
+			"response": []
 		}
 	]
 }
