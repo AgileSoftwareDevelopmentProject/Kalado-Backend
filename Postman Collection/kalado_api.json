@@ -21,14 +21,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}",
+					"raw": "{\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"arabzadehamirhossein@outlook.com\",\r\n    \"role\": \"USER\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8083/v1/auth/register/",
+				"url": "http://localhost:18083/v1/auth/register/",
 				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/auth/register/' \\\r\n--header 'Content-Type: application/json' \\\r\n--data-raw '{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}'"
 			},
 			"response": [
@@ -911,6 +911,48 @@
 				},
 				"url": "http://localhost:18083/v1/reports",
 				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/reports \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -d '{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 123,\r\n    \"reportedContentId\": 456\r\n  }'"
+			},
+			"response": []
+		},
+		{
+			"name": "Get my reportings",
+			"id": "02fb1f82-206d-48d6-90e0-ddbcb8413329",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_TOKEN"
+					}
+				],
+				"url": "http://localhost:8083/v1/reports/my-reports",
+				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/my-reports \\\r\n  -H \"Authorization: YOUR_TOKEN\""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all reports",
+			"id": "29b71b9f-4798-44a2-96a2-5d21967df4cf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_TOKEN"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": "http://localhost:8083/v1/reports/admin/all",
+				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/admin/all \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json'"
 			},
 			"response": []
 		}
