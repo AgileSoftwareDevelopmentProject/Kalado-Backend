@@ -39,13 +39,11 @@ public class ReportController implements ReportApi {
 
     @Override
     public ReportStatisticsDto getStatistics(LocalDateTime startDate, LocalDateTime endDate, String violationType, Long adminId) {
-//        return reportService.getStatistics(startDate, endDate, violationType, adminId);
-    return new ReportStatisticsDto();
+        return reportService.getStatistics(startDate, endDate, violationType);
     }
 
     @Override
     public byte[] exportStatistics(String format, LocalDateTime startDate, LocalDateTime endDate, Long adminId) {
-//        return reportService.exportStatistics(format, startDate, endDate, adminId);
-    return null;
+        return reportService.exportStatistics(format, startDate, endDate, adminId);
     }
 }

@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -110,36 +112,50 @@ public class ReportService {
 
   @Transactional(readOnly = true)
   public ReportStatisticsDto getStatistics(
-      LocalDateTime startDate, LocalDateTime endDate, String violationType) {
-    List<Report> reports =
-        reportRepository.findByDateRangeAndType(startDate, endDate, violationType);
+          LocalDateTime startDate,
+          LocalDateTime endDate,
+          String violationType) {
+
+    List<Report> reports;
+    if (startDate != null && endDate != null) {
+      if (violationType != null && !violationType.trim().isEmpty()) {
+        reports = reportRepository.findByCreatedAtBetweenAndViolationTypeContainingIgnoreCase(
+                startDate, endDate, violationType);
+      } else {
+        reports = reportRepository.findByCreatedAtBetween(startDate, endDate);
+      }
+    } else {
+      reports = reportRepository.findAll();
+    }
 
     long totalReports = reports.size();
-    long pendingReports =
-        reports.stream().filter(report -> report.getStatus() == ReportStatus.SUBMITTED).count();
-    long resolvedReports =
-        reports.stream().filter(report -> report.getStatus() == ReportStatus.RESOLVED).count();
-    long rejectedReports =
-        reports.stream().filter(report -> report.getStatus() == ReportStatus.REJECTED).count();
+    Map<ReportStatus, Long> statusCounts = reports.stream()
+            .collect(Collectors.groupingBy(Report::getStatus, Collectors.counting()));
 
-    Map<String, Long> reportsByType =
-        reports.stream()
+    double averageResolutionTime = reports.stream()
+            .filter(report -> report.getStatus() == ReportStatus.RESOLVED)
+            .mapToDouble(report -> {
+              Duration duration = Duration.between(report.getCreatedAt(), report.getLastUpdatedAt());
+              return duration.toHours();
+            })
+            .average()
+            .orElse(0.0);
+
+    Map<String, Long> reportsByType = reports.stream()
             .collect(Collectors.groupingBy(Report::getViolationType, Collectors.counting()));
 
-    Map<String, Long> reportsByStatus =
-        reports.stream()
-            .collect(
-                Collectors.groupingBy(
-                    report -> report.getStatus().toString(), Collectors.counting()));
+    Map<String, Long> reportsByStatus = reports.stream()
+            .collect(Collectors.groupingBy(r -> r.getStatus().toString(), Collectors.counting()));
 
     return ReportStatisticsDto.builder()
-        .totalReports(totalReports)
-        .pendingReports(pendingReports)
-        .resolvedReports(resolvedReports)
-        .rejectedReports(rejectedReports)
-        .reportsByType(reportsByType)
-        .reportsByStatus(reportsByStatus)
-        .build();
+            .totalReports(totalReports)
+            .pendingReports(statusCounts.getOrDefault(ReportStatus.SUBMITTED, 0L))
+            .resolvedReports(statusCounts.getOrDefault(ReportStatus.RESOLVED, 0L))
+            .rejectedReports(statusCounts.getOrDefault(ReportStatus.REJECTED, 0L))
+            .averageResolutionTimeInHours(averageResolutionTime)
+            .reportsByType(reportsByType)
+            .reportsByStatus(reportsByStatus)
+            .build();
   }
 
   @Transactional(readOnly = true)
@@ -153,5 +169,36 @@ public class ReportService {
   public List<ReportResponseDto> getAllReports() {
     List<Report> reports = reportRepository.findAll();
     return reports.stream().map(reportMapper::toReportResponse).collect(Collectors.toList());
+  }
+
+  public byte[] exportStatistics(String format, LocalDateTime startDate, LocalDateTime endDate, Long adminId) {
+    ReportStatisticsDto statistics = getStatistics(startDate, endDate, null);
+
+    switch (format.toUpperCase()) {
+      case "CSV":
+        return generateCsvReport(statistics);
+      default:
+        throw new CustomException(ErrorCode.BAD_REQUEST, "Unsupported format: " + format);
+    }
+  }
+
+  private byte[] generateCsvReport(ReportStatisticsDto statistics) {
+    StringBuilder csv = new StringBuilder();
+    csv.append("Report Statistics\n\n");
+    csv.append("Total Reports,").append(statistics.getTotalReports()).append("\n");
+    csv.append("Pending Reports,").append(statistics.getPendingReports()).append("\n");
+    csv.append("Resolved Reports,").append(statistics.getResolvedReports()).append("\n");
+    csv.append("Rejected Reports,").append(statistics.getRejectedReports()).append("\n");
+    csv.append("Average Resolution Time (hours),").append(statistics.getAverageResolutionTimeInHours()).append("\n\n");
+
+    csv.append("Reports by Type\n");
+    statistics.getReportsByType().forEach((type, count) ->
+            csv.append(type).append(",").append(count).append("\n"));
+
+    csv.append("\nReports by Status\n");
+    statistics.getReportsByStatus().forEach((status, count) ->
+            csv.append(status).append(",").append(count).append("\n"));
+
+    return csv.toString().getBytes(StandardCharsets.UTF_8);
   }
 }
