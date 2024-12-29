@@ -884,38 +884,6 @@
 		},
 		{
 			"name": "Create Report",
-			"id": "6ded9058-90bb-4cd2-b228-581d9e62d887",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMiIsImlhdCI6MTczNTQ0Njc2OSwiZXhwIjoxNzM1NTMzMTY5LCJqdGkiOiI1NWFhYWQ5My1kMGE2LTQyOGYtYWUxNC0wOTJjM2UyMmM1MGQifQ.sQZFRpYTt0Ss32WaymxKXULfRbzUz18lEh5SKMTmYCk"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n  \"description\": \"Offensive language in product description\",\r\n  \"reportedUserId\": 13\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:18083/v1/reports",
-				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/reports' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MzIyMTAxLCJleHAiOjE3MzU0MDg1MDEsImp0aSI6ImI2ODc3YmM5LWU1NDItNGQzNS1iNTY5LTg5YWMwMmY0MmVjNCJ9.5ePro20Wjhky44C6Ti_r8-9JRQnXOTZxCYzpSyreiHU' \\\r\n--data-raw '{\r\n  \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n  \"description\": \"Offensive language in product description\",\r\n  \"reportedUserId\": 2\r\n}'\r\n"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8083/v1/reports",
 			"id": "a942c19a-96ff-449a-8445-53d39ea31bc0",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -929,19 +897,19 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "YOUR_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1NDg3ODcxLCJleHAiOjE3MzU1NzQyNzEsImp0aSI6ImU1OTVkNjZlLTY1ODMtNDgyYS1hZTdlLThkNDNhMWQzNDU5NyJ9.Dmy9GTYMtyI9BKe2pzP09MywbNCpI_8YTsbRGlfOaZ4"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 123,\r\n    \"reportedContentId\": 456\r\n  }",
+					"raw": "{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 2,\r\n    \"reportedContentId\": 456\r\n  }",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8083/v1/reports",
+				"url": "http://localhost:18083/v1/reports",
 				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/reports \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -d '{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 123,\r\n    \"reportedContentId\": 456\r\n  }'"
 			},
 			"response": []
