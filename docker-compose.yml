@@ -54,7 +54,7 @@ services:
     environment:
       - SPRING_APPLICATION_NAME=authentication-service
       - SERVER_PORT=8081
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:15432/kalado
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
       - SPRING_DATASOURCE_USERNAME=kalado
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SPRING_REDIS_HOST=redis
@@ -84,7 +84,7 @@ services:
     environment:
       - SPRING_APPLICATION_NAME=user-service
       - SERVER_PORT=8085
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:15432/kalado
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
       - SPRING_DATASOURCE_USERNAME=kalado
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
@@ -108,7 +108,7 @@ services:
     environment:
       - SPRING_APPLICATION_NAME=product-service
       - SERVER_PORT=8082
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:15432/kalado
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
       - SPRING_DATASOURCE_USERNAME=kalado
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SPRING_REDIS_HOST=redis
@@ -231,7 +231,7 @@ services:
     environment:
       - SPRING_APPLICATION_NAME=payment-service
       - SERVER_PORT=8089
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:15432/kalado
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
       - SPRING_DATASOURCE_USERNAME=kalado
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
