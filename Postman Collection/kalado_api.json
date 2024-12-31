@@ -21,14 +21,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"arabzadehamirhossein@outlook.com\",\r\n    \"role\": \"USER\"\r\n}",
+					"raw": "{\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amirsaeedahmadi80@yahoo.com\",\r\n    \"role\": \"USER\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:18083/v1/auth/register/",
+				"url": "http://kaladoshop.com:8083/v1/auth/register/",
 				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/auth/register/' \\\r\n--header 'Content-Type: application/json' \\\r\n--data-raw '{\r\n    \"username\": \"amir.arabzadeh888@gmail.com\",\r\n    \"password\": \"testpass123\",\r\n    \"firstName\": \"Amir\",\r\n    \"lastName\": \"Arabzadeh\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"email\": \"amir.arabzadeh888@gmail.com\",\r\n    \"role\": \"USER\"\r\n}'"
 			},
 			"response": [
