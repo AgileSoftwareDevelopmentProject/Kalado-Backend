@@ -58,7 +58,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=kalado
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=63179
+      - SPRING_REDIS_PORT=6379
       - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
       - EUREKA_INSTANCE_PREFER_IP_ADDRESS=true
@@ -112,7 +112,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=kalado
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=63179
+      - SPRING_REDIS_PORT=6379
       - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
@@ -208,7 +208,7 @@ services:
   #     - SPRING_APPLICATION_NAME=notification-service
   #     - SERVER_PORT=8088
   #     - SPRING_REDIS_HOST=redis
-  #     - SPRING_REDIS_PORT=63179
+  #     - SPRING_REDIS_PORT=6379
   #     - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
   #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
   #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
@@ -265,7 +265,9 @@ services:
     container_name: redis
     command: redis-server --requirepass ${REDIS_PASSWORD}
     ports:
-      - "63179:6379"
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
     networks:
       - kalado-net
 
@@ -288,4 +290,7 @@ networks:
 
 volumes:
   postgres-data:
+    driver: local
+  redis-data:
+    driver: local
 
