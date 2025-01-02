@@ -1387,7 +1387,7 @@
 		},
 		{
 			"name": "http://localhost:18083/v1/search/products?minPrice=1000000&maxPrice=5000000",
-			"id": "86126c58-595d-48e1-a237-530d7a726607",
+			"id": "55db355f-6644-4a07-b53e-6e8958b195f6",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -1423,25 +1423,6 @@
 					]
 				},
 				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/search/products?minPrice=1000000&maxPrice=5000000' \\\n-H \"Accept: application/json\""
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:18083/v1/search/products",
-			"id": "6eded493-683d-4ef0-95f8-f67a203ebdc4",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json"
-					}
-				],
-				"url": "http://localhost:18083/v1/search/products",
-				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/search/products' \\\n-H \"Accept: application/json\""
 			},
 			"response": []
 		}
