@@ -1384,6 +1384,47 @@
 				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/search/products' \\\n-H \"Accept: application/json\""
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:18083/v1/search/products?minPrice=1000000&maxPrice=5000000",
+			"id": "86126c58-595d-48e1-a237-530d7a726607",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:18083/v1/search/products?minPrice=1000000&maxPrice=5000000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18083",
+					"path": [
+						"v1",
+						"search",
+						"products"
+					],
+					"query": [
+						{
+							"key": "minPrice",
+							"value": "1000000"
+						},
+						{
+							"key": "maxPrice",
+							"value": "5000000"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/search/products?minPrice=1000000&maxPrice=5000000' \\\n-H \"Accept: application/json\""
+			},
+			"response": []
 		}
 	]
 }
