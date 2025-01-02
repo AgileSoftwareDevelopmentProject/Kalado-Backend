@@ -1,8 +1,10 @@
 package com.kalado.search.application.service;
 
+import com.kalado.common.dto.ProductDto;
 import com.kalado.search.domain.model.ProductDocument;
 import com.kalado.search.infrastructure.repository.ProductSearchRepository;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -44,7 +46,6 @@ public class SearchService {
     ) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
-        // Keyword search across multiple fields
         if (keyword != null && !keyword.trim().isEmpty()) {
             boolQuery.must(QueryBuilders.multiMatchQuery(keyword)
                     .field("title", 2.0f)
@@ -56,49 +57,52 @@ public class SearchService {
                     .fuzziness("AUTO"));
         }
 
-        // Price range
         if (minPrice != null || maxPrice != null) {
             boolQuery.must(QueryBuilders.rangeQuery("price.amount")
                     .from(minPrice)
                     .to(maxPrice));
         }
 
-        // Date range
         if (fromDate != null || toDate != null) {
             boolQuery.must(QueryBuilders.rangeQuery("createdAt")
                     .from(fromDate)
                     .to(toDate));
         }
 
-        // Production year range
         if (fromYear != null || toYear != null) {
             boolQuery.must(QueryBuilders.rangeQuery("productionYear")
                     .from(fromYear)
                     .to(toYear));
         }
 
-        // Category filter
         if (category != null && !category.trim().isEmpty()) {
             boolQuery.must(QueryBuilders.termQuery("category", category));
         }
 
-        // Brand filter
         if (brand != null && !brand.trim().isEmpty()) {
             boolQuery.must(QueryBuilders.termQuery("brand", brand));
         }
 
-        // Location-based search
         if (location != null && !location.trim().isEmpty() && distance != null) {
-            boolQuery.must(QueryBuilders.geoDistanceQuery("location")
-                    .point(location)
-                    .distance(distance, DistanceUnit.KILOMETERS));
+            String[] coordinates = location.split(",");
+            if (coordinates.length == 2) {
+                try {
+                    double lat = Double.parseDouble(coordinates[0]);
+                    double lon = Double.parseDouble(coordinates[1]);
+                    GeoPoint geoPoint = new GeoPoint(lat, lon);
+
+                    boolQuery.must(QueryBuilders.geoDistanceQuery("location")
+                            .point(lat, lon)
+                            .distance(distance, DistanceUnit.KILOMETERS));
+                } catch (NumberFormatException e) {
+                }
+            }
         }
 
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
                 .withQuery(boolQuery)
                 .withPageable(pageable);
 
-        // Sorting
         if (sortBy != null && sortOrder != null) {
             switch (sortBy) {
                 case "price" -> searchQueryBuilder.withSort(SortBuilders.fieldSort("price.amount").order(sortOrder));
@@ -106,7 +110,6 @@ public class SearchService {
                 case "year" -> searchQueryBuilder.withSort(SortBuilders.fieldSort("productionYear").order(sortOrder));
             }
         } else {
-            // Default sort by creation date, newest first
             searchQueryBuilder.withSort(SortBuilders.fieldSort("createdAt").order(SortOrder.DESC));
         }
 
