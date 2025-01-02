@@ -17,7 +17,7 @@ public class CustomExceptionHandler {
   public ResponseEntity<ErrorResponse> handleCustomException(CustomException ex) {
     ErrorResponse errorResponse = new ErrorResponse(
             ex.getErrorCode().getErrorCodeValue(),
-            ex.getMessage()  // Use the actual error message
+            ex.getMessage()
     );
     return new ResponseEntity<>(errorResponse, ex.getErrorCode().getHttpStatus());
   }

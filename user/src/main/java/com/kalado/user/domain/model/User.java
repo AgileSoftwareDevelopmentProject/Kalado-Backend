@@ -22,6 +22,7 @@ public class User {
   private String lastName;
   private String phoneNumber;
   private String address;
+  private boolean isBlocked;
 
   @ElementCollection
   @CollectionTable(name = "user_orders", joinColumns = @JoinColumn(name = "user_id"))
