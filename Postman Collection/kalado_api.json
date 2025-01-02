@@ -1365,6 +1365,25 @@
 					"body": "{\n    \"totalReports\": 1,\n    \"pendingReports\": 0,\n    \"resolvedReports\": 1,\n    \"rejectedReports\": 0,\n    \"averageResolutionTimeInHours\": 1,\n    \"reportsByType\": {\n        \"SCAM\": 1\n    },\n    \"reportsByStatus\": {\n        \"RESOLVED\": 1\n    }\n}"
 				}
 			]
+		},
+		{
+			"name": "Basic Search",
+			"id": "ed6d0283-0ea2-4b5a-bd92-5cc4f22ecf26",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": "http://localhost:18083/v1/search/products",
+				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/search/products' \\\n-H \"Accept: application/json\""
+			},
+			"response": []
 		}
 	]
 }
