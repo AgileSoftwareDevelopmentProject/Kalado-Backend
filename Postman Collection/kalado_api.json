@@ -2185,6 +2185,38 @@
 				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/user' \\\n-H 'Authorization: YOUR_JWT_TOKEN'"
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:18083/v1/user",
+			"id": "0325d1d6-97e0-4e64-9a5a-1486a86b4735",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_JWT_TOKEN"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"phoneNumber\": \"1234567890\",\n    \"address\": \"123 Main St\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:18083/v1/user",
+				"description": "Generated from cURL: curl -X PUT 'http://localhost:18083/v1/user' \\\n-H 'Authorization: YOUR_JWT_TOKEN' \\\n-H 'Content-Type: application/json' \\\n-d '{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"phoneNumber\": \"1234567890\",\n    \"address\": \"123 Main St\"\n}'"
+			},
+			"response": []
 		}
 	]
 }
