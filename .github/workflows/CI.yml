@@ -110,3 +110,22 @@ jobs:
             docker compose down
             docker compose pull
             docker compose up -d
+            max_retries=5
+            retries=0
+            while [ $retries -lt $max_retries ]; do
+              echo "Checking service status... Attempt $((retries + 1))"
+              status=$(docker compose ps --services --filter "status=running" | wc -l)
+              total_services=$(docker compose ps --services | wc -l)
+              if [ "$status" -eq "$total_services" ]; then
+                echo "All services are up!"
+                break
+              fi
+              echo "Not all services are up!"
+              retries=$((retries + 1))
+              sleep 10
+              docker compose up -d
+            done
+            if [ $retries -eq $max_retries ]; then
+              echo "Some services failed to start after $max_retries attempts."
+              exit 1
+            fi
