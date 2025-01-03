@@ -2037,6 +2037,38 @@
 					"body": "{\n    \"content\": [\n        {\n            \"id\": 22,\n            \"title\": \"Dell XPS 15\",\n            \"description\": \"Premium Windows laptop with OLED display\",\n            \"price\": {\n                \"amount\": 1599.99,\n                \"unit\": \"TOMAN\"\n            },\n            \"category\": \"Electronics\",\n            \"productionYear\": 2023,\n            \"brand\": \"Dell\",\n            \"status\": \"ACTIVE\",\n            \"createdAt\": 1735884774410,\n            \"sellerId\": 1\n        },\n        {\n            \"id\": 21,\n            \"title\": \"iPhone 15 Pro\",\n            \"description\": \"Professional camera system with 48MP main\",\n            \"price\": {\n                \"amount\": 999.99,\n                \"unit\": \"TOMAN\"\n            },\n            \"category\": \"Electronics\",\n            \"productionYear\": 2023,\n            \"brand\": \"Apple\",\n            \"status\": \"ACTIVE\",\n            \"createdAt\": 1735884770664,\n            \"sellerId\": 1\n        },\n        {\n            \"id\": 20,\n            \"title\": \"MacBook Pro M2\",\n            \"description\": \"Latest MacBook Pro with M2 chip, perfect for developers\",\n            \"price\": {\n                \"amount\": 1999.99,\n                \"unit\": \"TOMAN\"\n            },\n            \"category\": \"Electronics\",\n            \"productionYear\": 2023,\n            \"brand\": \"Apple\",\n            \"status\": \"ACTIVE\",\n            \"createdAt\": 1735884753872,\n            \"sellerId\": 1\n        }\n    ],\n    \"pageable\": {\n        \"sort\": {\n            \"sorted\": false,\n            \"empty\": true,\n            \"unsorted\": true\n        },\n        \"pageNumber\": 0,\n        \"pageSize\": 10,\n        \"offset\": 0,\n        \"paged\": true,\n        \"unpaged\": false\n    },\n    \"last\": true,\n    \"totalPages\": 1,\n    \"totalElements\": 3,\n    \"first\": true,\n    \"size\": 10,\n    \"number\": 0,\n    \"sort\": {\n        \"sorted\": false,\n        \"empty\": true,\n        \"unsorted\": true\n    },\n    \"numberOfElements\": 3,\n    \"empty\": false\n}"
 				}
 			]
+		},
+		{
+			"name": "Update a product",
+			"id": "7869175c-ef8e-4043-bfef-bfd981b40fd3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "YOUR_AUTH_TOKEN"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"MacBook Pro M2 Max\",\n  \"description\": \"Updated MacBook Pro with M2 Max chip, perfect for professionals\",\n  \"price\": {\n    \"amount\": 2499.99,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"Electronics\",\n  \"productionYear\": 2023,\n  \"brand\": \"Apple\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:18083/v1/product/1",
+				"description": "Generated from cURL: curl -X PUT \"http://localhost:18083/v1/product/1\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: YOUR_AUTH_TOKEN\" \\\n-d '{\n  \"title\": \"MacBook Pro M2 Max\",\n  \"description\": \"Updated MacBook Pro with M2 Max chip, perfect for professionals\",\n  \"price\": {\n    \"amount\": 2499.99,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"Electronics\",\n  \"productionYear\": 2023,\n  \"brand\": \"Apple\"\n}'"
+			},
+			"response": []
 		}
 	]
 }
