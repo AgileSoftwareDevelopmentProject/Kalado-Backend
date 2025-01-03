@@ -4,13 +4,13 @@ import com.kalado.common.Price;
 import com.kalado.common.enums.ProductStatus;
 import lombok.*;
 import org.elasticsearch.common.geo.GeoPoint;
-import org.springframework.data.elasticsearch.annotations.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.*;
+
 import java.time.LocalDateTime;
 
 @Document(indexName = "products")
-@Setting(settingPath = "elasticsearch/settings.json")
+@Setting(settingPath = "/elasticsearch/settings.json")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -52,26 +52,9 @@ public class ProductDocument {
     @Field(type = FieldType.Keyword)
     private ProductStatus status;
 
-    @Field(type = FieldType.Date)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     @Field(type = FieldType.Long)
     private Long sellerId;
-
-    @Field(type = FieldType.Object)
-    private GeoPoint location;
-
-    public void setLocationFromString(String location) {
-        if (location != null && !location.trim().isEmpty()) {
-            String[] coordinates = location.split(",");
-            if (coordinates.length == 2) {
-                try {
-                    double lat = Double.parseDouble(coordinates[0]);
-                    double lon = Double.parseDouble(coordinates[1]);
-                    this.location = new GeoPoint(lat, lon);
-                } catch (NumberFormatException e) {
-                }
-            }
-        }
-    }
 }

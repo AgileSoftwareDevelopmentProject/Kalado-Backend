@@ -39,7 +39,8 @@ public class AuthenticationAspect {
           entry("/v1/create", List.of(Role.USER, Role.ADMIN)),
           entry("/v1/reports", List.of(Role.USER, Role.ADMIN)),
           entry("/v1/reports/admin/all", List.of(Role.ADMIN)),
-          entry("/v1/product", List.of(Role.USER, Role.ADMIN)));
+          entry("/v1/product", List.of(Role.USER, Role.ADMIN)),
+              entry("/v1/product/*", List.of(Role.USER, Role.ADMIN)));
 
   @Around("@annotation(authentication)")
   public Object authentication(ProceedingJoinPoint joinPoint, Authentication authentication)

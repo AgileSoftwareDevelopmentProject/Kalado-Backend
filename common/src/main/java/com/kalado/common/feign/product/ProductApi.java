@@ -44,4 +44,7 @@ public interface ProductApi {
 
     @GetMapping("/{id}")
     ProductDto getProduct(@PathVariable Long id);
+
+    @GetMapping("/all")
+    List<ProductDto> getAllProducts();
 }

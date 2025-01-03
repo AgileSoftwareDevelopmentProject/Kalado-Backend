@@ -32,5 +32,9 @@
             <version>${common.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
     </dependencies>
 </project>

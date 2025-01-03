@@ -72,4 +72,13 @@ public class ProductController implements ProductApi {
     Product product = productService.getProduct(id);
     return productMapper.toResponseDto(product);
   }
+
+  @Override
+  @GetMapping("/all")
+  public List<ProductDto> getAllProducts() {
+    List<Product> products = productService.getAllProducts();
+    return products.stream()
+            .map(productMapper::toResponseDto)
+            .collect(Collectors.toList());
+  }
 }

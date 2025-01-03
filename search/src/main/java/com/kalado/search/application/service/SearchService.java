@@ -4,6 +4,7 @@ import com.kalado.common.dto.ProductDto;
 import com.kalado.search.domain.model.ProductDocument;
 import com.kalado.search.infrastructure.repository.ProductSearchRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -11,6 +12,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SearchService {
     private final ProductSearchRepository productSearchRepository;
     private final ElasticsearchOperations elasticsearchOperations;
@@ -32,14 +35,7 @@ public class SearchService {
             String keyword,
             Double minPrice,
             Double maxPrice,
-            LocalDateTime fromDate,
-            LocalDateTime toDate,
-            Integer fromYear,
-            Integer toYear,
-            String category,
-            String brand,
-            String location,
-            Integer distance,
+            String timeFilter, // "1D" for 1 day, "1W" for 1 week, "1M" for 1 month
             String sortBy,
             SortOrder sortOrder,
             Pageable pageable
@@ -59,45 +55,29 @@ public class SearchService {
 
         if (minPrice != null || maxPrice != null) {
             boolQuery.must(QueryBuilders.rangeQuery("price.amount")
-                    .from(minPrice)
+                    .from(minPrice != null ? minPrice : 0)
                     .to(maxPrice));
         }
 
-        if (fromDate != null || toDate != null) {
-            boolQuery.must(QueryBuilders.rangeQuery("createdAt")
-                    .from(fromDate)
-                    .to(toDate));
-        }
+        if (timeFilter != null) {
+            LocalDateTime fromDate = null;
+            LocalDateTime now = LocalDateTime.now();
 
-        if (fromYear != null || toYear != null) {
-            boolQuery.must(QueryBuilders.rangeQuery("productionYear")
-                    .from(fromYear)
-                    .to(toYear));
-        }
+            switch (timeFilter) {
+                case "1D" -> fromDate = now.minusDays(1);
+                case "1W" -> fromDate = now.minusWeeks(1);
+                case "1M" -> fromDate = now.minusMonths(1);
+                default -> log.warn("Invalid time filter: {}", timeFilter);
+            }
 
-        if (category != null && !category.trim().isEmpty()) {
-            boolQuery.must(QueryBuilders.termQuery("category", category));
-        }
-
-        if (brand != null && !brand.trim().isEmpty()) {
-            boolQuery.must(QueryBuilders.termQuery("brand", brand));
-        }
-
-        if (location != null && !location.trim().isEmpty() && distance != null) {
-            String[] coordinates = location.split(",");
-            if (coordinates.length == 2) {
-                try {
-                    double lat = Double.parseDouble(coordinates[0]);
-                    double lon = Double.parseDouble(coordinates[1]);
-                    GeoPoint geoPoint = new GeoPoint(lat, lon);
-
-                    boolQuery.must(QueryBuilders.geoDistanceQuery("location")
-                            .point(lat, lon)
-                            .distance(distance, DistanceUnit.KILOMETERS));
-                } catch (NumberFormatException e) {
-                }
+            if (fromDate != null) {
+                boolQuery.must(QueryBuilders.rangeQuery("createdAt")
+                        .from(fromDate)
+                        .to(now));
             }
         }
+
+        boolQuery.mustNot(QueryBuilders.termQuery("status", "DELETED"));
 
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
                 .withQuery(boolQuery)
@@ -107,7 +87,7 @@ public class SearchService {
             switch (sortBy) {
                 case "price" -> searchQueryBuilder.withSort(SortBuilders.fieldSort("price.amount").order(sortOrder));
                 case "date" -> searchQueryBuilder.withSort(SortBuilders.fieldSort("createdAt").order(sortOrder));
-                case "year" -> searchQueryBuilder.withSort(SortBuilders.fieldSort("productionYear").order(sortOrder));
+                default -> searchQueryBuilder.withSort(SortBuilders.fieldSort("createdAt").order(SortOrder.DESC));
             }
         } else {
             searchQueryBuilder.withSort(SortBuilders.fieldSort("createdAt").order(SortOrder.DESC));
@@ -122,7 +102,11 @@ public class SearchService {
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
 
-        return Page.empty(); // TODO: Implement proper pagination
+        return new PageImpl<>(
+                products,
+                pageable,
+                searchHits.getTotalHits()
+        );
     }
 
     public void indexProduct(ProductDocument product) {

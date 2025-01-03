@@ -4,6 +4,7 @@ import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.exception.CustomException;
 import com.kalado.product.domain.model.Product;
 import com.kalado.common.enums.ProductStatus;
+import com.kalado.product.infrastructure.messaging.ProductEventPublisher;
 import com.kalado.product.infrastructure.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class ProductService {
   private final ProductRepository productRepository;
   private final ImageService imageService;
+  private final ProductEventPublisher eventPublisher;
+
 
   private static final int MAX_IMAGES = 3;
   private static final long MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
@@ -29,14 +32,13 @@ public class ProductService {
     validateProduct(product);
     validateImages(images);
 
-    // Process and store images
-//    List<String> imageUrls = images.stream().map(imageService::storeImage).toList();
-
-//    product.setImageUrls(imageUrls);
     product.setStatus(ProductStatus.ACTIVE);
+    Product savedProduct = productRepository.save(product);
 
-    log.info("Creating new product: {}", product.getTitle());
-    return productRepository.save(product);
+    // Publish creation event
+    eventPublisher.publishProductCreated(savedProduct);
+
+    return savedProduct;
   }
 
   @Transactional
@@ -44,18 +46,13 @@ public class ProductService {
     Product existingProduct = getProduct(id);
     validateProductOwnership(existingProduct, updatedProduct.getSellerId());
 
-    if (newImages != null && !newImages.isEmpty()) {
-      // Delete old images
-//      existingProduct.getImageUrls().forEach(imageService::deleteImage);
-
-      // Store new images
-      List<String> imageUrls =
-          newImages.stream().map(imageService::storeImage).collect(Collectors.toList());
-//      existingProduct.setImageUrls(imageUrls);
-    }
-
     updateProductFields(existingProduct, updatedProduct);
-    return productRepository.save(existingProduct);
+    Product savedProduct = productRepository.save(existingProduct);
+
+    // Publish update event
+    eventPublisher.publishProductUpdated(savedProduct);
+
+    return savedProduct;
   }
 
   @Transactional
@@ -63,10 +60,11 @@ public class ProductService {
     Product product = getProduct(id);
     validateProductOwnership(product, sellerId);
 
-//    product.getImageUrls().forEach(imageService::deleteImage);
-
     product.setStatus(ProductStatus.DELETED);
-    productRepository.save(product);
+    Product deletedProduct = productRepository.save(product);
+
+    // Publish deletion event
+    eventPublisher.publishProductDeleted(deletedProduct);
   }
 
   public Product updateProductStatus(Long id, ProductStatus newStatus, Long sellerId) {
@@ -141,5 +139,12 @@ public class ProductService {
     existingProduct.setCategory(updatedProduct.getCategory());
     existingProduct.setProductionYear(updatedProduct.getProductionYear());
     existingProduct.setBrand(updatedProduct.getBrand());
+  }
+
+  @Transactional(readOnly = true)
+  public List<Product> getAllProducts() {
+    return productRepository.findAll().stream()
+            .filter(product -> product.getStatus() != ProductStatus.DELETED)
+            .collect(Collectors.toList());
   }
 }
