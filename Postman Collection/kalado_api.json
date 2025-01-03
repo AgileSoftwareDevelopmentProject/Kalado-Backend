@@ -2101,18 +2101,6 @@
 			"response": []
 		},
 		{
-			"name": "Get User",
-			"id": "d9734b76-e59f-4308-98ae-c9f8519bc841",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
 			"name": "Delete the existing index from Elasticsearch",
 			"id": "3db6b623-e1e7-4d3b-9d69-b765d8c1db03",
 			"protocolProfileBehavior": {
@@ -2242,7 +2230,7 @@
 			]
 		},
 		{
-			"name": "http://localhost:18083/v1/user",
+			"name": "Modify Profile",
 			"id": "0325d1d6-97e0-4e64-9a5a-1486a86b4735",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -2252,7 +2240,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_JWT_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1OTA0OTAzLCJleHAiOjE3MzU5OTEzMDMsImp0aSI6IjY0ODBiMzY3LWI4YWYtNDhmZC05ZDBkLWY5MWYzOGU1MDJkYiJ9.oiywcPoW05aDRVWusQiXVQ2XRkPSzNsInCwXD7UNOaI"
 					},
 					{
 						"key": "Content-Type",
@@ -2268,10 +2256,78 @@
 						}
 					}
 				},
-				"url": "http://localhost:18083/v1/user",
+				"url": "http://localhost:8083/v1/user/modifyProfile",
 				"description": "Generated from cURL: curl -X PUT 'http://localhost:18083/v1/user' \\\n-H 'Authorization: YOUR_JWT_TOKEN' \\\n-H 'Content-Type: application/json' \\\n-d '{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"phoneNumber\": \"1234567890\",\n    \"address\": \"123 Main St\"\n}'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "b1e5dc04-18a7-4c25-843f-626b92fcb5a9",
+					"name": "http://localhost:18083/v1/user",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1OTA0OTAzLCJleHAiOjE3MzU5OTEzMDMsImp0aSI6IjY0ODBiMzY3LWI4YWYtNDhmZC05ZDBkLWY5MWYzOGU1MDJkYiJ9.oiywcPoW05aDRVWusQiXVQ2XRkPSzNsInCwXD7UNOaI"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"phoneNumber\": \"1234567890\",\n    \"address\": \"123 Main St\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8083/v1/user/modifyProfile"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Jan 2025 11:49:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "true"
+				}
+			]
 		}
 	]
 }
