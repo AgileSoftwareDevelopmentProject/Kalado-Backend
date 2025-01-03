@@ -10,6 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Rename Dockerfile to DockerFile
+        run: |
+          directories=(authentication discovery gateway payment product reporting search user)
+          for dir in "${directories[@]}"; do
+            if [ -f "./$dir/Dockerfile" ]; then
+              mv "./$dir/Dockerfile" "./$dir/DockerFile"
+              echo "Renamed Dockerfile to DockerFile in $dir"
+            fi
+          done
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         with:
