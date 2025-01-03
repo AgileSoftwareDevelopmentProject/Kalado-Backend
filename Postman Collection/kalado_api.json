@@ -2168,7 +2168,7 @@
 			]
 		},
 		{
-			"name": "http://localhost:18083/v1/user",
+			"name": "Get Profile",
 			"id": "c0475966-ae3e-4e4f-85f3-5ee3ed3e2264",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -2178,13 +2178,68 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_JWT_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1OTA0OTAzLCJleHAiOjE3MzU5OTEzMDMsImp0aSI6IjY0ODBiMzY3LWI4YWYtNDhmZC05ZDBkLWY5MWYzOGU1MDJkYiJ9.oiywcPoW05aDRVWusQiXVQ2XRkPSzNsInCwXD7UNOaI"
 					}
 				],
-				"url": "http://localhost:18083/v1/user",
+				"url": "http://localhost:8083/v1/user/getProfile",
 				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/user' \\\n-H 'Authorization: YOUR_JWT_TOKEN'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "572e42d2-832c-44ba-85ad-6ea36ebacef7",
+					"name": "http://localhost:18083/v1/user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1OTA0OTAzLCJleHAiOjE3MzU5OTEzMDMsImp0aSI6IjY0ODBiMzY3LWI4YWYtNDhmZC05ZDBkLWY5MWYzOGU1MDJkYiJ9.oiywcPoW05aDRVWusQiXVQ2XRkPSzNsInCwXD7UNOaI"
+							}
+						],
+						"url": "http://localhost:8083/v1/user/getProfile"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Jan 2025 11:48:33 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 1,\n    \"username\": \"arabzadehamirhossein@outlook.com\",\n    \"firstName\": \"Amir\",\n    \"lastName\": \"Arabzadeh\",\n    \"address\": null,\n    \"phoneNumber\": \"1234567890\"\n}"
+				}
+			]
 		},
 		{
 			"name": "http://localhost:18083/v1/user",
