@@ -34,17 +34,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class AuthenticationAspect {
   private final AuthenticationApi authenticationApi;
   private static final Map<String, List<Role>> ROLE_PATH_ACCESS =
-      Map.ofEntries(
-          entry("/v1/payment", List.of(Role.USER, Role.ADMIN)),
-          entry("/v1/create", List.of(Role.USER, Role.ADMIN)),
-          entry("/v1/reports", List.of(Role.USER, Role.ADMIN)),
-          entry("/v1/reports/admin/all", List.of(Role.ADMIN)),
-          entry("/v1/product", List.of(Role.USER, Role.ADMIN)),
-              entry("/v1/product/*", List.of(Role.USER, Role.ADMIN)));
+          Map.ofEntries(
+                  entry("/v1/payment", List.of(Role.USER, Role.ADMIN)),
+                  entry("/v1/user", List.of(Role.USER, Role.ADMIN)),
+                  entry("/v1/create", List.of(Role.USER, Role.ADMIN)),
+                  entry("/v1/reports", List.of(Role.USER, Role.ADMIN)),
+                  entry("/v1/reports/admin/all", List.of(Role.ADMIN)),
+                  entry("/v1/product", List.of(Role.USER, Role.ADMIN)),
+                  entry("/v1/product/*", List.of(Role.USER, Role.ADMIN)));
 
   @Around("@annotation(authentication)")
   public Object authentication(ProceedingJoinPoint joinPoint, Authentication authentication)
-      throws Throwable {
+          throws Throwable {
     MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
     String[] parameterNames = methodSignature.getParameterNames();
     Object[] args = joinPoint.getArgs();
@@ -79,7 +80,7 @@ public class AuthenticationAspect {
 
     if (!isAccessAllowed(authDto.getRole(), requestPath)) {
       log.error(
-          "Access denied for user with roles: {} to path: {}", authDto.getRole(), requestPath);
+              "Access denied for user with roles: {} to path: {}", authDto.getRole(), requestPath);
       throw new CustomException(ErrorCode.FORBIDDEN, "Access denied");
     }
 
@@ -98,14 +99,14 @@ public class AuthenticationAspect {
 
   private boolean isAccessAllowed(Role role, String requestPath) {
     return ROLE_PATH_ACCESS.entrySet().stream()
-        .filter(entry -> requestPath.startsWith(entry.getKey()))
-        .flatMap(entry -> entry.getValue().stream())
-        .anyMatch(allowedRole -> allowedRole.equals(role));
+            .filter(entry -> requestPath.startsWith(entry.getKey()))
+            .flatMap(entry -> entry.getValue().stream())
+            .anyMatch(allowedRole -> allowedRole.equals(role));
   }
 
   private Optional<HttpServletRequest> getRequest() {
     return Optional.ofNullable(
-            (ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-        .map(ServletRequestAttributes::getRequest);
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+            .map(ServletRequestAttributes::getRequest);
   }
 }

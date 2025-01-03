@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController implements UserApi {
-
   private final UserService userService;
 
   @Override
-  @PutMapping("/{id}")
-  public Boolean modifyUserProfile(@PathVariable long id, @RequestBody UserDto userDto) {
-    return userService.modifyProfile(id, userDto);
+  @PutMapping("/modifyProfile")
+  public Boolean modifyUserProfile(@RequestParam("userId") Long userId, @RequestBody UserDto userDto) {
+    userDto.setId(userId);
+    return userService.modifyProfile(userId, userDto);
   }
 
   @Override
-  @GetMapping("/{userId}")
-  public UserDto getUserProfile(@PathVariable Long userId) {
+  @GetMapping("/getProfile")
+  public UserDto getUserProfile(@RequestParam("userId") Long userId) {
     return userService.getUserProfile(userId);
   }
 
