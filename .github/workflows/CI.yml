@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "production" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -37,6 +37,7 @@ jobs:
           ls product/target/*.jar
           ls payment/target/*.jar
           ls reporting/target/*.jar
+          ls search/target/*.jar
 
       - name: Get JAR names
         id: get_jars
@@ -48,6 +49,7 @@ jobs:
           echo "PRODUCT_JAR_NAME=$(ls product/target/*.jar)" >> $GITHUB_ENV
           echo "PAYMENT_JAR_NAME=$(ls payment/target/*.jar)" >> $GITHUB_ENV
           echo "REPORTING_JAR_NAME=$(ls reporting/target/*.jar)" >> $GITHUB_ENV
+          echo "REPORTING_JAR_NAME=$(ls search/target/*.jar)" >> $GITHUB_ENV
 
       - name: Copy JAR files to build context
         run: |
@@ -58,6 +60,7 @@ jobs:
           cp ${{ env.PRODUCT_JAR_NAME }} ./product/app.jar
           cp ${{ env.PAYMENT_JAR_NAME }} ./payment/app.jar
           cp ${{ env.REPORTING_JAR_NAME }} ./reporting/app.jar
+          cp ${{ env.REPORTING_JAR_NAME }} ./search/app.jar
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -74,6 +77,7 @@ jobs:
           docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_product:latest -f ./product/DockerFile ./product --push
           docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_payment:latest -f ./payment/DockerFile ./payment --push
           docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_reporting:latest -f ./reporting/DockerFile ./reporting --push
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_search:latest -f ./search/DockerFile ./search --push
 
 
       - name: Copy docker-compose.yml to server
