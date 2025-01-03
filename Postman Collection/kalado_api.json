@@ -1473,11 +1473,11 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1ODg0NzQwLCJleHAiOjE3MzU5NzExNDAsImp0aSI6Ijc3ZjdkYTQ0LWJhZmUtNGQwMS04ZDA2LTgyNmZlMTY5ODBmOSJ9.D2_cRBZROUld07v27MjLCFbvE9p6FiWZfzYtCtxTbR8"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1ODkxOTQwLCJleHAiOjE3MzU5NzgzNDAsImp0aSI6IjZmNzg3NWJjLWQ5NTUtNDA4Yy1iYTYxLWU1NTA0NmNhNDEwNyJ9.RU0fV8K74oe62BnSSFE9hZyNezE80I8_L-Y1TH1QLxw"
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8083/v1/search/products?keyword=camera",
+					"raw": "http://localhost:8083/v1/search/products?keyword=laptop",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1491,7 +1491,7 @@
 					"query": [
 						{
 							"key": "keyword",
-							"value": "camera"
+							"value": "laptop"
 						}
 					]
 				},
@@ -1573,61 +1573,6 @@
 			]
 		},
 		{
-			"name": "Delete the existing index from Elasticsearch",
-			"id": "3db6b623-e1e7-4d3b-9d69-b765d8c1db03",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": {
-						"username": "elastic",
-						"password": "kalado_pass"
-					}
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": "http://localhost:9200/products",
-				"description": "Generated from cURL: curl -X DELETE \"http://localhost:9200/products\" \\\n-u elastic:kalado_pass"
-			},
-			"response": [
-				{
-					"id": "6ed0c485-851a-4da5-bcab-4316f12cd21e",
-					"name": "Delete the existing index from Elasticsearch",
-					"originalRequest": {
-						"method": "DELETE",
-						"header": [],
-						"url": "http://localhost:9200/products"
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-elastic-product",
-							"value": "Elasticsearch"
-						},
-						{
-							"key": "content-type",
-							"value": "application/json; charset=UTF-8"
-						},
-						{
-							"key": "content-encoding",
-							"value": "gzip"
-						},
-						{
-							"key": "content-length",
-							"value": "47"
-						}
-					],
-					"cookie": [],
-					"responseTime": null,
-					"body": "{\n    \"acknowledged\": true\n}"
-				}
-			]
-		},
-		{
 			"name": "Search with price range",
 			"id": "a83da2cc-6396-4119-bdac-96958224225e",
 			"protocolProfileBehavior": {
@@ -1638,7 +1583,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1ODg0NzQwLCJleHAiOjE3MzU5NzExNDAsImp0aSI6Ijc3ZjdkYTQ0LWJhZmUtNGQwMS04ZDA2LTgyNmZlMTY5ODBmOSJ9.D2_cRBZROUld07v27MjLCFbvE9p6FiWZfzYtCtxTbR8"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1ODg3MTQyLCJleHAiOjE3MzU5NzM1NDIsImp0aSI6IjAyNzg4NWQwLTkxMjMtNGExZi04MTM5LTA3ZjQ4ZmU1ZjU1MiJ9.Q7ZJXkpj4qpkLUM2kM3HMwPeIXi2oy3Y3WUorfGrZhY"
 					}
 				],
 				"url": {
@@ -1882,16 +1827,16 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1ODkxOTQwLCJleHAiOjE3MzU5NzgzNDAsImp0aSI6IjZmNzg3NWJjLWQ5NTUtNDA4Yy1iYTYxLWU1NTA0NmNhNDEwNyJ9.RU0fV8K74oe62BnSSFE9hZyNezE80I8_L-Y1TH1QLxw"
 					}
 				],
 				"url": {
-					"raw": "http://localhost:18083/v1/search/products?keyword=laptop&minPrice=1500&maxPrice=2500&timeFilter=1M",
+					"raw": "http://localhost:8083/v1/search/products?keyword=laptop&minPrice=1500&maxPrice=2500&timeFilter=1M",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "18083",
+					"port": "8083",
 					"path": [
 						"v1",
 						"search",
@@ -1918,7 +1863,92 @@
 				},
 				"description": "Generated from cURL: curl -X GET \"http://localhost:18083/v1/search/products?keyword=laptop&minPrice=1500&maxPrice=2500&timeFilter=1M\" \\\n-H \"Authorization: YOUR_AUTH_TOKEN\""
 			},
-			"response": []
+			"response": [
+				{
+					"id": "6b19be79-efc6-465f-8a86-c2b6b7b8b5d6",
+					"name": "Search with multiple filters",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1ODkxOTQwLCJleHAiOjE3MzU5NzgzNDAsImp0aSI6IjZmNzg3NWJjLWQ5NTUtNDA4Yy1iYTYxLWU1NTA0NmNhNDEwNyJ9.RU0fV8K74oe62BnSSFE9hZyNezE80I8_L-Y1TH1QLxw"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8083/v1/search/products?keyword=laptop&minPrice=1500&maxPrice=2500&timeFilter=1M",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"search",
+								"products"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "laptop"
+								},
+								{
+									"key": "minPrice",
+									"value": "1500"
+								},
+								{
+									"key": "maxPrice",
+									"value": "2500"
+								},
+								{
+									"key": "timeFilter",
+									"value": "1M"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 03 Jan 2025 08:13:04 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"content\": [\n        {\n            \"id\": 31,\n            \"title\": \"Dell XPS 15\",\n            \"description\": \"Premium Windows laptop with OLED display\",\n            \"price\": {\n                \"amount\": 1599.99,\n                \"unit\": \"TOMAN\"\n            },\n            \"category\": \"Electronics\",\n            \"productionYear\": 2023,\n            \"brand\": \"Dell\",\n            \"status\": \"ACTIVE\",\n            \"createdAt\": 1735891957307,\n            \"sellerId\": 2\n        }\n    ],\n    \"pageable\": {\n        \"sort\": {\n            \"sorted\": false,\n            \"empty\": true,\n            \"unsorted\": true\n        },\n        \"pageNumber\": 0,\n        \"pageSize\": 20,\n        \"offset\": 0,\n        \"paged\": true,\n        \"unpaged\": false\n    },\n    \"last\": true,\n    \"totalPages\": 1,\n    \"totalElements\": 1,\n    \"first\": true,\n    \"size\": 20,\n    \"number\": 0,\n    \"sort\": {\n        \"sorted\": false,\n        \"empty\": true,\n        \"unsorted\": true\n    },\n    \"numberOfElements\": 1,\n    \"empty\": false\n}"
+				}
+			]
 		},
 		{
 			"name": "Paginated search",
@@ -2081,6 +2111,61 @@
 				"header": []
 			},
 			"response": []
+		},
+		{
+			"name": "Delete the existing index from Elasticsearch",
+			"id": "3db6b623-e1e7-4d3b-9d69-b765d8c1db03",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"username": "elastic",
+						"password": "kalado_pass"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:9200/products",
+				"description": "Generated from cURL: curl -X DELETE \"http://localhost:9200/products\" \\\n-u elastic:kalado_pass"
+			},
+			"response": [
+				{
+					"id": "6ed0c485-851a-4da5-bcab-4316f12cd21e",
+					"name": "Delete the existing index from Elasticsearch",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:9200/products"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-elastic-product",
+							"value": "Elasticsearch"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json; charset=UTF-8"
+						},
+						{
+							"key": "content-encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "content-length",
+							"value": "47"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"acknowledged\": true\n}"
+				}
+			]
 		}
 	]
 }
