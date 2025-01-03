@@ -1400,7 +1400,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1ODgyMDM1LCJleHAiOjE3MzU5Njg0MzUsImp0aSI6IjJlMGM2YWE0LTQ3NzUtNGI1OS1hZDU3LWIzZDliYjEyMzcxNSJ9.l9lmcww0le7RDyw2agn5x66pXEHE5_rWFPm2ritT-KQ"
 					}
 				],
 				"body": {
@@ -1412,7 +1412,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:18083/v1/product",
+				"url": "http://localhost:8083/v1/product",
 				"description": "Generated from cURL: curl -X POST http://localhost:18083/v1/product \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: YOUR_AUTH_TOKEN\" \\\n-d '{\n  \"title\": \"MacBook Pro M2\",\n  \"description\": \"Latest MacBook Pro with M2 chip, perfect for developers\",\n  \"price\": {\n    \"amount\": 1999.99,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"Electronics\",\n  \"productionYear\": 2023,\n  \"brand\": \"Apple\"\n}'"
 			},
 			"response": []
@@ -1432,7 +1432,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1ODgyMDM1LCJleHAiOjE3MzU5Njg0MzUsImp0aSI6IjJlMGM2YWE0LTQ3NzUtNGI1OS1hZDU3LWIzZDliYjEyMzcxNSJ9.l9lmcww0le7RDyw2agn5x66pXEHE5_rWFPm2ritT-KQ"
 					}
 				],
 				"body": {
@@ -1444,7 +1444,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:18083/v1/product",
+				"url": "http://localhost:8083/v1/product",
 				"description": "Generated from cURL: curl -X POST http://localhost:18083/v1/product \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: YOUR_AUTH_TOKEN\" \\\n-d '{\n  \"title\": \"iPhone 15 Pro\",\n  \"description\": \"Professional camera system with 48MP main\",\n  \"price\": {\n    \"amount\": 999.99,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"Electronics\",\n  \"productionYear\": 2023,\n  \"brand\": \"Apple\"\n}'"
 			},
 			"response": []
@@ -1464,7 +1464,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1ODgyMDM1LCJleHAiOjE3MzU5Njg0MzUsImp0aSI6IjJlMGM2YWE0LTQ3NzUtNGI1OS1hZDU3LWIzZDliYjEyMzcxNSJ9.l9lmcww0le7RDyw2agn5x66pXEHE5_rWFPm2ritT-KQ"
 					}
 				],
 				"body": {
@@ -1476,7 +1476,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:18083/v1/product",
+				"url": "http://localhost:8083/v1/product",
 				"description": "Generated from cURL: curl -X POST http://localhost:18083/v1/product \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: YOUR_AUTH_TOKEN\" \\\n-d '{\n  \"title\": \"Dell XPS 15\",\n  \"description\": \"Premium Windows laptop with OLED display\",\n  \"price\": {\n    \"amount\": 1599.99,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"Electronics\",\n  \"productionYear\": 2023,\n  \"brand\": \"Dell\"\n}'"
 			},
 			"response": []
