@@ -2069,6 +2069,18 @@
 				"description": "Generated from cURL: curl -X PUT \"http://localhost:18083/v1/product/1\" \\\n-H \"Content-Type: application/json\" \\\n-H \"Authorization: YOUR_AUTH_TOKEN\" \\\n-d '{\n  \"title\": \"MacBook Pro M2 Max\",\n  \"description\": \"Updated MacBook Pro with M2 Max chip, perfect for professionals\",\n  \"price\": {\n    \"amount\": 2499.99,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"Electronics\",\n  \"productionYear\": 2023,\n  \"brand\": \"Apple\"\n}'"
 			},
 			"response": []
+		},
+		{
+			"name": "Get User",
+			"id": "d9734b76-e59f-4308-98ae-c9f8519bc841",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }
