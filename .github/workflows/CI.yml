@@ -36,6 +36,7 @@ jobs:
           ls user/target/*.jar
           ls product/target/*.jar
           ls payment/target/*.jar
+          ls reporting/target/*.jar
 
       - name: Get JAR names
         id: get_jars
@@ -46,7 +47,8 @@ jobs:
           echo "USER_JAR_NAME=$(ls user/target/*.jar)" >> $GITHUB_ENV
           echo "PRODUCT_JAR_NAME=$(ls product/target/*.jar)" >> $GITHUB_ENV
           echo "PAYMENT_JAR_NAME=$(ls payment/target/*.jar)" >> $GITHUB_ENV
-
+          echo "REPORTING_JAR_NAME=$(ls reporting/target/*.jar)" >> $GITHUB_ENV
+cd 
       - name: Copy JAR files to build context
         run: |
           cp ${{ env.DISCOVERY_JAR_NAME }} ./discovery/app.jar
@@ -55,6 +57,7 @@ jobs:
           cp ${{ env.USER_JAR_NAME }} ./user/app.jar
           cp ${{ env.PRODUCT_JAR_NAME }} ./product/app.jar
           cp ${{ env.PAYMENT_JAR_NAME }} ./payment/app.jar
+          cp ${{ env.REPORTING_JAR_NAME }} ./reporting/app.jar
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -70,6 +73,8 @@ jobs:
           docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_user:latest -f ./user/DockerFile ./user --push
           docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_product:latest -f ./product/DockerFile ./product --push
           docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_payment:latest -f ./payment/DockerFile ./payment --push
+          docker buildx build --platform linux/amd64,linux/arm64 --build-arg JAR_FILE=app.jar -t amiril/kalado_reporting:latest -f ./reporting/DockerFile ./reporting --push
+
 
       - name: Copy docker-compose.yml to server
         uses: appleboy/scp-action@v0.1.0
