@@ -1498,6 +1498,27 @@
 				"description": "Generated from cURL: curl -X GET \"http://localhost:18083/v1/search/products?keyword=laptop\" \\\n-H \"Authorization: YOUR_AUTH_TOKEN\""
 			},
 			"response": []
+		},
+		{
+			"name": "Delete the existing index from Elasticsearch",
+			"id": "3db6b623-e1e7-4d3b-9d69-b765d8c1db03",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"username": "elastic",
+						"password": "kalado_pass"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:9200/products",
+				"description": "Generated from cURL: curl -X DELETE \"http://localhost:9200/products\" \\\n-u elastic:kalado_pass"
+			},
+			"response": []
 		}
 	]
 }
