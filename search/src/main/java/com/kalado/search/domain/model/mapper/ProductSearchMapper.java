@@ -8,7 +8,7 @@ import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 public interface ProductSearchMapper {
 
     @Mapping(target = "id", expression = "java(String.valueOf(productDto.getId()))")
-    @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "timestampToLocalDateTime")
+    @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "timestampToInstant")
     ProductDocument dtoToDocument(ProductDto productDto);
 
     @Mapping(target = "id", expression = "java(Long.valueOf(document.getId()))")
-    @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "localDateTimeToTimestamp")
+    @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "instantToTimestamp")
     ProductDto documentToDto(ProductDocument document);
 
     default Page<ProductDto> toProductDtoPage(Page<ProductDocument> page) {
@@ -33,13 +33,13 @@ public interface ProductSearchMapper {
                 .collect(Collectors.toList());
     }
 
-    @Named("timestampToLocalDateTime")
-    default LocalDateTime timestampToLocalDateTime(Timestamp timestamp) {
-        return timestamp != null ? timestamp.toLocalDateTime() : null;
+    @Named("timestampToInstant")
+    default Instant timestampToInstant(Timestamp timestamp) {
+        return timestamp != null ? timestamp.toInstant() : null;
     }
 
-    @Named("localDateTimeToTimestamp")
-    default Timestamp localDateTimeToTimestamp(LocalDateTime localDateTime) {
-        return localDateTime != null ? Timestamp.valueOf(localDateTime) : null;
+    @Named("instantToTimestamp")
+    default Timestamp instantToTimestamp(Instant instant) {
+        return instant != null ? Timestamp.from(instant) : null;
     }
 }

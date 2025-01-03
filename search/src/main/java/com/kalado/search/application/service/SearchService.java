@@ -1,18 +1,14 @@
 package com.kalado.search.application.service;
 
-import com.kalado.common.dto.ProductDto;
 import com.kalado.search.domain.model.ProductDocument;
 import com.kalado.search.infrastructure.repository.ProductSearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.common.geo.GeoPoint;
-import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -21,6 +17,8 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,18 +28,20 @@ import java.util.stream.Collectors;
 public class SearchService {
     private final ProductSearchRepository productSearchRepository;
     private final ElasticsearchOperations elasticsearchOperations;
+    private static final DateTimeFormatter ES_DATE_FORMAT = DateTimeFormatter.ISO_DATE_TIME;
 
     public Page<ProductDocument> searchProducts(
             String keyword,
             Double minPrice,
             Double maxPrice,
-            String timeFilter, // "1D" for 1 day, "1W" for 1 week, "1M" for 1 month
+            String timeFilter,
             String sortBy,
             SortOrder sortOrder,
             Pageable pageable
     ) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
+        // Keyword search
         if (keyword != null && !keyword.trim().isEmpty()) {
             boolQuery.must(QueryBuilders.multiMatchQuery(keyword)
                     .field("title", 2.0f)
@@ -53,12 +53,14 @@ public class SearchService {
                     .fuzziness("AUTO"));
         }
 
+        // Price range
         if (minPrice != null || maxPrice != null) {
             boolQuery.must(QueryBuilders.rangeQuery("price.amount")
                     .from(minPrice != null ? minPrice : 0)
                     .to(maxPrice));
         }
 
+        // Time filter
         if (timeFilter != null) {
             LocalDateTime fromDate = null;
             LocalDateTime now = LocalDateTime.now();
@@ -71,18 +73,23 @@ public class SearchService {
             }
 
             if (fromDate != null) {
+                String fromDateStr = fromDate.atZone(ZoneOffset.UTC).format(ES_DATE_FORMAT);
+                String toDateStr = now.atZone(ZoneOffset.UTC).format(ES_DATE_FORMAT);
+
                 boolQuery.must(QueryBuilders.rangeQuery("createdAt")
-                        .from(fromDate)
-                        .to(now));
+                        .from(fromDateStr)
+                        .to(toDateStr));
             }
         }
 
+        // Status filter - exclude deleted products
         boolQuery.mustNot(QueryBuilders.termQuery("status", "DELETED"));
 
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
                 .withQuery(boolQuery)
                 .withPageable(pageable);
 
+        // Sorting
         if (sortBy != null && sortOrder != null) {
             switch (sortBy) {
                 case "price" -> searchQueryBuilder.withSort(SortBuilders.fieldSort("price.amount").order(sortOrder));
@@ -102,7 +109,7 @@ public class SearchService {
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(
+        return new org.springframework.data.domain.PageImpl<>(
                 products,
                 pageable,
                 searchHits.getTotalHits()

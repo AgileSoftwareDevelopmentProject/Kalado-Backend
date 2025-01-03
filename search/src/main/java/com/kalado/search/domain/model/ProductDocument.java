@@ -7,6 +7,7 @@ import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Document(indexName = "products")
@@ -52,8 +53,8 @@ public class ProductDocument {
     @Field(type = FieldType.Keyword)
     private ProductStatus status;
 
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ss.SSS")
-    private LocalDateTime createdAt;
+    @Field(type = FieldType.Date)
+    private Instant createdAt;
 
     @Field(type = FieldType.Long)
     private Long sellerId;

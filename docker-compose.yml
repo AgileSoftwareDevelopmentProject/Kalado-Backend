@@ -18,8 +18,6 @@ services:
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
       - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-    ports:
-      - "18761:18761"
     networks:
       - kalado-net
 
@@ -70,8 +68,6 @@ services:
       - discovery
       - postgres
       - redis
-    ports:
-      - "8081:8081"
     networks:
       - kalado-net
 
@@ -94,8 +90,6 @@ services:
     depends_on:
       - discovery
       - postgres
-    ports:
-      - "8085:8085"
     networks:
       - kalado-net
 
@@ -114,6 +108,8 @@ services:
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
       - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
+      # Kafka config
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
       - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
       - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
@@ -122,105 +118,63 @@ services:
       - discovery
       - postgres
       - redis
-    ports:
-      - "8082:8082"
+      - kafka
     networks:
       - kalado-net
 
-  # search:
-  #   image: amiril/kalado_search:latest
-  #   container_name: search
-  #   build:
-  #     context: ./search
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - SPRING_APPLICATION_NAME=search-service
-  #     - SERVER_PORT=8084
-  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-  #     - ELASTICSEARCH_HOST=elasticsearch
-  #     - ELASTICSEARCH_PORT=9200
-  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-  #   depends_on:
-  #     - discovery
-  #     - elasticsearch
-  #   ports:
-  #     - "8084:8084"
-  #   networks:
-  #     - kalado-net
+  search:
+    image: amiril/kalado_search:latest
+    container_name: search
+    build:
+      context: ./search
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_APPLICATION_NAME=search-service
+      - SERVER_PORT=8084
+      # Database config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
+      - SPRING_DATASOURCE_USERNAME=kalado
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      # Elasticsearch config
+      - SPRING_ELASTICSEARCH_URIS=http://elasticsearch:9200
+      - SPRING_ELASTICSEARCH_USERNAME=elastic
+      - SPRING_ELASTICSEARCH_PASSWORD=kalado_pass
+      # Kafka config
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
+      - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+    depends_on:
+      - discovery
+      - elasticsearch
+      - postgres
+      - kafka
+    networks:
+      - kalado-net
 
-  # reporting:
-  #   image: amiril/kalado_reporting:latest
-  #   container_name: reporting
-  #   build:
-  #     context: ./reporting
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - SPRING_APPLICATION_NAME=reporting-service
-  #     - SERVER_PORT=8086
-  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
-  #     - SPRING_DATASOURCE_USERNAME=kalado
-  #     - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-  #   depends_on:
-  #     - discovery
-  #     - postgres
-  #   ports:
-  #     - "8086:8086"
-  #   networks:
-  #     - kalado-net
+  reporting:
+    image: amiril/kalado_reporting:latest
+    container_name: reporting
+    build:
+      context: ./reporting
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_APPLICATION_NAME=reporting-service
+      - SERVER_PORT=8086
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
+      - SPRING_DATASOURCE_USERNAME=kalado
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
+      - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+    depends_on:
+      - discovery
+      - postgres
+    networks:
+      - kalado-net
 
-  # admin:
-  #   image: amiril/kalado_admin:latest
-  #   container_name: admin
-  #   build:
-  #     context: ./admin
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - SPRING_APPLICATION_NAME=admin-service
-  #     - SERVER_PORT=8087
-  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/kalado
-  #     - SPRING_DATASOURCE_USERNAME=kalado
-  #     - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-  #   depends_on:
-  #     - discovery
-  #     - postgres
-  #   ports:
-  #     - "8087:8087"
-  #   networks:
-  #     - kalado-net
-
-  # notification:
-  #   image: amiril/kalado_notification:latest
-  #   container_name: notification
-  #   build:
-  #     context: ./notification
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - SPRING_APPLICATION_NAME=notification-service
-  #     - SERVER_PORT=8088
-  #     - SPRING_REDIS_HOST=redis
-  #     - SPRING_REDIS_PORT=6379
-  #     - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
-  #     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:18761/eureka/
-  #     - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=prometheus,health
-  #     - MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED=true
-  #     - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-  #   depends_on:
-  #     - discovery
-  #     - redis
-  #   ports:
-  #     - "8088:8088"
-  #   networks:
-  #     - kalado-net
 
   payment:
     image: amiril/kalado_payment:latest
@@ -241,8 +195,6 @@ services:
     depends_on:
       - discovery
       - postgres
-    ports:
-      - "8089:8089"
     networks:
       - kalado-net
 
@@ -253,19 +205,24 @@ services:
       - POSTGRES_USER=kalado
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=kalado
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - kalado-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U kalado" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
     container_name: redis
     command: redis-server --requirepass ${REDIS_PASSWORD}
-    ports:
-      - "6379:6379"
+#    ports:
+#      - "6379:6379"
     volumes:
       - redis-data:/data
     networks:
@@ -279,8 +236,37 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - ELASTIC_PASSWORD=kalado_pass
       - xpack.security.enabled=true
-    ports:
-      - "9200:9200"
+#    ports:
+#      - "9200:9200"
+    networks:
+      - kalado-net
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - kalado-net
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "kafka:29092", "--list" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     networks:
       - kalado-net
 
