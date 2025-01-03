@@ -2166,6 +2166,25 @@
 					"body": "{\n    \"acknowledged\": true\n}"
 				}
 			]
+		},
+		{
+			"name": "http://localhost:18083/v1/user",
+			"id": "c0475966-ae3e-4e4f-85f3-5ee3ed3e2264",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_JWT_TOKEN"
+					}
+				],
+				"url": "http://localhost:18083/v1/user",
+				"description": "Generated from cURL: curl -X GET 'http://localhost:18083/v1/user' \\\n-H 'Authorization: YOUR_JWT_TOKEN'"
+			},
+			"response": []
 		}
 	]
 }
