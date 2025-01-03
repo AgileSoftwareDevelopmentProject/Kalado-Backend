@@ -2166,7 +2166,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1OTA0OTAzLCJleHAiOjE3MzU5OTEzMDMsImp0aSI6IjY0ODBiMzY3LWI4YWYtNDhmZC05ZDBkLWY5MWYzOGU1MDJkYiJ9.oiywcPoW05aDRVWusQiXVQ2XRkPSzNsInCwXD7UNOaI"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM1OTI5NTM0LCJleHAiOjE3MzYwMTU5MzQsImp0aSI6IjA2NDQwYTY5LTBhMjgtNGM3My05Y2UwLTUzNDE1MGI1NDQ5MCJ9.3vtMBwbP3NwIoagAVuy1pBYa4sCn87TTfA1lN8fvcxI"
 					}
 				],
 				"url": "http://localhost:8083/v1/user/getProfile",
