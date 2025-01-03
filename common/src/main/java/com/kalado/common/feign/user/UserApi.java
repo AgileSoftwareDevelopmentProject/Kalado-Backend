@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "user-service")
 public interface UserApi {
-  @PutMapping("/user/{id}")
-  Boolean modifyUserProfile(@PathVariable long id, @RequestBody UserDto userDto);
+  @PutMapping("/user/modifyProfile")
+  Boolean modifyUserProfile(@RequestParam("userId") Long userId, @RequestBody UserDto userDto);
 
-  @GetMapping("/user/{userId}")
-  UserDto getUserProfile(@PathVariable Long userId);
+  @GetMapping("/user/getProfile")
+  UserDto getUserProfile(@RequestParam("userId") Long userId);
 
   @PostMapping("/user")
   void createUser(@RequestBody UserDto userDto);

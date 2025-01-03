@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
   private final UserApi userApi;
 
-  @PutMapping
+  @PutMapping("/modifyProfile")
   @Authentication(userId = "#userId")
-  Boolean modifyUserProfile(Long userId, @RequestBody UserDto userDto) {
+  public Boolean modifyUserProfile(Long userId, @RequestBody UserDto userDto) {
     return userApi.modifyUserProfile(userId, userDto);
   }
 
-  @GetMapping()
+  @GetMapping("/getProfile")
   @Authentication(userId = "#userId")
   public UserDto getUserProfile(Long userId) {
     return userApi.getUserProfile(userId);
