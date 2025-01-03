@@ -241,19 +241,37 @@ services:
     networks:
       - kalado-net
 
+  #zookeeper:
+  #  image: confluentinc/cp-zookeeper:latest
+  #  environment:
+  #    ZOOKEEPER_CLIENT_PORT: 2181
+  #    ZOOKEEPER_TICK_TIME: 2000
+  #  networks:
+  #    - kalado-net
+
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: docker.io/bitnami/zookeeper:3.9.2
+    container_name: zookeeper
+    restart: always
+    ports:
+      - '2181:2181'
+   # volumes:
+   #   - zookeeper_data:/bitnami
+    networks:
+      - kalado-net
+      #- broker-net
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    networks:
-      - kalado-net
+      ALLOW_ANONYMOUS_LOGIN: yes
+
+
 
   kafka:
     image: confluentinc/cp-kafka:latest
     depends_on:
-      zookeeper:
-        condition: service_healthy
+      - zookeeper
+       # condition: service_healthy
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -269,6 +287,7 @@ services:
       retries: 3
     networks:
       - kalado-net
+
 
 networks:
   kalado-net:
