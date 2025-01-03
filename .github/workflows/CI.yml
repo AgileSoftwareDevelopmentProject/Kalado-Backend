@@ -48,7 +48,7 @@ jobs:
           echo "PRODUCT_JAR_NAME=$(ls product/target/*.jar)" >> $GITHUB_ENV
           echo "PAYMENT_JAR_NAME=$(ls payment/target/*.jar)" >> $GITHUB_ENV
           echo "REPORTING_JAR_NAME=$(ls reporting/target/*.jar)" >> $GITHUB_ENV
-cd 
+
       - name: Copy JAR files to build context
         run: |
           cp ${{ env.DISCOVERY_JAR_NAME }} ./discovery/app.jar
