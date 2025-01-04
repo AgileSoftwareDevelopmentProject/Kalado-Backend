@@ -2331,7 +2331,7 @@
 		},
 		{
 			"name": "http://localhost:8083/v1/product",
-			"id": "6f6b8ca4-da77-4da9-8ba4-064a48d2244e",
+			"id": "37c345ae-e688-41eb-a567-7b1d1de18f22",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -2354,17 +2354,17 @@
 						{
 							"type": "file",
 							"key": "images",
-							"src": "image1.jpg"
+							"src": "path/to/image1.jpg"
 						},
 						{
 							"type": "file",
 							"key": "images",
-							"src": "image2.jpg"
+							"src": "path/to/image2.jpg"
 						}
 					]
 				},
 				"url": "http://localhost:8083/v1/product",
-				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: Bearer your-token' \\\n--form 'product=\"{\n    \\\"title\\\":\\\"Test Product\\\",\n    \\\"description\\\":\\\"Detailed product description\\\",\n    \\\"price\\\":{\n        \\\"amount\\\":100000,\n        \\\"unit\\\":\\\"TOMAN\\\"\n    },\n    \\\"category\\\":\\\"Electronics\\\",\n    \\\"productionYear\\\":2023,\n    \\\"brand\\\":\\\"Test Brand\\\"\n}\"' \\\n--form 'images=@\"image1.jpg\"' \\\n--form 'images=@\"image2.jpg\"'"
+				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: Bearer your-token' \\\n--form 'product=\"{\n    \\\"title\\\":\\\"Test Product\\\",\n    \\\"description\\\":\\\"Detailed product description\\\",\n    \\\"price\\\":{\n        \\\"amount\\\":100000,\n        \\\"unit\\\":\\\"TOMAN\\\"\n    },\n    \\\"category\\\":\\\"Electronics\\\",\n    \\\"productionYear\\\":2023,\n    \\\"brand\\\":\\\"Test Brand\\\"\n}\"' \\\n--form 'images=@\"path/to/image1.jpg\"' \\\n--form 'images=@\"path/to/image2.jpg\"'"
 			},
 			"response": []
 		}
