@@ -2503,6 +2503,25 @@
 				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: Bearer your-token' \\\n--form 'product=\"{\n    \\\"title\\\":\\\"Test Product\\\",\n    \\\"description\\\":\\\"Detailed product description\\\",\n    \\\"price\\\":{\n        \\\"amount\\\":100000,\n        \\\"unit\\\":\\\"TOMAN\\\"\n    },\n    \\\"category\\\":\\\"Electronics\\\",\n    \\\"productionYear\\\":2023,\n    \\\"brand\\\":\\\"Test Brand\\\",\n    \\\"sellerId\\\":7\n}\"' \\\n--form 'images=@\"/path/to/image.jpg\"'"
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:8083/v1/product/1",
+			"id": "eee73af9-54e4-4fa3-9b67-6226a2a42a3b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer your-token"
+					}
+				],
+				"url": "http://localhost:8083/v1/product/1",
+				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product/1' \\\n--header 'Authorization: Bearer your-token'"
+			},
+			"response": []
 		}
 	]
 }
