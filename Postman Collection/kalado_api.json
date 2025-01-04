@@ -309,7 +309,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjgxOTE3LCJleHAiOjE3MzUzNjgzMTcsImp0aSI6ImU3OWZiZmI3LTYzOTYtNDgwNy1iMTI4LWYwMWM4MzFkYjc5ZCJ9.No6vIKcOvaVq3HOkzdwpJ9848mDC_jBUI1z8jZ58WF8"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM2MDE2NDI1LCJleHAiOjE3MzYxMDI4MjUsImp0aSI6IjVlMjJiNmY5LTAyMGUtNDZkMy1hYWEyLWFjYWM3ZmUyYzAzNSJ9.TfBznHFjQJdPNwmlFhPCbbWAOR4ENY4ZWSMx7CxgdRA"
 					},
 					{
 						"key": "Content-Type",
@@ -318,7 +318,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\",\r\n         \"sellerId\":1\r\n     }",
+					"raw": "{\r\n         \"title\":\"Test Product\",\r\n         \"description\":\"Detailed product description\",\r\n         \"price\":{\r\n             \"amount\":100000,\r\n             \"unit\":\"TOMAN\"\r\n         },\r\n         \"category\":\"Electronics\",\r\n         \"productionYear\":2023,\r\n         \"brand\":\"Test Brand\"\r\n        //  \"sellerId\":1\r\n     }",
 					"options": {
 						"raw": {
 							"language": "json"
