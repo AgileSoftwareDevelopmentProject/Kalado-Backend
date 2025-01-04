@@ -12,16 +12,19 @@ import java.util.List;
 @FeignClient(name = "product-service", path = "/products")
 public interface ProductApi {
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ProductDto createProduct(
-            @RequestBody ProductDto productDto
+            @RequestPart(value = "product") String productJson,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
     );
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ProductDto updateProduct(
             @PathVariable Long id,
-            @RequestBody ProductDto productDto
+            @RequestPart(value = "product") String productJson,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
     );
+
 
     @PutMapping("/delete/{id}")
     void deleteProduct(

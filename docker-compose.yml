@@ -236,8 +236,8 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - ELASTIC_PASSWORD=kalado_pass
       - xpack.security.enabled=true
-#    ports:
-#      - "9200:9200"
+    ports:
+      - "9200:9200"
     networks:
       - kalado-net
 
