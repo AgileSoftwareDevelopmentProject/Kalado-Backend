@@ -2435,6 +2435,40 @@
 				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: Bearer your-token' \\\n--form 'product=\"{\n    \\\"title\\\": \\\"Test Product\\\",\n    \\\"description\\\": \\\"Detailed product description\\\",\n    \\\"price\\\": {\n        \\\"amount\\\": 100000,\n        \\\"unit\\\": \\\"TOMAN\\\"\n    },\n    \\\"category\\\": \\\"Electronics\\\",\n    \\\"productionYear\\\": 2023,\n    \\\"brand\\\": \\\"Test Brand\\\"\n}\"' \\\n--form 'images=@\"/path/to/image1.jpg\"'"
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:8083/v1/product",
+			"id": "cabd4750-7748-4b81-96b3-e3f70b3bfce6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer your-token"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "product",
+							"value": "{\n    \"title\": \"Test Product\",\n    \"description\": \"Detailed product description\",\n    \"price\": {\n        \"amount\": 100000,\n        \"unit\": \"TOMAN\"\n    },\n    \"category\": \"Electronics\",\n    \"productionYear\": 2023,\n    \"brand\": \"Test Brand\"\n}"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "/path/to/image.jpg"
+						}
+					]
+				},
+				"url": "http://localhost:8083/v1/product",
+				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: Bearer your-token' \\\n--form 'product=\"{\n    \\\"title\\\": \\\"Test Product\\\",\n    \\\"description\\\": \\\"Detailed product description\\\",\n    \\\"price\\\": {\n        \\\"amount\\\": 100000,\n        \\\"unit\\\": \\\"TOMAN\\\"\n    },\n    \\\"category\\\": \\\"Electronics\\\",\n    \\\"productionYear\\\": 2023,\n    \\\"brand\\\": \\\"Test Brand\\\"\n}\"' \\\n--form 'images=@\"/path/to/image.jpg\"'"
+			},
+			"response": []
 		}
 	]
 }
