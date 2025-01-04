@@ -2331,7 +2331,7 @@
 		},
 		{
 			"name": "http://localhost:8083/v1/product",
-			"id": "c0c9409d-76fb-427d-a66f-1c57ebf19e69",
+			"id": "6f6b8ca4-da77-4da9-8ba4-064a48d2244e",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -2340,7 +2340,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjgxOTE3LCJleHAiOjE3MzUzNjgzMTcsImp0aSI6ImU3OWZiZmI3LTYzOTYtNDgwNy1iMTI4LWYwMWM4MzFkYjc5ZCJ9.No6vIKcOvaVq3HOkzdwpJ9848mDC_jBUI1z8jZ58WF8"
+						"value": "Bearer your-token"
 					}
 				],
 				"body": {
@@ -2349,27 +2349,22 @@
 						{
 							"type": "text",
 							"key": "product",
-							"value": "{\n    \"title\":\"Test Product\",\n    \"description\":\"Detailed product description\",\n    \"price\":{\n        \"amount\":100000,\n        \"unit\":\"TOMAN\"\n    },\n    \"category\":\"Electronics\",\n    \"productionYear\":2023,\n    \"brand\":\"Test Brand\",\n    \"sellerId\":1\n}"
+							"value": "{\n    \"title\":\"Test Product\",\n    \"description\":\"Detailed product description\",\n    \"price\":{\n        \"amount\":100000,\n        \"unit\":\"TOMAN\"\n    },\n    \"category\":\"Electronics\",\n    \"productionYear\":2023,\n    \"brand\":\"Test Brand\"\n}"
 						},
 						{
 							"type": "file",
 							"key": "images",
-							"src": "/path/to/your/image1.jpg"
+							"src": "image1.jpg"
 						},
 						{
 							"type": "file",
 							"key": "images",
-							"src": "/path/to/your/image2.jpg"
-						},
-						{
-							"type": "file",
-							"key": "images",
-							"src": "/path/to/your/image3.jpg"
+							"src": "image2.jpg"
 						}
 					]
 				},
 				"url": "http://localhost:8083/v1/product",
-				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM1MjgxOTE3LCJleHAiOjE3MzUzNjgzMTcsImp0aSI6ImU3OWZiZmI3LTYzOTYtNDgwNy1iMTI4LWYwMWM4MzFkYjc5ZCJ9.No6vIKcOvaVq3HOkzdwpJ9848mDC_jBUI1z8jZ58WF8' \\\n--form 'product={\n    \"title\":\"Test Product\",\n    \"description\":\"Detailed product description\",\n    \"price\":{\n        \"amount\":100000,\n        \"unit\":\"TOMAN\"\n    },\n    \"category\":\"Electronics\",\n    \"productionYear\":2023,\n    \"brand\":\"Test Brand\",\n    \"sellerId\":1\n}' \\\n--form 'images=@\"/path/to/your/image1.jpg\"' \\\n--form 'images=@\"/path/to/your/image2.jpg\"' \\\n--form 'images=@\"/path/to/your/image3.jpg\"'"
+				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: Bearer your-token' \\\n--form 'product=\"{\n    \\\"title\\\":\\\"Test Product\\\",\n    \\\"description\\\":\\\"Detailed product description\\\",\n    \\\"price\\\":{\n        \\\"amount\\\":100000,\n        \\\"unit\\\":\\\"TOMAN\\\"\n    },\n    \\\"category\\\":\\\"Electronics\\\",\n    \\\"productionYear\\\":2023,\n    \\\"brand\\\":\\\"Test Brand\\\"\n}\"' \\\n--form 'images=@\"image1.jpg\"' \\\n--form 'images=@\"image2.jpg\"'"
 			},
 			"response": []
 		}
