@@ -23,7 +23,7 @@ public class ImageService {
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
 
-    @Value("${app.gateway-url:http://localhost:8083}")
+    @Value("${app.gateway-url:http://kaladoshop.com:8083}")
     private String gatewayUrl;
 
     private static final long MAX_IMAGE_SIZE = 1024 * 1024;
