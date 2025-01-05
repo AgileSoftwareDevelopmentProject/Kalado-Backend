@@ -1,14 +1,16 @@
 package com.kalado.gateway.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.codec.ErrorDecoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import com.kalado.gateway.exception.ExceptionHandlerAdvice;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,22 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .findAndRegisterModules(); // This helps with date/time handling
+    }
+
+    @Bean
+    public ErrorDecoder errorDecoder(ObjectMapper objectMapper) {
+        return new FeignClientErrorDecoder(objectMapper);
+    }
+
+    @Bean
+    public ExceptionHandlerAdvice exceptionHandlerAdvice(ObjectMapper objectMapper) {
+        return new ExceptionHandlerAdvice(objectMapper);
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -48,6 +66,7 @@ public class WebConfig implements WebMvcConfigurer {
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
     }
+
     private long parseSize(String size) {
         size = size.toUpperCase();
         if (size.endsWith("KB")) {

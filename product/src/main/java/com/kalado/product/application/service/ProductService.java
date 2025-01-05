@@ -50,6 +50,7 @@ public class ProductService {
     product.setStatus(ProductStatus.ACTIVE);
 
     Product savedProduct = productRepository.save(product);
+    eventPublisher.publishProductCreated(savedProduct);
     log.debug("Created product with ID: {} and {} images",
             savedProduct.getId(),
             savedProduct.getImageUrls().size());
