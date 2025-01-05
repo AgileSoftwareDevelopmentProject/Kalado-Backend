@@ -38,10 +38,10 @@ public class WebConfig implements WebMvcConfigurer {
         return new FeignClientErrorDecoder(objectMapper);
     }
 
-    @Bean
-    public ExceptionHandlerAdvice exceptionHandlerAdvice(ObjectMapper objectMapper) {
-        return new ExceptionHandlerAdvice(objectMapper);
-    }
+    // @Bean
+    // public ExceptionHandlerAdvice exceptionHandlerAdvice(ObjectMapper objectMapper) {
+    //     return new ExceptionHandlerAdvice(objectMapper);
+    // }
 
     // @Override
     // public void addCorsMappings(CorsRegistry registry) {
