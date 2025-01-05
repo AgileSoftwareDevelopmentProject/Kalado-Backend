@@ -43,14 +43,45 @@ public class WebConfig implements WebMvcConfigurer {
         return new ExceptionHandlerAdvice(objectMapper);
     }
 
+    // @Override
+    // public void addCorsMappings(CorsRegistry registry) {
+    //     registry.addMapping("/**")
+    //             .allowedOrigins("http://localhost:8080", "http://kaladoshop.com/")
+    //             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+    //             .allowedHeaders("*")
+    //             .exposedHeaders("Content-Disposition")
+    //             .maxAge(3600);
+    // }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080", "http://kaladoshop.com/")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-                .allowedHeaders("*")
-                .exposedHeaders("Content-Disposition")
-                .maxAge(3600);
+        registry
+            // .addMapping("/**")
+
+            // // .allowedOrigins("*")
+            // .allowedOrigins("http://localhost:8080", "http://kaladoshop.com")
+
+
+
+            // .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+
+            // .allowedHeaders("*")
+
+            // .allowCredentials(true)
+
+            // .maxAge(3600);
+        .addMapping("/**")
+
+        .allowedOrigins(
+            "http://localhost:8080",  
+            "http://kaladoshop.com/"
+        )
+
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+
+        .allowedHeaders("*")
+
+        .maxAge(3600);
     }
 
     @Override
