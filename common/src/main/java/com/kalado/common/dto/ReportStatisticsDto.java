@@ -16,6 +16,6 @@ public class ReportStatisticsDto {
     private long resolvedReports;
     private long rejectedReports;
     private double averageResolutionTimeInHours;
-    private Map<String, Long> reportsByType;      // Count of each violation type
-    private Map<String, Long> reportsByStatus;    // Count of each status
+    private Map<String, Long> reportsByType;
+    private Map<String, Long> reportsByStatus;
 }

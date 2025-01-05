@@ -9,8 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import org.springframework.core.io.Resource;
+
+
 @FeignClient(name = "product-service", path = "/products")
 public interface ProductApi {
+
+    @GetMapping(value = "/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    Resource getImage(@PathVariable String filename);
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ProductDto createProduct(

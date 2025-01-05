@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-    // Multi-argument constructor usage
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR, 500, "Internal_server_error"),
     SERVICE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, HttpStatus.SERVICE_UNAVAILABLE, 503, "Service_unavailable"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED, 401, "Unauthorized"),
@@ -33,16 +32,14 @@ public enum ErrorCode {
     private final String errorMessageValue;
     private final String message;
 
-    // Constructor for full parameters
     ErrorCode(HttpStatus httpStatus, HttpStatus clientHttpStatus, Integer errorCodeValue, String errorMessageValue) {
         this.httpStatus = httpStatus;
         this.clientHttpStatus = clientHttpStatus;
         this.errorCodeValue = errorCodeValue;
         this.errorMessageValue = errorMessageValue;
-        this.message = null; // message not applicable in this case
+        this.message = null;
     }
 
-    // Constructor for single message
     ErrorCode(String message) {
         this.httpStatus = null;
         this.clientHttpStatus = null;

@@ -8,7 +8,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-  // Ensure sellerId is explicitly mapped
   @Mapping(target = "sellerId", source = "sellerId")
   Product toProduct(ProductDto productDto);
 

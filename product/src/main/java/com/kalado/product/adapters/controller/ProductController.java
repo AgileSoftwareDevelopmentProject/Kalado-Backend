@@ -10,18 +10,43 @@ import com.kalado.product.application.service.ProductService;
 import com.kalado.product.domain.model.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
+import com.kalado.common.dto.ProductDto;
+import com.kalado.common.enums.ErrorCode;
+import com.kalado.common.exception.CustomException;
+import com.kalado.common.feign.product.ProductApi;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController implements ProductApi {
+  @Value("${app.upload.dir:uploads}")
+  private String uploadDir;
+
   private final ProductService productService;
   private final ProductMapper productMapper;
   private final ObjectMapper objectMapper;
@@ -35,18 +60,14 @@ public class ProductController implements ProductApi {
       log.debug("Received product JSON: {}", productJson);
       log.debug("Received images count: {}", images != null ? images.size() : 0);
 
-      // Parse the JSON string into a ProductDto
       ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
 
-      // Ensure we have a sellerId
       if (productDto.getSellerId() == null) {
         throw new CustomException(ErrorCode.BAD_REQUEST, "Seller ID is required");
       }
 
-      // Convert DTO to domain model
       Product product = productMapper.toProduct(productDto);
 
-      // The sellerId should now be properly set in the product
       Product createdProduct = productService.createProduct(product, images);
 
       return productMapper.toResponseDto(createdProduct);
@@ -58,24 +79,37 @@ public class ProductController implements ProductApi {
   }
 
   @Override
+  @GetMapping(value = "/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+  public Resource getImage(@PathVariable String filename) {
+    try {
+      Path filePath = Paths.get(uploadDir).resolve(filename).normalize();
+      Resource resource = new UrlResource(filePath.toUri());
+
+      if (resource.exists()) {
+        return resource;
+      } else {
+        throw new CustomException(ErrorCode.NOT_FOUND, "Image not found: " + filename);
+      }
+    } catch (MalformedURLException e) {
+      throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "Error retrieving image");
+    }
+  }
+
+  @Override
   @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ProductDto updateProduct(
           @PathVariable Long id,
           @RequestPart(value = "product", required = true) String productJson,
           @RequestPart(value = "images", required = false) List<MultipartFile> images) {
     try {
-      // Log the received data for debugging
       log.debug("Updating product {}. Received JSON: {}", id, productJson);
       log.debug("Received images count: {}", images != null ? images.size() : 0);
 
-      // Convert the JSON string to ProductDto
       ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
 
-      // Convert DTO to domain model and update the product
       Product product = productMapper.toProduct(productDto);
       Product updatedProduct = productService.updateProduct(id, product, images);
 
-      // Convert back to DTO and return
       return productMapper.toResponseDto(updatedProduct);
     } catch (Exception e) {
       log.error("Error updating product", e);

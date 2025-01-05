@@ -24,16 +24,13 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "app.upload")
 public class ProductConfiguration implements WebMvcConfigurer {
 
-    // Upload configuration properties
     private String dir = "uploads";
-    private long maxFileSize = 1024 * 1024; // 1MB
+    private long maxFileSize = 1024 * 1024;
     private int maxImages = 3;
 
-    // Kafka configuration property
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    // File upload configuration
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
@@ -46,7 +43,6 @@ public class ProductConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("file:" + uploadPath + "/");
     }
 
-    // Kafka configuration
     @Bean
     public ProducerFactory<String, ProductEvent> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -61,7 +57,6 @@ public class ProductConfiguration implements WebMvcConfigurer {
         return new KafkaTemplate<>(producerFactory());
     }
 
-    // Getters and setters for upload configuration
     public String getDir() {
         return dir;
     }

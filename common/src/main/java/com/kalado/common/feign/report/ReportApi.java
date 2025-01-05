@@ -25,7 +25,6 @@ public interface ReportApi {
             @PathVariable Long userId
     );
 
-    // Admin endpoints
     @GetMapping("/admin/all")
     List<ReportResponseDto> getAllReports(
             @RequestParam(required = false) String status,
@@ -49,7 +48,7 @@ public interface ReportApi {
 
     @GetMapping("/admin/statistics/export")
     byte[] exportStatistics(
-            @RequestParam String format,  // "PDF", "CSV", or "EXCEL"
+            @RequestParam String format,
             @RequestParam(required = false) LocalDateTime startDate,
             @RequestParam(required = false) LocalDateTime endDate,
             @RequestParam("userId") Long adminId

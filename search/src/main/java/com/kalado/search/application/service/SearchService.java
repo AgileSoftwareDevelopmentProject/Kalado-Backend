@@ -41,7 +41,6 @@ public class SearchService {
     ) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
-        // Keyword search
         if (keyword != null && !keyword.trim().isEmpty()) {
             boolQuery.must(QueryBuilders.multiMatchQuery(keyword)
                     .field("title", 2.0f)
@@ -53,14 +52,12 @@ public class SearchService {
                     .fuzziness("AUTO"));
         }
 
-        // Price range
         if (minPrice != null || maxPrice != null) {
             boolQuery.must(QueryBuilders.rangeQuery("price.amount")
                     .from(minPrice != null ? minPrice : 0)
                     .to(maxPrice));
         }
 
-        // Time filter
         if (timeFilter != null) {
             LocalDateTime fromDate = null;
             LocalDateTime now = LocalDateTime.now();
@@ -82,14 +79,12 @@ public class SearchService {
             }
         }
 
-        // Status filter - exclude deleted products
         boolQuery.mustNot(QueryBuilders.termQuery("status", "DELETED"));
 
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
                 .withQuery(boolQuery)
                 .withPageable(pageable);
 
-        // Sorting
         if (sortBy != null && sortOrder != null) {
             switch (sortBy) {
                 case "price" -> searchQueryBuilder.withSort(SortBuilders.fieldSort("price.amount").order(sortOrder));

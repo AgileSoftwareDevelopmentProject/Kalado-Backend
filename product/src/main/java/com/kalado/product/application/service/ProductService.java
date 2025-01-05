@@ -27,17 +27,16 @@ public class ProductService {
 
 
   private static final int MAX_IMAGES = 3;
-  private static final long MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
+  private static final long MAX_IMAGE_SIZE = 1024 * 1024;
 
   @Transactional
   public Product createProduct(Product product, List<MultipartFile> images) {
     validateProduct(product);
 
-    // Handle image uploads if present
     if (images != null && !images.isEmpty()) {
       try {
         List<String> imageUrls = imageService.storeImages(images);
-        product.setImageUrls(imageUrls);  // Set the image URLs in the product
+        product.setImageUrls(imageUrls);
         log.debug("Stored {} images for product. URLs: {}", images.size(), imageUrls);
       } catch (Exception e) {
         log.error("Failed to store images", e);
@@ -45,13 +44,11 @@ public class ProductService {
                 "Failed to store images: " + e.getMessage());
       }
     } else {
-      product.setImageUrls(new ArrayList<>());  // Initialize empty list if no images
+      product.setImageUrls(new ArrayList<>());
     }
 
-    // Set initial status
     product.setStatus(ProductStatus.ACTIVE);
 
-    // Save and return the product
     Product savedProduct = productRepository.save(product);
     log.debug("Created product with ID: {} and {} images",
             savedProduct.getId(),
@@ -69,7 +66,6 @@ public class ProductService {
     updateProductFields(existingProduct, updatedProduct);
     Product savedProduct = productRepository.save(existingProduct);
 
-    // Publish update event
     eventPublisher.publishProductUpdated(savedProduct);
 
     return savedProduct;
@@ -83,7 +79,6 @@ public class ProductService {
     product.setStatus(ProductStatus.DELETED);
     Product deletedProduct = productRepository.save(product);
 
-    // Publish deletion event
     eventPublisher.publishProductDeleted(deletedProduct);
   }
 
@@ -103,7 +98,7 @@ public class ProductService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Product not found"));
   }
 
-  @Transactional(readOnly = true) // Add for read operations
+  @Transactional(readOnly = true)
   public List<Product> getProductsBySeller(Long sellerId) {
     return productRepository.findBySellerId(sellerId);
   }

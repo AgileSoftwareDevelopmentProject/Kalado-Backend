@@ -16,16 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 @Service
 @Slf4j
 public class ImageService {
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;
 
-    @Value("${app.base-url:http://localhost:8082}")
-    private String baseUrl;
+    @Value("${app.gateway-url:http://localhost:8083}")
+    private String gatewayUrl;
 
-    private static final long MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
+    private static final long MAX_IMAGE_SIZE = 1024 * 1024;
     private static final int MAX_IMAGES = 3;
 
     public List<String> storeImages(List<MultipartFile> images) {
@@ -35,23 +36,18 @@ public class ImageService {
         Path uploadPath = Paths.get(uploadDir);
 
         try {
-            // Create uploads directory if it doesn't exist
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
-                log.debug("Created upload directory: {}", uploadPath);
             }
 
-            // Process each image
             for (MultipartFile image : images) {
                 String filename = generateUniqueFilename(image);
                 Path targetLocation = uploadPath.resolve(filename);
-
-                // Store the file
                 Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-                // Add the URL to our list
-                imageUrls.add(filename);
-                log.debug("Stored image: {} -> {}", image.getOriginalFilename(), filename);
+                String imageUrl = gatewayUrl + "/v1/images/" + filename;
+                imageUrls.add(imageUrl);
+                log.debug("Stored image: {} -> {}", image.getOriginalFilename(), imageUrl);
             }
 
             return imageUrls;
@@ -60,6 +56,7 @@ public class ImageService {
             throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "Failed to store images");
         }
     }
+
 
     private void validateImages(List<MultipartFile> images) {
         if (images.size() > MAX_IMAGES) {

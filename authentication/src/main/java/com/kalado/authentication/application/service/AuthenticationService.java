@@ -160,7 +160,6 @@ public class AuthenticationService {
                     .role(request.getRole())
                     .build());
 
-    // Create initial user profile
     UserDto userDto = UserDto.builder()
             .id(authenticationInfo.getUserId())
             .username(request.getEmail())
@@ -169,7 +168,6 @@ public class AuthenticationService {
             .phoneNumber(request.getPhoneNumber())
             .build();
 
-    // Create user profile based on role
     switch (request.getRole()) {
       case ADMIN -> userApi.createAdmin(AdminDto.builder()
               .id(authenticationInfo.getUserId())
@@ -179,7 +177,6 @@ public class AuthenticationService {
               .build());
       case USER -> userApi.createUser(userDto);
     }
-    // Send verification email
     verificationService.createVerificationToken(authenticationInfo);
 
     return authenticationInfo;

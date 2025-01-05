@@ -26,7 +26,6 @@ public class VerificationService {
     }
 
     public void createVerificationToken(AuthenticationInfo user) {
-        // Delete any existing tokens for this user
         tokenRepository.findByUser_UserId(user.getUserId())
                 .ifPresent(tokenRepository::delete);
 

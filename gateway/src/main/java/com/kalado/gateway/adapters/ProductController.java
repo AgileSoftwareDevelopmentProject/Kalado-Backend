@@ -21,24 +21,21 @@ import java.util.List;
 @Slf4j
 public class ProductController {
   private final ProductApi productApi;
-  private final ObjectMapper objectMapper;  // Will be used to convert between JSON and objects
+  private final ObjectMapper objectMapper;
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Authentication(userId = "#userId")
   public ProductDto createProduct(
           Long userId,
-          @RequestParam("product") String productJson,  // Changed from ProductDto to String
+          @RequestParam("product") String productJson,
           @RequestParam(value = "images", required = false) List<MultipartFile> images) {
     try {
-      // Deserialize the JSON string to a ProductDto
       ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
       productDto.setSellerId(userId);
 
-      // Log the request for debugging
       log.debug("Creating product with data: {} and {} images", productDto,
               images != null ? images.size() : 0);
 
-      // Forward to the product service
       return productApi.createProduct(productJson, images);
     } catch (Exception e) {
       log.error("Error creating product: {}", e.getMessage());
@@ -51,18 +48,15 @@ public class ProductController {
   public ProductDto updateProduct(
           Long userId,
           @PathVariable Long id,
-          @RequestParam("product") String productJson,  // Changed from ProductDto to String
+          @RequestParam("product") String productJson,
           @RequestParam(value = "images", required = false) List<MultipartFile> images) {
     try {
-      // Deserialize the JSON string to a ProductDto
       ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
       productDto.setSellerId(userId);
 
-      // Log the request for debugging
       log.debug("Updating product {} with data: {} and {} images", id, productDto,
               images != null ? images.size() : 0);
 
-      // Forward to the product service
       return productApi.updateProduct(id, productJson, images);
     } catch (Exception e) {
       log.error("Error updating product: {}", e.getMessage());
