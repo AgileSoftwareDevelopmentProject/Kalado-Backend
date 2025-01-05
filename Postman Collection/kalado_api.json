@@ -2434,6 +2434,110 @@
 			]
 		},
 		{
+			"name": "update product with image",
+			"id": "e422e687-f364-4616-86c3-01078fe1ce5f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM2MDk1ODI5LCJleHAiOjE3MzYxODIyMjksImp0aSI6IjBiZjEyMDFlLTk0YmItNDljOC05MDk3LWI2MjZmZTQ1ZTI4MCJ9.akSw4-glCX1rI1u6sH9QGwS2Cb5b8F_pLIeucPWXu_c"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "product",
+							"value": "{\n    \"title\":\"Test Product\",\n    \"description\":\"Detailed product description\",\n    \"price\":{\n        \"amount\":100000,\n        \"unit\":\"TOMAN\"\n    },\n    \"category\":\"Electronics\",\n    \"productionYear\":2023,\n    \"brand\":\"Test Brand\",\n    \"sellerId\":7\n}"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "postman-cloud:///1efcac45-2c02-46a0-8e14-4a029395f010"
+						}
+					]
+				},
+				"url": "http://localhost:8083/v1/product",
+				"description": "Generated from cURL: curl --location 'http://localhost:8083/v1/product' \\\n--header 'Authorization: Bearer your-token' \\\n--form 'product=\"{\n    \\\"title\\\":\\\"Test Product\\\",\n    \\\"description\\\":\\\"Detailed product description\\\",\n    \\\"price\\\":{\n        \\\"amount\\\":100000,\n        \\\"unit\\\":\\\"TOMAN\\\"\n    },\n    \\\"category\\\":\\\"Electronics\\\",\n    \\\"productionYear\\\":2023,\n    \\\"brand\\\":\\\"Test Brand\\\",\n    \\\"sellerId\\\":7\n}\"' \\\n--form 'images=@\"/path/to/image.jpg\"'"
+			},
+			"response": [
+				{
+					"id": "2d273f13-ac01-44c6-ba5e-c3eb60893ed1",
+					"name": "http://localhost:8083/v1/product",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM2MDU1OTk5LCJleHAiOjE3MzYxNDIzOTksImp0aSI6ImU0NjRhNWYzLTEwYTgtNDEzNy1iZjUxLTY0MDk4NmE3YThiMSJ9.4vVba8j4Eln4Cpzy3w1uS1Z6lgHRD4fBSNykwM0Jyug"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"type": "text",
+									"key": "product",
+									"value": "{\n    \"title\":\"Test Product\",\n    \"description\":\"Detailed product description\",\n    \"price\":{\n        \"amount\":100000,\n        \"unit\":\"TOMAN\"\n    },\n    \"category\":\"Electronics\",\n    \"productionYear\":2023,\n    \"brand\":\"Test Brand\",\n    \"sellerId\":7\n}"
+								},
+								{
+									"type": "file",
+									"key": "images",
+									"src": "postman-cloud:///1efcac45-2c02-46a0-8e14-4a029395f010"
+								}
+							]
+						},
+						"url": "http://localhost:8083/v1/product"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 05 Jan 2025 05:46:50 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=120"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 9,\n    \"title\": \"Test Product\",\n    \"description\": \"Detailed product description\",\n    \"price\": {\n        \"amount\": 100000,\n        \"unit\": \"TOMAN\"\n    },\n    \"imageUrls\": [\n        \"http://localhost:8083/v1/images/e55c5a0d-0fde-4bb4-8c2e-600a36622137.jpg\"\n    ],\n    \"category\": \"Electronics\",\n    \"productionYear\": 2023,\n    \"brand\": \"Test Brand\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": \"2025-01-05T05:46:50.308+00:00\",\n    \"sellerId\": 7\n}"
+				}
+			]
+		},
+		{
 			"name": "get product by image",
 			"id": "eee73af9-54e4-4fa3-9b67-6226a2a42a3b",
 			"protocolProfileBehavior": {
