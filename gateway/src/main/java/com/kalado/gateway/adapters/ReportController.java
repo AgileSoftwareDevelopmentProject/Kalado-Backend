@@ -18,7 +18,6 @@ import java.util.List;
 public class ReportController {
     private final ReportApi reportApi;
 
-    // User endpoints
     @PostMapping
     @Authentication(userId = "#userId")
     public ReportResponseDto createReport(
@@ -33,7 +32,6 @@ public class ReportController {
         return reportApi.getUserReports(userId);
     }
 
-    // Admin endpoints
     @GetMapping("/admin/all")
     @Authentication(userId = "#userId")
     public List<ReportResponseDto> getAllReports(

@@ -14,9 +14,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByPhoneNumber(String phoneNumber);
 
-  @Query("UPDATE User SET firstName =:firstName, lastName =:lastName, " +
-          "address =:address, phoneNumber =:phoneNumber, isBlocked =:isBlocked " +
-          "WHERE id =:id")
+  @Query("UPDATE User u SET u.firstName = :firstName, u.lastName = :lastName, " +
+          "u.address = :address, u.phoneNumber = :phoneNumber, u.isBlocked = :isBlocked " +
+          "WHERE u.id = :id")
   @Modifying
   @Transactional
   void modify(
@@ -24,6 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
           @Param("lastName") String lastName,
           @Param("address") String address,
           @Param("phoneNumber") String phoneNumber,
-          @Param("id") long id,
+          @Param("id") Long id,
           @Param("isBlocked") boolean isBlocked);
 }

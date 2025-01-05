@@ -41,7 +41,6 @@ public class SearchConfiguration extends AbstractElasticsearchConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaBootstrapServers;
 
-    // Elasticsearch Configuration
     @Override
     @Bean
     public RestHighLevelClient elasticsearchClient() {
@@ -53,7 +52,6 @@ public class SearchConfiguration extends AbstractElasticsearchConfiguration {
         return RestClients.create(clientConfiguration).rest();
     }
 
-    // Kafka Consumer Configuration
     @Bean
     public ConsumerFactory<String, ProductEvent> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
@@ -61,11 +59,9 @@ public class SearchConfiguration extends AbstractElasticsearchConfiguration {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "search-service");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-        // Configure key deserializer with error handling
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         props.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
 
-        // Configure value deserializer with error handling
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
         props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, ProductEvent.class.getName());
@@ -80,7 +76,7 @@ public class SearchConfiguration extends AbstractElasticsearchConfiguration {
                 (record, exception) -> {
                     log.error("Error in Kafka consumer: {}", exception.getMessage());
                 },
-                new FixedBackOff(1000L, 3) // Retry 3 times with 1s interval
+                new FixedBackOff(1000L, 3)
         );
     }
 

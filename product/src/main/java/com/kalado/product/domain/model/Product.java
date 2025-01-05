@@ -31,11 +31,11 @@ public class Product {
   @Embedded
   private Price price;
 
-//  @ElementCollection(fetch = FetchType.EAGER)
-//  @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
-//  @Column(name = "image_url")
-//  @Builder.Default
-//  private List<String> imageUrls = new ArrayList<>();
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+  @Column(name = "image_url")
+  @Builder.Default
+  private List<String> imageUrls = new ArrayList<>();
 
   @Column(nullable = false)
   private String category;

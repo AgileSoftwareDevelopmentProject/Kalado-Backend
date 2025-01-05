@@ -2,64 +2,79 @@ package com.kalado.gateway.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.codec.ErrorDecoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import com.kalado.gateway.exception.ExceptionHandlerAdvice;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-  @Override
-  public void addCorsMappings(CorsRegistry registry) {
-    registry
-        // .addMapping("/**")
+    @Value("${spring.servlet.multipart.max-file-size:1MB}")
+    private String maxFileSize;
 
-        // // .allowedOrigins("*")
-        // .allowedOrigins("http://localhost:8080", "http://kaladoshop.com")
+    @Value("${spring.servlet.multipart.max-request-size:10MB}")
+    private String maxRequestSize;
 
+    @Value("${app.upload.dir:uploads}")
+    private String uploadDir;
 
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .findAndRegisterModules(); // This helps with date/time handling
+    }
 
-        // .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+    @Bean
+    public ErrorDecoder errorDecoder(ObjectMapper objectMapper) {
+        return new FeignClientErrorDecoder(objectMapper);
+    }
 
-        // .allowedHeaders("*")
+    @Bean
+    public ExceptionHandlerAdvice exceptionHandlerAdvice(ObjectMapper objectMapper) {
+        return new ExceptionHandlerAdvice(objectMapper);
+    }
 
-        // .allowCredentials(true)
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080", "http://kaladoshop.com/")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .exposedHeaders("Content-Disposition")
+                .maxAge(3600);
+    }
 
-        // .maxAge(3600);
-      .addMapping("/**")
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
 
-      .allowedOrigins(
-          "http://localhost:8080",  
-          "http://kaladoshop.com/"
-      )
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:" + uploadPath.toString() + "/")
+                .setCachePeriod(3600);
+    }
 
-      .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
 
-      .allowedHeaders("*")
-
-      .maxAge(3600);
-  }
-
-//  @Override
-//  public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-//    configurer.favorParameter(true)
-//            .parameterName("mediaType")
-//            .defaultContentType(MediaType.APPLICATION_JSON)
-//            .mediaType("json", MediaType.APPLICATION_JSON)
-//            .mediaType("multipart", MediaType.MULTIPART_FORM_DATA);
-//  }
-//
-
-  @Bean
-  public ObjectMapper objectMapper() {
-    return new ObjectMapper();
-  }
-
-  @Bean
-  public ErrorDecoder errorDecoder(ObjectMapper objectMapper) {
-    return new FeignClientErrorDecoder(objectMapper);
-  }
+    private long parseSize(String size) {
+        size = size.toUpperCase();
+        if (size.endsWith("KB")) {
+            return Long.parseLong(size.replace("KB", "").trim()) * 1024;
+        }
+        if (size.endsWith("MB")) {
+            return Long.parseLong(size.replace("MB", "").trim()) * 1024 * 1024;
+        }
+        return Long.parseLong(size);
+    }
 }

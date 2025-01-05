@@ -18,7 +18,7 @@ public class ProductDto {
     private String title;
     private String description;
     private Price price;
-//    private List<String> imageUrls;
+    private List<String> imageUrls;
     private String category;
     private Integer productionYear;
     private String brand;
@@ -26,4 +26,3 @@ public class ProductDto {
     private Timestamp createdAt;
     private Long sellerId;
 }
-

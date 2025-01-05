@@ -1,4 +1,3 @@
-// InitialDataIndexer.java
 package com.kalado.search.infrastructure.indexing;
 
 import com.kalado.common.dto.ProductDto;

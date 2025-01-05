@@ -1,5 +1,6 @@
 package com.kalado.gateway.adapters;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kalado.common.dto.ProductDto;
 import com.kalado.common.dto.ProductStatusUpdateDto;
 import com.kalado.common.enums.ErrorCode;
@@ -7,35 +8,60 @@ import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.product.ProductApi;
 import com.kalado.gateway.annotation.Authentication;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/product")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
   private final ProductApi productApi;
+  private final ObjectMapper objectMapper;
 
-  @PostMapping()
+  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Authentication(userId = "#userId")
   public ProductDto createProduct(
           Long userId,
-          @RequestBody ProductDto productDto) {
-    productDto.setSellerId(userId);
-    return productApi.createProduct(productDto);
+          @RequestParam("product") String productJson,
+          @RequestParam(value = "images", required = false) List<MultipartFile> images) {
+    try {
+      ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
+      productDto.setSellerId(userId);
+
+      log.debug("Creating product with data: {} and {} images", productDto,
+              images != null ? images.size() : 0);
+
+      return productApi.createProduct(productJson, images);
+    } catch (Exception e) {
+      log.error("Error creating product: {}", e.getMessage());
+      throw new CustomException(ErrorCode.BAD_REQUEST, "Error processing request: " + e.getMessage());
+    }
   }
 
-  @PutMapping("/{id}")
+  @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Authentication(userId = "#userId")
   public ProductDto updateProduct(
-      Long userId,
-      @PathVariable Long id,
-      @RequestBody ProductDto productDto) {
-    productDto.setSellerId(userId);
-    return productApi.updateProduct(id, productDto);
+          Long userId,
+          @PathVariable Long id,
+          @RequestParam("product") String productJson,
+          @RequestParam(value = "images", required = false) List<MultipartFile> images) {
+    try {
+      ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
+      productDto.setSellerId(userId);
+
+      log.debug("Updating product {} with data: {} and {} images", id, productDto,
+              images != null ? images.size() : 0);
+
+      return productApi.updateProduct(id, productJson, images);
+    } catch (Exception e) {
+      log.error("Error updating product: {}", e.getMessage());
+      throw new CustomException(ErrorCode.BAD_REQUEST, "Error processing request: " + e.getMessage());
+    }
   }
 
   @PutMapping("/delete/{id}")
@@ -47,13 +73,13 @@ public class ProductController {
   @PutMapping(value = "/status/{id}")
   @Authentication(userId = "#userId")
   public ProductDto updateProductStatus(
-      Long userId, @PathVariable Long id, @RequestBody ProductStatusUpdateDto statusUpdate) {
+          Long userId,
+          @PathVariable Long id,
+          @RequestBody ProductStatusUpdateDto statusUpdate) {
     if (statusUpdate == null || statusUpdate.getStatus() == null) {
       throw new CustomException(ErrorCode.BAD_REQUEST, "Status cannot be null");
     }
-
-    ProductDto updatedProduct = productApi.updateProductStatus(id, userId, statusUpdate);
-    return updatedProduct;
+    return productApi.updateProductStatus(id, userId, statusUpdate);
   }
 
   @GetMapping("/seller")

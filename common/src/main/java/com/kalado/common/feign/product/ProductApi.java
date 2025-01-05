@@ -9,19 +9,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import org.springframework.core.io.Resource;
+
+
 @FeignClient(name = "product-service", path = "/products")
 public interface ProductApi {
 
-    @PostMapping()
+    @GetMapping(value = "/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    Resource getImage(@PathVariable String filename);
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ProductDto createProduct(
-            @RequestBody ProductDto productDto
+            @RequestPart(value = "product") String productJson,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
     );
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ProductDto updateProduct(
             @PathVariable Long id,
-            @RequestBody ProductDto productDto
+            @RequestPart(value = "product") String productJson,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
     );
+
 
     @PutMapping("/delete/{id}")
     void deleteProduct(

@@ -3,12 +3,11 @@ package com.kalado.search.domain.model;
 import com.kalado.common.Price;
 import com.kalado.common.enums.ProductStatus;
 import lombok.*;
-import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Document(indexName = "products")
 @Setting(settingPath = "/elasticsearch/settings.json")
@@ -40,6 +39,9 @@ public class ProductDocument {
 
     @Field(type = FieldType.Object)
     private Price price;
+
+    @Field(type = FieldType.Keyword)
+    private List<String> imageUrls;
 
     @Field(type = FieldType.Keyword)
     private String category;

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,20 +27,37 @@ public class ProductService {
 
 
   private static final int MAX_IMAGES = 3;
-  private static final long MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
+  private static final long MAX_IMAGE_SIZE = 1024 * 1024;
 
+  @Transactional
   public Product createProduct(Product product, List<MultipartFile> images) {
     validateProduct(product);
-    validateImages(images);
+
+    if (images != null && !images.isEmpty()) {
+      try {
+        List<String> imageUrls = imageService.storeImages(images);
+        product.setImageUrls(imageUrls);
+        log.debug("Stored {} images for product. URLs: {}", images.size(), imageUrls);
+      } catch (Exception e) {
+        log.error("Failed to store images", e);
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR,
+                "Failed to store images: " + e.getMessage());
+      }
+    } else {
+      product.setImageUrls(new ArrayList<>());
+    }
 
     product.setStatus(ProductStatus.ACTIVE);
-    Product savedProduct = productRepository.save(product);
 
-    // Publish creation event
+    Product savedProduct = productRepository.save(product);
     eventPublisher.publishProductCreated(savedProduct);
+    log.debug("Created product with ID: {} and {} images",
+            savedProduct.getId(),
+            savedProduct.getImageUrls().size());
 
     return savedProduct;
   }
+
 
   @Transactional
   public Product updateProduct(Long id, Product updatedProduct, List<MultipartFile> newImages) {
@@ -49,7 +67,6 @@ public class ProductService {
     updateProductFields(existingProduct, updatedProduct);
     Product savedProduct = productRepository.save(existingProduct);
 
-    // Publish update event
     eventPublisher.publishProductUpdated(savedProduct);
 
     return savedProduct;
@@ -63,7 +80,6 @@ public class ProductService {
     product.setStatus(ProductStatus.DELETED);
     Product deletedProduct = productRepository.save(product);
 
-    // Publish deletion event
     eventPublisher.publishProductDeleted(deletedProduct);
   }
 
@@ -83,7 +99,7 @@ public class ProductService {
         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Product not found"));
   }
 
-  @Transactional(readOnly = true) // Add for read operations
+  @Transactional(readOnly = true)
   public List<Product> getProductsBySeller(Long sellerId) {
     return productRepository.findBySellerId(sellerId);
   }
