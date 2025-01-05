@@ -2330,7 +2330,7 @@
 			]
 		},
 		{
-			"name": "http://localhost:8083/v1/product",
+			"name": "create product with image",
 			"id": "74ea206f-c7b7-4744-86c1-e3ab552d8c1a",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -2340,7 +2340,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer your-token"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM2MDU1OTk5LCJleHAiOjE3MzYxNDIzOTksImp0aSI6ImU0NjRhNWYzLTEwYTgtNDEzNy1iZjUxLTY0MDk4NmE3YThiMSJ9.4vVba8j4Eln4Cpzy3w1uS1Z6lgHRD4fBSNykwM0Jyug"
 					}
 				],
 				"body": {
@@ -2354,7 +2354,7 @@
 						{
 							"type": "file",
 							"key": "images",
-							"src": "/path/to/image.jpg"
+							"src": "postman-cloud:///1efcac45-2c02-46a0-8e14-4a029395f010"
 						}
 					]
 				},
