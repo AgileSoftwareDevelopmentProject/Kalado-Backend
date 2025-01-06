@@ -925,7 +925,7 @@
 			]
 		},
 		{
-			"name": "http://localhost:8083/v1/reports",
+			"name": "Create report with image",
 			"id": "0821f639-3f93-461d-9dda-0a7069dec293",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -935,7 +935,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM2MTUyNzMxLCJleHAiOjE3MzYyMzkxMzEsImp0aSI6IjUxMTFkNWVmLWI5ZDgtNGZmYi1iYzcxLWRkZWJlY2ZkZTczMSJ9.om8AIDr3i-oMC5qdGcIwhhxfzzdl5JiRQApd8lxUFEs"
 					}
 				],
 				"body": {
@@ -944,24 +944,89 @@
 						{
 							"type": "text",
 							"key": "report",
-							"value": "{\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }"
+							"value": "{\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\n    \"description\": \"This listing contains inappropriate content\",\n    \"reportedContentId\": 1\n  }"
 						},
 						{
 							"type": "file",
 							"key": "evidence",
-							"src": "/path/to/your/evidence1.jpg"
-						},
-						{
-							"type": "file",
-							"key": "evidence",
-							"src": "/path/to/your/evidence2.pdf"
+							"src": "postman-cloud:///1efcac45-2c02-46a0-8e14-4a029395f010"
 						}
 					]
 				},
 				"url": "http://localhost:8083/v1/reports",
 				"description": "Generated from cURL: curl -X POST 'http://localhost:8083/v1/reports' \\\r\n  -H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n  -F 'report={\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }' \\\r\n  -F 'evidence=@/path/to/your/evidence1.jpg' \\\r\n  -F 'evidence=@/path/to/your/evidence2.pdf'"
 			},
-			"response": []
+			"response": [
+				{
+					"id": "31477372-ca6f-4135-8d2f-8ee9a4f58418",
+					"name": "http://localhost:8083/v1/reports",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM2MTUyNzMxLCJleHAiOjE3MzYyMzkxMzEsImp0aSI6IjUxMTFkNWVmLWI5ZDgtNGZmYi1iYzcxLWRkZWJlY2ZkZTczMSJ9.om8AIDr3i-oMC5qdGcIwhhxfzzdl5JiRQApd8lxUFEs"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"type": "text",
+									"key": "report",
+									"value": "{\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\n    \"description\": \"This listing contains inappropriate content\",\n    \"reportedContentId\": 1\n  }"
+								},
+								{
+									"type": "file",
+									"key": "evidence",
+									"src": "postman-cloud:///1efcac45-2c02-46a0-8e14-4a029395f010"
+								}
+							]
+						},
+						"url": "http://localhost:8083/v1/reports"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2025 08:39:09 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=120"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": 1,\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\n    \"description\": \"This listing contains inappropriate content\",\n    \"reporterId\": 2,\n    \"reportedContentId\": 1,\n    \"evidenceFiles\": [\n        \"http://localhost:8083/v1/evidence/3f78fb07-b538-4bdc-87a4-16e99fb65c02.jpg\"\n    ],\n    \"createdAt\": [\n        2025,\n        1,\n        6,\n        12,\n        9,\n        7,\n        267845200\n    ],\n    \"status\": \"SUBMITTED\",\n    \"adminNotes\": null,\n    \"lastUpdatedAt\": [\n        2025,\n        1,\n        6,\n        12,\n        9,\n        7,\n        233336400\n    ],\n    \"adminId\": null,\n    \"userBlocked\": false\n}"
+				}
+			]
 		},
 		{
 			"name": "Get my reportings",
