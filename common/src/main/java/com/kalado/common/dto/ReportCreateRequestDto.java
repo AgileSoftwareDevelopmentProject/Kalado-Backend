@@ -1,6 +1,8 @@
 package com.kalado.common.dto;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,6 +13,6 @@ import java.util.List;
 public class ReportCreateRequestDto {
   private String violationType;
   private String description;
-  private Long reportedUserId;
   private Long reportedContentId;
+  private List<MultipartFile> evidenceFiles;
 }

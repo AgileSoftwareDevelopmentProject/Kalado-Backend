@@ -5,7 +5,9 @@ import com.kalado.common.dto.ReportResponseDto;
 import com.kalado.common.dto.ReportStatusUpdateDto;
 import com.kalado.common.dto.ReportStatisticsDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,11 +16,14 @@ import java.util.List;
 
 @FeignClient(name = "reporting-service", path = "/reports")
 public interface ReportApi {
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ReportResponseDto createReport(
-            @RequestBody ReportCreateRequestDto request,
-            @RequestParam("userId") Long reporterId
-    );
+            @RequestPart("report") String reportJson,
+            @RequestPart(value = "evidence", required = false) List<MultipartFile> evidenceFiles,
+            @RequestParam("userId") Long reporterId);
+
+    @GetMapping(value = "/evidence/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    Resource getEvidence(@PathVariable String filename);
 
     @GetMapping("/user/{userId}")
     List<ReportResponseDto> getUserReports(

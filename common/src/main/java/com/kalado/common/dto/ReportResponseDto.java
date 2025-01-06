@@ -18,8 +18,8 @@ public class ReportResponseDto {
   private String violationType;
   private String description;
   private Long reporterId;
-  private Long reportedUserId;
   private Long reportedContentId;
+  private List<String> evidenceFiles;
   private LocalDateTime createdAt;
   private ReportStatus status;
   private String adminNotes;

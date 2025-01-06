@@ -4,6 +4,7 @@ import com.kalado.common.dto.*;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.ReportStatus;
 import com.kalado.common.exception.CustomException;
+import com.kalado.common.feign.product.ProductApi;
 import com.kalado.common.feign.user.UserApi;
 import com.kalado.reporting.domain.model.Report;
 import com.kalado.reporting.domain.model.ReportMapper;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,28 +28,39 @@ import java.util.stream.Collectors;
 public class ReportService {
   private final ReportRepository reportRepository;
   private final UserApi userApi;
+  private final EvidenceService evidenceService;
+  private final EmailService emailService;
   private final ReportMapper reportMapper;
+  private final ProductApi productApi;
 
   @Transactional
   public ReportResponseDto createReport(ReportCreateRequestDto request, Long reporterId) {
     validateRequest(request);
     validateUser(reporterId);
-    validateUser(request.getReportedUserId());
 
-    Report report =
-        Report.builder()
-            .violationType(request.getViolationType())
-            .description(request.getDescription())
-            .reporterId(reporterId)
-            .reportedUserId(request.getReportedUserId())
-            .reportedContentId(request.getReportedContentId())
-            .status(ReportStatus.SUBMITTED)
-            .createdAt(LocalDateTime.now())
-            .lastUpdatedAt(LocalDateTime.now())
-            .build();
+    ProductDto product = productApi.getProduct(request.getReportedContentId());
+    if (product == null) {
+      throw new CustomException(ErrorCode.NOT_FOUND, "Product not found");
+    }
+    Long reportedUserId = product.getSellerId();
+    validateUser(reportedUserId);
+
+    if (reporterId.equals(reportedUserId)) {
+      throw new CustomException(ErrorCode.BAD_REQUEST, "Cannot report your own product");
+    }
+
+    Report report = reportMapper.toReport(request, reporterId);
+    report.setReportedUserId(reportedUserId);
+
+    if (request.getEvidenceFiles() != null && !request.getEvidenceFiles().isEmpty()) {
+      List<String> evidenceUrls = evidenceService.storeEvidence(request.getEvidenceFiles());
+      report.setEvidenceFiles(evidenceUrls);
+    }
 
     Report savedReport = reportRepository.save(report);
-    log.info("Created report with ID: {} by user: {}", savedReport.getId(), reporterId);
+    emailService.sendReportConfirmation(reporterId);
+
+    log.info("Created report ID: {} for product ID: {}", savedReport.getId(), request.getReportedContentId());
 
     return reportMapper.toReportResponse(savedReport);
   }
@@ -55,7 +68,6 @@ public class ReportService {
   @Transactional
   public ReportResponseDto updateReportStatus(
       Long reportId, ReportStatusUpdateDto request, Long adminId) {
-    validateUser(adminId);
     Report report = getReportById(reportId);
 
     report.setStatus(request.getStatus());
@@ -105,8 +117,8 @@ public class ReportService {
     if (request.getDescription() == null || request.getDescription().trim().isEmpty()) {
       throw new CustomException(ErrorCode.BAD_REQUEST, "Description is required");
     }
-    if (request.getReportedUserId() == null) {
-      throw new CustomException(ErrorCode.BAD_REQUEST, "Reported user ID is required");
+    if (request.getReportedContentId() == null) {
+      throw new CustomException(ErrorCode.BAD_REQUEST, "Product ID is required");
     }
   }
 
