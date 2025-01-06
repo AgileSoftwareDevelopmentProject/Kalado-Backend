@@ -2370,6 +2370,45 @@
 					"body": "true"
 				}
 			]
+		},
+		{
+			"name": "http://localhost:8083/v1/reports",
+			"id": "0821f639-3f93-461d-9dda-0a7069dec293",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_AUTH_TOKEN"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "report",
+							"value": "{\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }"
+						},
+						{
+							"type": "file",
+							"key": "evidence",
+							"src": "/path/to/your/evidence1.jpg"
+						},
+						{
+							"type": "file",
+							"key": "evidence",
+							"src": "/path/to/your/evidence2.pdf"
+						}
+					]
+				},
+				"url": "http://localhost:8083/v1/reports",
+				"description": "Generated from cURL: curl -X POST 'http://localhost:8083/v1/reports' \\\r\n  -H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n  -F 'report={\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }' \\\r\n  -F 'evidence=@/path/to/your/evidence1.jpg' \\\r\n  -F 'evidence=@/path/to/your/evidence2.pdf'"
+			},
+			"response": []
 		}
 	]
 }
