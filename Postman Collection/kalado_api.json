@@ -935,7 +935,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM2MTU0Nzk3LCJleHAiOjE3MzYyNDExOTcsImp0aSI6ImQ4ZDkyMmVjLWQyYjYtNGUyYy1iODI0LTQ2NzY0Yjc3NGQ1MSJ9.BpAKeo4hRDNrg0fue9J9QAPWCor55xbahxVfdoE-GfM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM2MTU1MzUxLCJleHAiOjE3MzYyNDE3NTEsImp0aSI6IjI2NjI0YTVjLTIyNjYtNDE5ZS04NTI3LTk2ZjcyNmRlYTU2OCJ9.m560JePpTpi4-AUYrd5hJTyQUZp028Na54yvfXYK01w"
 					}
 				],
 				"body": {
@@ -1039,10 +1039,10 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1NDg3ODcxLCJleHAiOjE3MzU1NzQyNzEsImp0aSI6ImU1OTVkNjZlLTY1ODMtNDgyYS1hZTdlLThkNDNhMWQzNDU5NyJ9.Dmy9GTYMtyI9BKe2pzP09MywbNCpI_8YTsbRGlfOaZ4"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM2MTUyNzMxLCJleHAiOjE3MzYyMzkxMzEsImp0aSI6IjUxMTFkNWVmLWI5ZDgtNGZmYi1iYzcxLWRkZWJlY2ZkZTczMSJ9.om8AIDr3i-oMC5qdGcIwhhxfzzdl5JiRQApd8lxUFEs"
 					}
 				],
-				"url": "http://localhost:18083/v1/reports/my-reports",
+				"url": "http://localhost:8083/v1/reports/my-reports",
 				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/my-reports \\\r\n  -H \"Authorization: YOUR_TOKEN\""
 			},
 			"response": [
@@ -1113,14 +1113,14 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM2MTUyODcwLCJleHAiOjE3MzYyMzkyNzAsImp0aSI6IjM0MDdkZjkyLTZlNjMtNDU1YS1hMWQyLWRlMjkwNjgwZmI1YiJ9.YMeX6xje04CWlSRAwEtj_LmWR8y-8LHnxoOicZDrJ-E"
 					},
 					{
 						"key": "Content-Type",
 						"value": "application/json"
 					}
 				],
-				"url": "http://localhost:18083/v1/reports/admin/all",
+				"url": "http://localhost:8083/v1/reports/admin/all",
 				"description": "Generated from cURL: curl -X GET http://localhost:8083/v1/reports/admin/all \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json'"
 			},
 			"response": [
@@ -1195,7 +1195,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM2MTUyODcwLCJleHAiOjE3MzYyMzkyNzAsImp0aSI6IjM0MDdkZjkyLTZlNjMtNDU1YS1hMWQyLWRlMjkwNjgwZmI1YiJ9.YMeX6xje04CWlSRAwEtj_LmWR8y-8LHnxoOicZDrJ-E"
 					},
 					{
 						"key": "Content-Type",
@@ -1211,7 +1211,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:18083/v1/reports/admin/status/1",
+				"url": "http://localhost:8083/v1/reports/admin/status/1",
 				"description": "Generated from cURL: curl -X PATCH http://localhost:8083/v1/reports/admin/789/status \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockUser\": false,\r\n    \"blockReason\": null\r\n  }'"
 			},
 			"response": [
@@ -1295,7 +1295,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM2MTUyODcwLCJleHAiOjE3MzYyMzkyNzAsImp0aSI6IjM0MDdkZjkyLTZlNjMtNDU1YS1hMWQyLWRlMjkwNjgwZmI1YiJ9.YMeX6xje04CWlSRAwEtj_LmWR8y-8LHnxoOicZDrJ-E"
 					},
 					{
 						"key": "Content-Type",
@@ -1303,12 +1303,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:18083/v1/reports/admin/statistics?startDate=2024-01-01T00:00:00&endDate=2024-12-31T23:59:59",
+					"raw": "http://localhost:8083/v1/reports/admin/statistics?startDate=2024-01-01T00:00:00&endDate=2025-12-31T23:59:59",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "18083",
+					"port": "8083",
 					"path": [
 						"v1",
 						"reports",
@@ -1322,7 +1322,7 @@
 						},
 						{
 							"key": "endDate",
-							"value": "2024-12-31T23:59:59"
+							"value": "2025-12-31T23:59:59"
 						}
 					]
 				},
