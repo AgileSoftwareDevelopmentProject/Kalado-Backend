@@ -25,4 +25,5 @@ public class ProductDto {
     private ProductStatus status;
     private Timestamp createdAt;
     private Long sellerId;
+    private String sellerPhoneNumber;
 }

@@ -6,6 +6,7 @@ import com.kalado.common.dto.ProductStatusUpdateDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.product.ProductApi;
+import com.kalado.common.feign.user.UserApi;
 import com.kalado.product.application.service.ProductService;
 import com.kalado.product.domain.model.Product;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,8 @@ public class ProductController implements ProductApi {
   private final ProductService productService;
   private final ProductMapper productMapper;
   private final ObjectMapper objectMapper;
+
+  private final UserApi userApi;
 
   @Override
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -162,7 +165,14 @@ public class ProductController implements ProductApi {
   @GetMapping("/{id}")
   public ProductDto getProduct(@PathVariable Long id) {
     Product product = productService.getProduct(id);
-    return productMapper.toResponseDto(product);
+    var userProfile = userApi.getUserProfile(product.getSellerId());
+    if (userProfile == null) {
+      throw new CustomException(ErrorCode.NOT_FOUND, "Seller not found");
+    }
+
+    var productDto = productMapper.toResponseDto(product);
+    productDto.setSellerPhoneNumber(userProfile.getPhoneNumber());
+    return productDto;
   }
 
   @Override
