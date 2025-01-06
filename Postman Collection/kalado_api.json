@@ -925,8 +925,8 @@
 			]
 		},
 		{
-			"name": "Create Report",
-			"id": "a942c19a-96ff-449a-8445-53d39ea31bc0",
+			"name": "http://localhost:8083/v1/reports",
+			"id": "0821f639-3f93-461d-9dda-0a7069dec293",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -934,95 +934,34 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1NDg3ODcxLCJleHAiOjE3MzU1NzQyNzEsImp0aSI6ImU1OTVkNjZlLTY1ODMtNDgyYS1hZTdlLThkNDNhMWQzNDU5NyJ9.Dmy9GTYMtyI9BKe2pzP09MywbNCpI_8YTsbRGlfOaZ4"
+						"value": "YOUR_AUTH_TOKEN"
 					}
 				],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 2,\r\n    \"reportedContentId\": 456\r\n  }",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "report",
+							"value": "{\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }"
+						},
+						{
+							"type": "file",
+							"key": "evidence",
+							"src": "/path/to/your/evidence1.jpg"
+						},
+						{
+							"type": "file",
+							"key": "evidence",
+							"src": "/path/to/your/evidence2.pdf"
 						}
-					}
+					]
 				},
-				"url": "http://localhost:18083/v1/reports",
-				"description": "Generated from cURL: curl -X POST http://localhost:8083/v1/reports \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H \"Authorization: YOUR_TOKEN\" \\\r\n  -d '{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 123,\r\n    \"reportedContentId\": 456\r\n  }'"
+				"url": "http://localhost:8083/v1/reports",
+				"description": "Generated from cURL: curl -X POST 'http://localhost:8083/v1/reports' \\\r\n  -H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n  -F 'report={\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }' \\\r\n  -F 'evidence=@/path/to/your/evidence1.jpg' \\\r\n  -F 'evidence=@/path/to/your/evidence2.pdf'"
 			},
-			"response": [
-				{
-					"id": "0f36ffa5-c05d-465f-a1c1-965122d29f19",
-					"name": "http://localhost:8083/v1/reports",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzM1NDg3ODcxLCJleHAiOjE3MzU1NzQyNzEsImp0aSI6ImU1OTVkNjZlLTY1ODMtNDgyYS1hZTdlLThkNDNhMWQzNDU5NyJ9.Dmy9GTYMtyI9BKe2pzP09MywbNCpI_8YTsbRGlfOaZ4"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"violationType\": \"SCAM\",\r\n    \"description\": \"User is trying to sell fake products\",\r\n    \"reportedUserId\": 2,\r\n    \"reportedContentId\": 456\r\n  }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:18083/v1/reports"
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Vary",
-							"value": "Origin"
-						},
-						{
-							"key": "Vary",
-							"value": "Access-Control-Request-Method"
-						},
-						{
-							"key": "Vary",
-							"value": "Access-Control-Request-Headers"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Date",
-							"value": "Sun, 29 Dec 2024 15:58:07 GMT"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=60"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						}
-					],
-					"cookie": [],
-					"responseTime": null,
-					"body": "{\n    \"id\": 1,\n    \"violationType\": \"SCAM\",\n    \"description\": \"User is trying to sell fake products\",\n    \"reporterId\": 2,\n    \"reportedUserId\": 2,\n    \"reportedContentId\": 456,\n    \"createdAt\": \"2024-12-29T19:28:07.932994\",\n    \"status\": \"SUBMITTED\",\n    \"adminNotes\": null,\n    \"lastUpdatedAt\": \"2024-12-29T19:28:07.932994\",\n    \"adminId\": null,\n    \"userBlocked\": false\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "Get my reportings",
@@ -2370,45 +2309,6 @@
 					"body": "true"
 				}
 			]
-		},
-		{
-			"name": "http://localhost:8083/v1/reports",
-			"id": "0821f639-3f93-461d-9dda-0a7069dec293",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "YOUR_AUTH_TOKEN"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"type": "text",
-							"key": "report",
-							"value": "{\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }"
-						},
-						{
-							"type": "file",
-							"key": "evidence",
-							"src": "/path/to/your/evidence1.jpg"
-						},
-						{
-							"type": "file",
-							"key": "evidence",
-							"src": "/path/to/your/evidence2.pdf"
-						}
-					]
-				},
-				"url": "http://localhost:8083/v1/reports",
-				"description": "Generated from cURL: curl -X POST 'http://localhost:8083/v1/reports' \\\r\n  -H 'Authorization: YOUR_AUTH_TOKEN' \\\r\n  -F 'report={\r\n    \"violationType\": \"INAPPROPRIATE_CONTENT\",\r\n    \"description\": \"This listing contains inappropriate content\",\r\n    \"reportedContentId\": 456\r\n  }' \\\r\n  -F 'evidence=@/path/to/your/evidence1.jpg' \\\r\n  -F 'evidence=@/path/to/your/evidence2.pdf'"
-			},
-			"response": []
 		}
 	]
 }
