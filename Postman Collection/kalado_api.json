@@ -670,6 +670,45 @@
 			]
 		},
 		{
+			"name": "http://localhost:8083/v1/product/{product_id}",
+			"id": "e47038d2-e4ce-4413-bbcb-ea24f52f621f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "YOUR_JWT_TOKEN"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"type": "text",
+							"key": "product",
+							"value": "{\n  \"title\": \"Updated Product Title\",\n  \"description\": \"Updated product description\",\n  \"price\": {\n    \"amount\": 1000.00,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"electronics\",\n  \"productionYear\": 2024,\n  \"brand\": \"SampleBrand\"\n}"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "/path/to/image1.jpg"
+						},
+						{
+							"type": "file",
+							"key": "images",
+							"src": "/path/to/image2.jpg"
+						}
+					]
+				},
+				"url": "http://localhost:8083/v1/product/{product_id}",
+				"description": "Generated from cURL: curl -X PUT 'http://localhost:8083/v1/product/{product_id}' \\\n-H 'Authorization: YOUR_JWT_TOKEN' \\\n-H 'Content-Type: multipart/form-data' \\\n-F 'product={\n  \"title\": \"Updated Product Title\",\n  \"description\": \"Updated product description\",\n  \"price\": {\n    \"amount\": 1000.00,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"electronics\",\n  \"productionYear\": 2024,\n  \"brand\": \"SampleBrand\"\n}' \\\n-F 'images=@/path/to/image1.jpg' \\\n-F 'images=@/path/to/image2.jpg'"
+			},
+			"response": []
+		},
+		{
 			"name": "Delete a Product",
 			"id": "83e1a217-3987-4d59-bac8-9ee0ea114f78",
 			"protocolProfileBehavior": {
@@ -2435,45 +2474,6 @@
 					"body": "true"
 				}
 			]
-		},
-		{
-			"name": "http://localhost:8083/v1/product/{product_id}",
-			"id": "e47038d2-e4ce-4413-bbcb-ea24f52f621f",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "YOUR_JWT_TOKEN"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"type": "text",
-							"key": "product",
-							"value": "{\n  \"title\": \"Updated Product Title\",\n  \"description\": \"Updated product description\",\n  \"price\": {\n    \"amount\": 1000.00,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"electronics\",\n  \"productionYear\": 2024,\n  \"brand\": \"SampleBrand\"\n}"
-						},
-						{
-							"type": "file",
-							"key": "images",
-							"src": "/path/to/image1.jpg"
-						},
-						{
-							"type": "file",
-							"key": "images",
-							"src": "/path/to/image2.jpg"
-						}
-					]
-				},
-				"url": "http://localhost:8083/v1/product/{product_id}",
-				"description": "Generated from cURL: curl -X PUT 'http://localhost:8083/v1/product/{product_id}' \\\n-H 'Authorization: YOUR_JWT_TOKEN' \\\n-H 'Content-Type: multipart/form-data' \\\n-F 'product={\n  \"title\": \"Updated Product Title\",\n  \"description\": \"Updated product description\",\n  \"price\": {\n    \"amount\": 1000.00,\n    \"unit\": \"TOMAN\"\n  },\n  \"category\": \"electronics\",\n  \"productionYear\": 2024,\n  \"brand\": \"SampleBrand\"\n}' \\\n-F 'images=@/path/to/image1.jpg' \\\n-F 'images=@/path/to/image2.jpg'"
-			},
-			"response": []
 		}
 	]
 }
