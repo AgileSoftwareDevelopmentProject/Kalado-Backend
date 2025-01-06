@@ -1,5 +1,6 @@
 package com.kalado.gateway.adapters;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kalado.common.dto.ProductDto;
 import com.kalado.common.dto.ProductStatusUpdateDto;
@@ -31,15 +32,24 @@ public class ProductController {
           @RequestParam(value = "images", required = false) List<MultipartFile> images) {
     try {
       ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
+
       productDto.setSellerId(userId);
 
-      log.debug("Creating product with data: {} and {} images", productDto,
+      String updatedProductJson = objectMapper.writeValueAsString(productDto);
+
+      log.debug("Creating product with data: {} and {} images",
+              productDto,
               images != null ? images.size() : 0);
 
-      return productApi.createProduct(productJson, images);
+      return productApi.createProduct(updatedProductJson, images);
+    } catch (JsonProcessingException e) {
+      log.error("Error parsing product JSON: {}", e.getMessage());
+      throw new CustomException(ErrorCode.BAD_REQUEST,
+              "Invalid product data format: " + e.getMessage());
     } catch (Exception e) {
-      log.error("Error creating product: {}", e.getMessage());
-      throw new CustomException(ErrorCode.BAD_REQUEST, "Error processing request: " + e.getMessage());
+      log.error("Error creating product: {}", e.getMessage(), e);
+      throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR,
+              "Error processing product creation: " + e.getMessage());
     }
   }
 
@@ -52,15 +62,37 @@ public class ProductController {
           @RequestParam(value = "images", required = false) List<MultipartFile> images) {
     try {
       ProductDto productDto = objectMapper.readValue(productJson, ProductDto.class);
+
       productDto.setSellerId(userId);
 
-      log.debug("Updating product {} with data: {} and {} images", id, productDto,
+      productDto.setId(id);
+
+      String updatedProductJson = objectMapper.writeValueAsString(productDto);
+
+      log.debug("Updating product {} with data: {} and {} images",
+              id,
+              productDto,
               images != null ? images.size() : 0);
 
-      return productApi.updateProduct(id, productJson, images);
+      return productApi.updateProduct(id, updatedProductJson, images);
+
+    } catch (JsonProcessingException e) {
+      log.error("Error parsing product JSON for update: {}", e.getMessage());
+      throw new CustomException(
+              ErrorCode.BAD_REQUEST,
+              "Invalid product data format: " + e.getMessage()
+      );
+
+    } catch (CustomException e) {
+      log.error("Business logic error during product update: {}", e.getMessage());
+      throw e;
+
     } catch (Exception e) {
-      log.error("Error updating product: {}", e.getMessage());
-      throw new CustomException(ErrorCode.BAD_REQUEST, "Error processing request: " + e.getMessage());
+      log.error("Unexpected error updating product {}: {}", id, e.getMessage(), e);
+      throw new CustomException(
+              ErrorCode.INTERNAL_SERVER_ERROR,
+              "Error processing product update: " + e.getMessage()
+      );
     }
   }
 
