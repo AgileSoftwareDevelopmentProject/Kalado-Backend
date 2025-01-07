@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByPhoneNumber(String phoneNumber);
 
   @Query("UPDATE User u SET u.firstName = :firstName, u.lastName = :lastName, " +
-          "u.address = :address, u.phoneNumber = :phoneNumber, u.isBlocked = :isBlocked " +
+          "u.address = :address, u.phoneNumber = :phoneNumber, u.blocked = :blocked " +
           "WHERE u.id = :id")
   @Modifying
   @Transactional
@@ -25,5 +25,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
           @Param("address") String address,
           @Param("phoneNumber") String phoneNumber,
           @Param("id") Long id,
-          @Param("isBlocked") boolean isBlocked);
+          @Param("blocked") boolean blocked);
 }

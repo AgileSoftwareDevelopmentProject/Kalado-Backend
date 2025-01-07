@@ -72,7 +72,7 @@ public class UserService {
   public UserDto getUserProfile(long userId) {
     log.info("Retrieving user profile for user ID: {}", userId);
     String username = authenticationApi.getUsername(userId);
-    return userRepository
+    var userDb = userRepository
         .findById(userId)
         .map(
             user -> {
@@ -85,6 +85,7 @@ public class UserService {
               log.error("user ID: {} not found", userId);
               return new CustomException(ErrorCode.NOT_FOUND, "user not found");
             });
+    return userDb;
   }
 
   public void createAdmin(AdminDto adminDto) {
