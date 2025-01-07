@@ -1132,14 +1132,14 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM1NDg4MjA2LCJleHAiOjE3MzU1NzQ2MDYsImp0aSI6IjAyYThlNDk3LTg5ZGQtNDZmYi05NWY2LThkNzM3OTkyYzI1YyJ9.DbmRvDhHJLVWeaMW6SyqklDf90M-0iDk7qAoAtdSKgM"
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzM2MTgwMjY2LCJleHAiOjE3MzYyNjY2NjYsImp0aSI6IjZhMzY3OWVjLWJiNGEtNDA3Mi04NDAzLTkwM2VmZWRmMTUyZCJ9.buvf7a-FC8eZrulQFXCFi3osX2pCCheex2dX6oHf-uo"
 							},
 							{
 								"key": "Content-Type",
 								"value": "application/json"
 							}
 						],
-						"url": "http://localhost:18083/v1/reports/admin/all"
+						"url": "http://kaladoshop.com:8083/v1/reports/admin/all"
 					},
 					"status": "OK",
 					"code": 200,
