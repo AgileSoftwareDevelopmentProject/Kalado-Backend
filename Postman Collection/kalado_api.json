@@ -510,17 +510,17 @@
 			},
 			"response": [
 				{
-					"id": "cade2726-d908-4d8b-965d-29b0f789fca6",
-					"name": "http://localhost:8083/v1/product/1",
+					"id": "589d38db-0682-47a1-9007-7e150d757039",
+					"name": "get product by image",
 					"originalRequest": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM2MDEyMTgxLCJleHAiOjE3MzYwOTg1ODEsImp0aSI6Ijk5Y2M2NjZkLWQyNTktNGM4Zi05MjNiLTg4MGYzMWJiMjZkMyJ9.pDnWyluVH33JVYutPs5INaOFB17NwcLvlOXLvhITuGU"
+								"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM2MDk0MDkwLCJleHAiOjE3MzYxODA0OTAsImp0aSI6ImE5NWNjNjI4LWVmNTQtNGQzNi05ZGVhLTQwNjZlMzRmNWYwZiJ9.5QtVwPI7kyhHvHmGizA0dMnNoiGKzM3sb2UTyeO-O5M"
 							}
 						],
-						"url": "http://localhost:8083/v1/product/8"
+						"url": "http://localhost:8083/v1/product/17"
 					},
 					"status": "OK",
 					"code": 200,
@@ -548,7 +548,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sun, 05 Jan 2025 05:34:43 GMT"
+							"value": "Tue, 07 Jan 2025 18:16:54 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -561,7 +561,7 @@
 					],
 					"cookie": [],
 					"responseTime": null,
-					"body": "{\n    \"id\": 8,\n    \"title\": \"Test Product\",\n    \"description\": \"Detailed product description\",\n    \"price\": {\n        \"amount\": 100000,\n        \"unit\": \"TOMAN\"\n    },\n    \"imageUrls\": [\n        \"02ffcf66-6ab4-4aad-ac68-289c79474f4b.jpg\"\n    ],\n    \"category\": \"Electronics\",\n    \"productionYear\": 2023,\n    \"brand\": \"Test Brand\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": \"2025-01-05T05:33:54.222+00:00\",\n    \"sellerId\": 7\n}"
+					"body": "{\n    \"id\": 17,\n    \"title\": \"Test Product\",\n    \"description\": \"Detailed product description\",\n    \"price\": {\n        \"amount\": 100000,\n        \"unit\": \"TOMAN\"\n    },\n    \"imageUrls\": [\n        \"http://kaladoshop.com:8083/v1/images/12557047-8a57-4730-b678-794ff06aecdd.jpg\"\n    ],\n    \"category\": \"Electronics\",\n    \"productionYear\": 2023,\n    \"brand\": \"Test Brand\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": 1736271924454,\n    \"sellerId\": 2,\n    \"sellerPhoneNumber\": \"1234567890\"\n}"
 				}
 			]
 		},
