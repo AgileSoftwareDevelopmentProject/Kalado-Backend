@@ -2,6 +2,7 @@ package com.kalado.reporting.application.service;
 
 import com.kalado.common.dto.*;
 import com.kalado.common.enums.ErrorCode;
+import com.kalado.common.enums.ProductStatus;
 import com.kalado.common.enums.ReportStatus;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.product.ProductApi;
@@ -66,8 +67,7 @@ public class ReportService {
   }
 
   @Transactional
-  public ReportResponseDto updateReportStatus(
-      Long reportId, ReportStatusUpdateDto request, Long adminId) {
+  public ReportResponseDto updateReportStatus(Long reportId, ReportStatusUpdateDto request, Long adminId) {
     Report report = getReportById(reportId);
 
     report.setStatus(request.getStatus());
@@ -79,15 +79,42 @@ public class ReportService {
       try {
         userApi.blockUser(report.getReportedUserId());
         report.setUserBlocked(true);
+        List<ProductDto> userProducts = productApi.getSellerProducts(report.getReportedUserId());
+        for (ProductDto product : userProducts) {
+          try {
+            productApi.updateProductStatus(
+                    product.getId(),
+                    report.getReportedUserId(),
+                    new ProductStatusUpdateDto(ProductStatus.DELETED)
+            );
+          } catch (Exception e) {
+            log.error("Failed to block product {} of blocked user {}",
+                    product.getId(), report.getReportedUserId(), e);
+          }
+        }
       } catch (Exception e) {
         log.error("Failed to block user: {}", report.getReportedUserId(), e);
         throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "Failed to block user");
       }
     }
 
+    if (request.isBlockProduct() && report.getReportedContentId() != null) {
+      try {
+        productApi.updateProductStatus(
+                report.getReportedContentId(),
+                report.getReportedUserId(),
+                new ProductStatusUpdateDto(ProductStatus.DELETED)
+        );
+      } catch (Exception e) {
+        log.error("Failed to block product: {}", report.getReportedContentId(), e);
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "Failed to block product");
+      }
+    }
+
     Report updatedReport = reportRepository.save(report);
     return reportMapper.toReportResponse(updatedReport);
   }
+
 
   private Report getReportById(Long reportId) {
     return reportRepository

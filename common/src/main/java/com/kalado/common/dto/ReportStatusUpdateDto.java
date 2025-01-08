@@ -14,5 +14,6 @@ public class ReportStatusUpdateDto {
   private ReportStatus status;
   private String adminNotes;
   private boolean blockUser;
+  private boolean blockProduct;
   private String blockReason;
 }

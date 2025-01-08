@@ -61,18 +61,20 @@ public class AuthenticationService {
       throw new CustomException(ErrorCode.EMAIL_NOT_VERIFIED, "Email not verified");
     }
 
-    try {
-      UserDto userDto = userApi.getUserProfile(authInfo.getUserId());
-      if (userDto != null && userDto.isBlocked()) {
-        log.warn("Blocked user attempted to login: {}", username);
-        throw new CustomException(ErrorCode.UNAUTHORIZED, "Your account has been blocked");
+    if (authInfo.getRole() != Role.ADMIN) {
+      try {
+        UserDto userDto = userApi.getUserProfile(authInfo.getUserId());
+        if (userDto != null && userDto.isBlocked()) {
+          log.warn("Blocked user attempted to login: {}", username);
+          throw new CustomException(ErrorCode.UNAUTHORIZED, "Your account has been blocked");
+        }
+      } catch (Exception e) {
+        log.error("Error checking user blocked status: {}", e.getMessage());
+        if (e instanceof CustomException) {
+          throw e;
+        }
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "Error validating user status");
       }
-    } catch (Exception e) {
-      log.error("Error checking user blocked status: {}", e.getMessage());
-      if (e instanceof CustomException) {
-        throw e;
-      }
-      throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "Error validating user status");
     }
 
     String token = generateToken(authInfo.getUserId());

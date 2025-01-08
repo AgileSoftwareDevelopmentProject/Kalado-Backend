@@ -99,20 +99,23 @@ public class UserService {
     Optional<User> userOptional = userRepository.findById(id);
 
     if (userOptional.isPresent()) {
-      log.info("Modifying profile for user ID: {}", id);
+      log.info("Blocking user with ID: {}", id);
       User user = userOptional.get();
+
       userRepository.modify(
-          user.getFirstName(),
-          user.getLastName(),
-          user.getAddress(),
-          user.getPhoneNumber(),
-          user.getId(),
-          true);
-      log.info("User is blocked. user ID: {}", id);
+              user.getFirstName(),
+              user.getLastName(),
+              user.getAddress(),
+              user.getPhoneNumber(),
+              user.getId(),
+              true
+      );
+
+      log.info("User blocked successfully. User ID: {}", id);
       return true;
     } else {
-      log.info("user ID: {} not found, creating new user", id);
-      return false;
+      log.warn("Attempted to block non-existent user with ID: {}", id);
+      throw new CustomException(ErrorCode.NOT_FOUND, "User not found");
     }
   }
 }

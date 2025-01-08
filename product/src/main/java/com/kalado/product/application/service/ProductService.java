@@ -1,7 +1,10 @@
 package com.kalado.product.application.service;
 
+import com.kalado.common.dto.AuthDto;
 import com.kalado.common.enums.ErrorCode;
+import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
+import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.product.domain.model.Product;
 import com.kalado.common.enums.ProductStatus;
 import com.kalado.product.infrastructure.messaging.ProductEventPublisher;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductService {
+  private final AuthenticationApi authenticationApi;
   private final ProductRepository productRepository;
   private final ImageService imageService;
   private final ProductEventPublisher eventPublisher;
@@ -83,14 +87,49 @@ public class ProductService {
     eventPublisher.publishProductDeleted(deletedProduct);
   }
 
+  @Transactional
   public Product updateProductStatus(Long id, ProductStatus newStatus, Long sellerId) {
     Product product = getProduct(id);
-    validateProductOwnership(product, sellerId);
 
-    product.setStatus(newStatus);
-    Product updatedProduct = productRepository.save(product);
-    log.info("Product status updated to {}: {}", newStatus, id);
-    return updatedProduct;
+    if (!sellerId.equals(product.getSellerId()) && !isAdmin(sellerId)) {
+      throw new CustomException(
+              ErrorCode.FORBIDDEN,
+              "You don't have permission to modify this product"
+      );
+    }
+
+    if (newStatus == ProductStatus.DELETED) {
+      product.setStatus(ProductStatus.DELETED);
+      Product blockedProduct = productRepository.save(product);
+
+      eventPublisher.publishProductDeleted(blockedProduct);
+
+      log.info("Product blocked/deleted: {}", id);
+      return blockedProduct;
+    }
+
+    if (product.getStatus() != ProductStatus.DELETED) {
+      product.setStatus(newStatus);
+      Product updatedProduct = productRepository.save(product);
+      eventPublisher.publishProductUpdated(updatedProduct);
+      log.info("Product status updated to {}: {}", newStatus, id);
+      return updatedProduct;
+    } else {
+      throw new CustomException(
+              ErrorCode.BAD_REQUEST,
+              "Cannot update status of a blocked/deleted product"
+      );
+    }
+  }
+
+  private boolean isAdmin(Long userId) {
+    try {
+      AuthDto authDto = authenticationApi.validate(userId.toString());
+      return authDto.getRole() == Role.ADMIN;
+    } catch (Exception e) {
+      log.error("Error validating admin status: {}", e.getMessage());
+      return false;
+    }
   }
 
   public Product getProduct(Long id) {
@@ -106,7 +145,9 @@ public class ProductService {
 
   @Transactional(readOnly = true)
   public List<Product> getProductsByCategory(String category) {
-    return productRepository.findByCategory(category);
+    return productRepository.findByCategory(category).stream()
+            .filter(product -> product.getStatus() != ProductStatus.DELETED)
+            .collect(Collectors.toList());
   }
 
   private void validateProduct(Product product) {

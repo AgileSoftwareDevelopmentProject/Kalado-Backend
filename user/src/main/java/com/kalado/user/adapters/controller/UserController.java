@@ -39,6 +39,7 @@ public class UserController implements UserApi {
   }
 
   @Override
+  @PostMapping("/block/{userId}")
   public boolean blockUser(@PathVariable Long userId) {
     return userService.blockUser(userId);
   }
