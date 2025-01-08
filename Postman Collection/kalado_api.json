@@ -1195,7 +1195,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzM2MTUyODcwLCJleHAiOjE3MzYyMzkyNzAsImp0aSI6IjM0MDdkZjkyLTZlNjMtNDU1YS1hMWQyLWRlMjkwNjgwZmI1YiJ9.YMeX6xje04CWlSRAwEtj_LmWR8y-8LHnxoOicZDrJ-E"
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzM2MzU3MzMxLCJleHAiOjE3MzY0NDM3MzEsImp0aSI6IjdjMDFjNDMzLTgyNTAtNDMwOC1iZDYyLTA4YjM5ODExOTFhMyJ9.MFjeU09q3wePmjtFgbg9j7wma7xi4pnjcEuHNYJt7yQ"
 					},
 					{
 						"key": "Content-Type",
@@ -1204,7 +1204,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockUser\": false,\r\n    \"blockReason\": null\r\n}",
+					"raw": "{\r\n    \"status\": \"RESOLVED\",\r\n    \"adminNotes\": \"Investigation complete. User warned.\",\r\n    \"blockReason\": null,\r\n    \"blockUser\": true,\r\n    \"blockProduct\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
