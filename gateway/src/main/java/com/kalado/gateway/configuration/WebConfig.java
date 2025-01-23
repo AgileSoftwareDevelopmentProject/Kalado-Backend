@@ -5,6 +5,8 @@ import feign.codec.ErrorDecoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,6 +16,7 @@ import com.kalado.gateway.exception.ExceptionHandlerAdvice;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -30,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper()
-                .findAndRegisterModules(); // This helps with date/time handling
+                .findAndRegisterModules();
     }
 
     @Bean
@@ -107,5 +110,10 @@ public class WebConfig implements WebMvcConfigurer {
             return Long.parseLong(size.replace("MB", "").trim()) * 1024 * 1024;
         }
         return Long.parseLong(size);
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
     }
 }
