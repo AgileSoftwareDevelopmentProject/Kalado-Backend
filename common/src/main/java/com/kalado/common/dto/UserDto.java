@@ -16,5 +16,6 @@ public class UserDto {
   private String lastName;
   private String address;
   private String phoneNumber;
+  private String profileImageUrl;
   private boolean blocked;
 }
