@@ -24,43 +24,60 @@ public class UserController {
   private final UserApi userApi;
   private final ObjectMapper objectMapper;
 
-  @PutMapping(value = "/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(value = "/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Authentication(userId = "#userId")
   public Boolean modifyUserProfile(
           Long userId,
           @RequestParam("profile") String profileJson,
-          @RequestParam(value = "profileImage", required = false) MultipartFile profileImage
-  ) {
+          @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) {
     try {
-      // Parse the profile JSON first, just like in ProductController
-      UserProfileUpdateDto profileData = objectMapper.readValue(profileJson, UserProfileUpdateDto.class);
+      UserProfileUpdateDto profileDto = objectMapper.readValue(profileJson, UserProfileUpdateDto.class);
 
-      // We could add any necessary modifications to the DTO here
-      // Similar to how ProductController sets the sellerId
+      profileDto.setId(userId);
 
-      // Convert back to JSON string if we made any modifications
-      String updatedProfileJson = objectMapper.writeValueAsString(profileData);
+      String updatedProfileJson = objectMapper.writeValueAsString(profileDto);
 
-      log.debug("Modifying profile for user ID: {} with data: {}", userId, profileData);
-      log.debug("Profile image present: {}", profileImage != null);
+      log.debug("Modifying profile with data: {} and image present: {}",
+              profileDto, profileImage != null);
 
-      // Forward to the user service with consistent parameter types
-      return userApi.modifyUserProfile(userId, updatedProfileJson, profileImage);
-
+      return userApi.modifyUserProfile(updatedProfileJson, profileImage);
     } catch (JsonProcessingException e) {
-      // Handle JSON parsing errors specifically, like ProductController does
       log.error("Error parsing profile JSON: {}", e.getMessage());
-      throw new CustomException(
-              ErrorCode.BAD_REQUEST,
-              "Invalid profile data format: " + e.getMessage()
-      );
+      throw new CustomException(ErrorCode.BAD_REQUEST,
+              "Invalid profile data format: " + e.getMessage());
     } catch (Exception e) {
-      // Handle other errors
-      log.error("Error modifying user profile for user {}: {}", userId, e.getMessage(), e);
+      log.error("Error modifying user profile: {}", e.getMessage(), e);
+      throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR,
+              "Error processing profile update: " + e.getMessage());
+    }
+  }
+
+  @GetMapping("/profile")
+  @Authentication(userId = "#userId")  // This annotation ensures proper authentication
+  public ResponseEntity<UserDto> getUserProfile(Long userId) {
+    try {
+      log.debug("Fetching user profile for userId: {}", userId);
+      UserDto userProfile = userApi.getUserProfile(userId);
+
+      if (userProfile == null) {
+        log.warn("No profile found for userId: {}", userId);
+        return ResponseEntity.notFound().build();
+      }
+
+      return ResponseEntity.ok(userProfile);
+
+    } catch (Exception e) {
+      log.error("Error fetching user profile for userId {}: {}", userId, e.getMessage());
       throw new CustomException(
               ErrorCode.INTERNAL_SERVER_ERROR,
-              "Error processing profile update: " + e.getMessage()
+              "Error retrieving user profile: " + e.getMessage()
       );
     }
+  }
+
+  @PostMapping("/user/block/{userId}")
+  @Authentication(userId = "#userId")
+  boolean blockUser(Long userId) {
+    return userApi.blockUser(userId);
   }
 }

@@ -41,7 +41,7 @@ public class ImageService {
             Path targetLocation = uploadPath.resolve(filename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            String imageUrl = gatewayUrl + "/v1/images/profile/" + filename;
+            String imageUrl = gatewayUrl + "/v1/images/" + filename;
             log.debug("Stored profile image: {} -> {}", file.getOriginalFilename(), imageUrl);
 
             return imageUrl;

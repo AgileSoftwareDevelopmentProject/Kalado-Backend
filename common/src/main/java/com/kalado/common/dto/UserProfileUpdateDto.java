@@ -14,4 +14,5 @@ public class UserProfileUpdateDto {
     private String lastName;
     private String phoneNumber;
     private String address;
+    private Long id;
 }

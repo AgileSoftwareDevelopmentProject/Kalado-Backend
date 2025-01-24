@@ -12,43 +12,39 @@ import com.kalado.user.service.ImageService;
 import com.kalado.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class UserController implements UserApi {
+  @Value("${app.upload.dir:uploads/profile}")
+  private String uploadDir;
   private final UserService userService;
   private final ImageService imageService;
   private final ObjectMapper objectMapper;
 
-  @PutMapping(value = "/user/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @Override
+  @PostMapping(value = "/user/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public Boolean modifyUserProfile(
-          @RequestParam("userId") Long userId,
-          @RequestParam("profile") String profileJson,
-          @RequestParam(value = "profileImage", required = false) MultipartFile profileImage
-  ) {
+          @RequestPart("profile") String profileJson,
+          @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
     try {
-      UserProfileUpdateDto profileData = objectMapper.readValue(profileJson, UserProfileUpdateDto.class);
-
-      // Process profile update and image
-      return userService.modifyProfile(userId, profileData, profileImage);
-
-    } catch (JsonProcessingException e) {
-      log.error("Error parsing profile JSON: {}", e.getMessage());
-      throw new CustomException(
-              ErrorCode.BAD_REQUEST,
-              "Invalid profile data format: " + e.getMessage()
-      );
+      UserProfileUpdateDto profileDto = objectMapper.readValue(profileJson, UserProfileUpdateDto.class);
+      return userService.modifyUserProfile(profileDto, profileImage);
     } catch (Exception e) {
-      log.error("Error processing profile update: {}", e.getMessage(), e);
-      throw new CustomException(
-              ErrorCode.INTERNAL_SERVER_ERROR,
-              "Failed to process profile update: " + e.getMessage()
-      );
+      log.error("Error processing profile update: {}", e.getMessage());
+      throw new CustomException(ErrorCode.BAD_REQUEST,
+              "Error processing profile update: " + e.getMessage());
     }
   }
 
@@ -77,8 +73,20 @@ public class UserController implements UserApi {
   }
 
   @Override
-  @GetMapping(value = "/user/profile-image/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
-  public Resource getProfileImage(@PathVariable String filename) {
-    return imageService.getProfileImage(filename);
+  @GetMapping(value = "/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+  public Resource getImage(@PathVariable String filename) {
+    try {
+      Path filePath = Paths.get(uploadDir).resolve(filename).normalize();
+      Resource resource = new UrlResource(filePath.toUri());
+
+      if (resource.exists()) {
+        return resource;
+      } else {
+        throw new CustomException(ErrorCode.NOT_FOUND, "Image not found: " + filename);
+      }
+    } catch (MalformedURLException e) {
+      throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "Error retrieving image");
+    }
   }
+
 }

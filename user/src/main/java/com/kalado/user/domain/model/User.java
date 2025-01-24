@@ -29,4 +29,7 @@ public class User {
   @Column(name = "order_id")
   @Singular
   private List<String> orderIds = new ArrayList<>();
+
+  @Column(name = "profile_image_url")
+  private String profileImageUrl;
 }

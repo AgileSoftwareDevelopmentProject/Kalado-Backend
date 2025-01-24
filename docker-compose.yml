@@ -253,8 +253,8 @@ services:
     image: docker.io/bitnami/zookeeper:3.9.2
     container_name: zookeeper
     restart: always
-    ports:
-      - '2181:2181'
+#    ports:
+#      - '2181:2181'
    # volumes:
    #   - zookeeper_data:/bitnami
     networks:

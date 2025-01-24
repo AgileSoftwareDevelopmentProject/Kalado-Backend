@@ -10,13 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@FeignClient(name = "user-service", configuration = FeignMultipartConfig.class)
+@FeignClient(name = "user-service")
 public interface UserApi {
-  @PutMapping(value = "/user/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(value = "/user/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   Boolean modifyUserProfile(
-          @RequestParam("userId") Long userId,
-          @RequestParam("profile") String profileJson,
-          @RequestParam(value = "profileImage", required = false) MultipartFile profileImage
+          @RequestPart("profile") String profileJson,
+          @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
   );
 
   @GetMapping("/user/getProfile")
@@ -31,6 +30,6 @@ public interface UserApi {
   @PostMapping("/user/block/{userId}")
   boolean blockUser(@PathVariable Long userId);
 
-  @GetMapping(value = "/user/profile-image/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
-  Resource getProfileImage(@PathVariable String filename);
+  @GetMapping(value = "/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+  Resource getImage(@PathVariable String filename);
 }
