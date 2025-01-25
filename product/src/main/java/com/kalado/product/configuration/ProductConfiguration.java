@@ -1,6 +1,8 @@
 package com.kalado.product.configuration;
 
 import com.kalado.common.event.ProductEvent;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@Setter
+@Getter
 @Configuration
 @ConfigurationProperties(prefix = "app.upload")
 public class ProductConfiguration implements WebMvcConfigurer {

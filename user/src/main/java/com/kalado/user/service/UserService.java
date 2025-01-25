@@ -2,6 +2,7 @@ package com.kalado.user.service;
 
 import com.kalado.common.dto.AdminDto;
 import com.kalado.common.dto.UserDto;
+import com.kalado.common.dto.UserProfileUpdateDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.authentication.AuthenticationApi;
@@ -15,6 +16,8 @@ import com.kalado.user.domain.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -24,29 +27,33 @@ public class UserService {
   private final UserRepository userRepository;
   private final AuthenticationApi authenticationApi;
   private final AdminRepository adminRepository;
+  private final ImageService imageService;
 
-  public Boolean modifyProfile(long id, UserDto userDto) {
-    Optional<User> userOptional = userRepository.findById(id);
 
-    if (userOptional.isPresent()) {
-      log.info("Modifying profile for user ID: {}", id);
-      User user = userOptional.get();
-      userRepository.modify(
-          userDto.getFirstName(),
-          userDto.getLastName(),
-          userDto.getAddress(),
-          userDto.getPhoneNumber(),
-          user.getId(),
-          false);
-      log.info("Profile modified successfully for user ID: {}", id);
+  @Transactional
+  public Boolean modifyUserProfile(UserProfileUpdateDto profileUpdateDto, MultipartFile profileImage) {
+    User user = userRepository.findById(profileUpdateDto.getId())
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
+
+    try {
+      if (profileImage != null) {
+        String imageUrl = imageService.storeProfileImage(profileImage);
+        user.setProfileImageUrl(imageUrl);
+      }
+
+      user.setFirstName(profileUpdateDto.getFirstName());
+      user.setLastName(profileUpdateDto.getLastName());
+      user.setPhoneNumber(profileUpdateDto.getPhoneNumber());
+      user.setAddress(profileUpdateDto.getAddress());
+
+      userRepository.save(user);
       return true;
-    } else {
-      log.info("user ID: {} not found, creating new user", id);
-      User newuser = UserMapper.INSTANCE.dtoTouser(userDto);
-      newuser.setId(id);
-      userRepository.save(newuser);
-      log.info("New user created with ID: {}", id);
-      return true;
+    } catch (Exception e) {
+      log.error("Failed to modify user profile: {}", e.getMessage(), e);
+      throw new CustomException(
+              ErrorCode.INTERNAL_SERVER_ERROR,
+              "Failed to modify user profile: " + e.getMessage()
+      );
     }
   }
 
