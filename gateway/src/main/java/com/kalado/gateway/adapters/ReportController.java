@@ -53,6 +53,11 @@ public class ReportController {
     return reportApi.getUserReports(userId);
   }
 
+  @GetMapping("/my-reports/{userId}")
+  public List<ReportResponseDto> getUserReportsByUserId(@PathVariable Long userId) {
+    return reportApi.getUserReports(userId);
+  }
+
   @GetMapping("/admin/all")
   @Authentication(userId = "#userId")
   public List<ReportResponseDto> getAllReports(

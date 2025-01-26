@@ -146,7 +146,6 @@ public class ProductService {
   @Transactional(readOnly = true)
   public List<Product> getProductsByCategory(String category) {
     return productRepository.findByCategory(category).stream()
-            .filter(product -> product.getStatus() != ProductStatus.DELETED)
             .collect(Collectors.toList());
   }
 
@@ -201,7 +200,6 @@ public class ProductService {
   @Transactional(readOnly = true)
   public List<Product> getAllProducts() {
     return productRepository.findAll().stream()
-            .filter(product -> product.getStatus() != ProductStatus.DELETED)
             .collect(Collectors.toList());
   }
 }

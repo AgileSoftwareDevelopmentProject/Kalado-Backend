@@ -120,6 +120,11 @@ public class ProductController {
     return productApi.getSellerProducts(userId);
   }
 
+  @GetMapping("/seller/{userId}")
+  public List<ProductDto> getSellerProductsBySellerId(@PathVariable Long userId) {
+    return productApi.getSellerProducts(userId);
+  }
+
   @GetMapping("/category/{category}")
   public List<ProductDto> getProductsByCategory(@PathVariable String category) {
     return productApi.getProductsByCategory(category);
