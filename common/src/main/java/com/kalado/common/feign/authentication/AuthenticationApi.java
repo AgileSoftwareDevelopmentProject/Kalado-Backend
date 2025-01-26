@@ -1,18 +1,12 @@
 package com.kalado.common.feign.authentication;
 
-import com.kalado.common.dto.AuthDto;
-import com.kalado.common.dto.RegistrationRequestDto;
-import com.kalado.common.enums.Role;
+import com.kalado.common.dto.*;
 import com.kalado.common.response.LoginResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "authentication-service")
 public interface AuthenticationApi {
-
   @PostMapping("auth/login")
   LoginResponse login(@RequestParam String username, @RequestParam String password);
 
@@ -30,4 +24,10 @@ public interface AuthenticationApi {
 
   @PostMapping("/auth/verify")
   String verifyEmail(@RequestParam String token);
+
+  @PostMapping("/auth/forgot-password")
+  void forgotPassword(@RequestBody ForgotPasswordRequestDto request);
+
+  @PostMapping("/auth/reset-password")
+  ResetPasswordResponseDto resetPassword(@RequestBody ResetPasswordRequestDto request);
 }

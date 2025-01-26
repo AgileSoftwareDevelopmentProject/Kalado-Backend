@@ -1,6 +1,6 @@
 package com.kalado.gateway.adapters;
 
-import com.kalado.common.dto.RegistrationRequestDto;
+import com.kalado.common.dto.*;
 import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.common.response.LoginResponse;
 import com.kalado.gateway.annotation.Authentication;
@@ -39,5 +39,15 @@ public class AuthenticationController {
   @PostMapping("/verify")
   public void verifyEmail(String token) {
     authenticationApi.verifyEmail(token);
+  }
+
+  @PostMapping("/forgot-password")
+  public void forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+    authenticationApi.forgotPassword(request);
+  }
+
+  @PostMapping("/reset-password")
+  public ResetPasswordResponseDto resetPassword(@RequestBody ResetPasswordRequestDto request) {
+    return authenticationApi.resetPassword(request);
   }
 }

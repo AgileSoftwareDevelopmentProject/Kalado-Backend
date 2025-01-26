@@ -22,4 +22,17 @@ public class EmailService {
 
         mailSender.send(message);
     }
+
+    public void sendPasswordResetToken(String to, String token) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(FROM_EMAIL);
+        message.setTo(to);
+        message.setSubject("Password Reset Request");
+        message.setText("You have requested to reset your password.\n\n" +
+                "Please use the following token to reset your password: " + token + "\n\n" +
+                "If you did not request this password reset, please ignore this email.\n" +
+                "This token will expire in 24 hours.");
+
+        mailSender.send(message);
+    }
 }

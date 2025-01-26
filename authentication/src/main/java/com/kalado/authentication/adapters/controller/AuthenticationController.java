@@ -1,17 +1,14 @@
 package com.kalado.authentication.adapters.controller;
 
+import com.kalado.authentication.application.service.AuthenticationService;
+import com.kalado.authentication.application.service.PasswordResetService;
 import com.kalado.authentication.application.service.VerificationService;
-import com.kalado.authentication.domain.model.AuthenticationInfo;
-import com.kalado.common.dto.AuthDto;
-import com.kalado.common.dto.RegistrationRequestDto;
+import com.kalado.common.dto.*;
 import com.kalado.common.enums.ErrorCode;
-import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.common.response.LoginResponse;
-import com.kalado.authentication.application.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +17,7 @@ public class AuthenticationController implements AuthenticationApi {
 
   private final AuthenticationService authService;
   private final VerificationService verificationService;
+  private final PasswordResetService passwordResetService;
 
   @Override
   public LoginResponse login(String username, String password) {
@@ -65,8 +63,19 @@ public class AuthenticationController implements AuthenticationApi {
   }
 
   @Override
-  @PostMapping("/auth/register")
   public void register(@RequestBody RegistrationRequestDto registrationRequest) {
     authService.register(registrationRequest);
+  }
+
+  @Override
+  @PostMapping("/auth/forgot-password")
+  public void forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+    passwordResetService.createPasswordResetTokenForUser(request.getEmail());
+  }
+
+  @Override
+  @PostMapping("/auth/reset-password")
+  public ResetPasswordResponseDto resetPassword(@RequestBody ResetPasswordRequestDto request) {
+    return passwordResetService.resetPassword(request);
   }
 }
