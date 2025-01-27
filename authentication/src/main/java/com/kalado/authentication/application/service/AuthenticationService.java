@@ -1,5 +1,6 @@
 package com.kalado.authentication.application.service;
 
+import com.kalado.authentication.configuration.AdminConfiguration;
 import com.kalado.authentication.domain.model.AuthenticationInfo;
 import com.kalado.common.dto.AuthDto;
 import com.kalado.common.dto.AdminDto;
@@ -36,6 +37,7 @@ public class AuthenticationService {
   private final RedisTemplate<String, Long> redisTemplate;
   private final UserApi userApi;
   private final VerificationService verificationService;
+  private final AdminConfiguration adminConfig;
 
   private static final String SECRET_KEY =
       "X71wHJEhg1LQE5DzWcdc/BRAgIvnqHYiZHBbqgrBOZLzwlHlHh/W1ScQGwd1XM8V1c5vtgGlDS8lb64zjZEZXg==";
@@ -155,11 +157,17 @@ public class AuthenticationService {
   }
 
 
+  @Transactional
   public AuthenticationInfo register(RegistrationRequestDto request) {
     validateRegistrationInput(request);
 
+    // Check if trying to register as admin
+    if (request.getRole() == Role.ADMIN) {
+      validateAdminRegistration(request.getEmail());
+    }
+
     AuthenticationInfo existingUser = authRepository.findByUsername(request.getEmail());
-    if (Objects.nonNull(existingUser)) {
+    if (existingUser != null) {
       log.info("User already exists: {}", existingUser);
       throw new CustomException(ErrorCode.USER_ALREADY_EXISTS, "User already exists");
     }
@@ -193,6 +201,16 @@ public class AuthenticationService {
     verificationService.createVerificationToken(authenticationInfo);
 
     return authenticationInfo;
+  }
+
+  private void validateAdminRegistration(String email) {
+      if (!adminConfig.isEmailAuthorizedForAdmin(email)) {
+        log.warn("Unauthorized attempt to register as admin: {}", email);
+        throw new CustomException(
+                ErrorCode.FORBIDDEN,
+                "Initial admin registration is restricted to authorized emails only"
+        );
+      }
   }
 
   private void validateRegistrationInput(RegistrationRequestDto request) {
