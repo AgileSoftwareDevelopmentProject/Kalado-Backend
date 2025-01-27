@@ -6,18 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminDto {
-  private Long id;
-  private String firstName;
-  private String lastName;
-  private String phoneNumber;
-  private String address;
-  private Role role;
-  private List<String> permissions;
+public class RoleUpdateResponseDto {
+    private boolean success;
+    private String message;
+    private Long userId;
+    private Role oldRole;
+    private Role newRole;
+    private Long updatedBy;
+    private String timestamp;
 }

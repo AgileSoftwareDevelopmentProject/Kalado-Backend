@@ -61,7 +61,7 @@ public class AuthenticationService {
       throw new CustomException(ErrorCode.EMAIL_NOT_VERIFIED, "Email not verified");
     }
 
-    if (authInfo.getRole() != Role.ADMIN) {
+    if (authInfo.getRole() == Role.USER) {
       try {
         UserDto userDto = userApi.getUserProfile(authInfo.getUserId());
         if (userDto != null && userDto.isBlocked()) {
@@ -161,9 +161,8 @@ public class AuthenticationService {
   public AuthenticationInfo register(RegistrationRequestDto request) {
     validateRegistrationInput(request);
 
-    // Check if trying to register as admin
-    if (request.getRole() == Role.ADMIN) {
-      validateAdminRegistration(request.getEmail());
+    if (request.getRole() == Role.GOD || request.getRole() == Role.ADMIN) {
+      validatePrivilegedRegistration(request.getEmail(), request.getRole());
     }
 
     AuthenticationInfo existingUser = authRepository.findByUsername(request.getEmail());
@@ -190,7 +189,7 @@ public class AuthenticationService {
             .build();
 
     switch (request.getRole()) {
-      case ADMIN -> userApi.createAdmin(AdminDto.builder()
+      case GOD, ADMIN -> userApi.createAdmin(AdminDto.builder()
               .id(authenticationInfo.getUserId())
               .firstName(request.getFirstName())
               .lastName(request.getLastName())
@@ -198,9 +197,60 @@ public class AuthenticationService {
               .build());
       case USER -> userApi.createUser(userDto);
     }
+
     verificationService.createVerificationToken(authenticationInfo);
 
     return authenticationInfo;
+  }
+
+  private void validatePrivilegedRegistration(String email, Role role) {
+    if (role == Role.GOD) {
+      if (!adminConfig.isEmailAuthorizedForGod(email)) {
+        log.warn("Unauthorized attempt to register as GOD: {}", email);
+        throw new CustomException(
+                ErrorCode.FORBIDDEN,
+                "GOD registration is restricted to authorized emails only"
+        );
+      }
+    } else if (role == Role.ADMIN) {
+      if (!adminConfig.isEmailAuthorizedForAdmin(email)) {
+        log.warn("Unauthorized attempt to register as admin: {}", email);
+        throw new CustomException(
+                ErrorCode.FORBIDDEN,
+                "Admin registration is restricted to authorized emails only"
+        );
+      }
+    }
+  }
+
+  @Transactional
+  public void updateUserRole(Long userId, Role newRole, Long requestingUserId) {
+    AuthenticationInfo requestingUser = findUserById(requestingUserId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Requesting user not found"));
+
+    if (requestingUser.getRole() != Role.GOD) {
+      throw new CustomException(ErrorCode.FORBIDDEN, "Only GOD role can modify user roles");
+    }
+
+    AuthenticationInfo targetUser = findUserById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Target user not found"));
+
+    if (targetUser.getRole() == Role.GOD) {
+      throw new CustomException(ErrorCode.FORBIDDEN, "Cannot modify GOD role");
+    }
+
+    targetUser.setRole(newRole);
+    authRepository.save(targetUser);
+
+    if (newRole == Role.ADMIN) {
+      UserDto userProfile = userApi.getUserProfile(userId);
+      userApi.createAdmin(AdminDto.builder()
+              .id(userId)
+              .firstName(userProfile.getFirstName())
+              .lastName(userProfile.getLastName())
+              .phoneNumber(userProfile.getPhoneNumber())
+              .build());
+    }
   }
 
   private void validateAdminRegistration(String email) {

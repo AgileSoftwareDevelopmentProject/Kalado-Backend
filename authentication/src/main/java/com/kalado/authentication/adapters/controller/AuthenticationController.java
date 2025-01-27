@@ -5,6 +5,7 @@ import com.kalado.authentication.application.service.PasswordResetService;
 import com.kalado.authentication.application.service.VerificationService;
 import com.kalado.common.dto.*;
 import com.kalado.common.enums.ErrorCode;
+import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.common.response.LoginResponse;
@@ -92,5 +93,60 @@ public class AuthenticationController implements AuthenticationApi {
 
     // Update the password through authentication service
     authService.updateUserPassword(userId, newPassword);
+  }
+
+  @Override
+  @PutMapping("/auth/roles/{userId}")
+  public void updateUserRole(
+          @PathVariable Long userId,
+          @RequestParam Role newRole,
+          @RequestParam Long requestingUserId) {
+
+    // Get the requesting user's info
+    var requestingUser = authService.findUserById(requestingUserId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Requesting user not found"));
+
+    // Get the target user's info
+    var targetUser = authService.findUserById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Target user not found"));
+
+    // Validate role change permissions
+    validateRoleChange(requestingUser.getRole(), targetUser.getRole(), newRole);
+
+    // Perform the role update
+    authService.updateUserRole(userId, newRole, requestingUserId);
+  }
+
+
+  private void validateRoleChange(Role requestingRole, Role currentRole, Role newRole) {
+    // Only GOD role can modify roles
+    if (requestingRole != Role.GOD) {
+      throw new CustomException(
+              ErrorCode.INSUFFICIENT_PRIVILEGES,
+              "Only GOD role can modify user roles"
+      );
+    }
+
+    // Cannot modify GOD roles
+    if (currentRole == Role.GOD) {
+      throw new CustomException(
+              ErrorCode.GOD_ROLE_MODIFICATION_FORBIDDEN,
+              "Cannot modify GOD role"
+      );
+    }
+
+    // Validate allowed role transitions
+    boolean isValidTransition = switch (currentRole) {
+      case USER -> newRole == Role.ADMIN;  // Users can only be promoted to ADMIN
+      case ADMIN -> newRole == Role.USER;  // Admins can only be demoted to USER
+      default -> false;  // Other transitions are not allowed
+    };
+
+    if (!isValidTransition) {
+      throw new CustomException(
+              ErrorCode.INVALID_ROLE_TRANSITION,
+              "Invalid role transition from " + currentRole + " to " + newRole
+      );
+    }
   }
 }

@@ -14,6 +14,7 @@ import java.util.Set;
 @Configuration
 public class AdminConfiguration {
     private Set<String> authorizedAdminEmails = new HashSet<>();
+    private Set<String> authorizedGodEmails = new HashSet<>();
 
     @PostConstruct
     public void loadAuthorizedEmails() {
@@ -22,17 +23,25 @@ public class AdminConfiguration {
             Properties properties = new Properties();
             properties.load(resource.getInputStream());
 
-            String emailsString = properties.getProperty("authorized.admin.emails", "");
-            String[] emails = emailsString.split(",");
-
-            for (String email : emails) {
+            String adminEmailsString = properties.getProperty("authorized.admin.emails", "");
+            String[] adminEmails = adminEmailsString.split(",");
+            for (String email : adminEmails) {
                 String trimmedEmail = email.trim();
                 if (!trimmedEmail.isEmpty()) {
                     authorizedAdminEmails.add(trimmedEmail.toLowerCase());
                 }
             }
+
+            String godEmailsString = properties.getProperty("authorized.god.emails", "");
+            String[] godEmails = godEmailsString.split(",");
+            for (String email : godEmails) {
+                String trimmedEmail = email.trim();
+                if (!trimmedEmail.isEmpty()) {
+                    authorizedGodEmails.add(trimmedEmail.toLowerCase());
+                }
+            }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load authorized admin emails", e);
+            throw new RuntimeException("Failed to load authorized emails", e);
         }
     }
 
@@ -40,7 +49,15 @@ public class AdminConfiguration {
         return email != null && authorizedAdminEmails.contains(email.toLowerCase());
     }
 
+    public boolean isEmailAuthorizedForGod(String email) {
+        return email != null && authorizedGodEmails.contains(email.toLowerCase());
+    }
+
     public Set<String> getAuthorizedAdminEmails() {
         return new HashSet<>(authorizedAdminEmails);
+    }
+
+    public Set<String> getAuthorizedGodEmails() {
+        return new HashSet<>(authorizedGodEmails);
     }
 }

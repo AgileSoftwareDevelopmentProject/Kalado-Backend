@@ -1,6 +1,7 @@
 package com.kalado.common.feign.authentication;
 
 import com.kalado.common.dto.*;
+import com.kalado.common.enums.Role;
 import com.kalado.common.response.LoginResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -36,5 +37,12 @@ public interface AuthenticationApi {
           @RequestParam Long userId,
           @RequestParam String currentPassword,
           @RequestParam String newPassword
+  );
+
+  @PutMapping("/auth/roles/{userId}")
+  void updateUserRole(
+          @PathVariable Long userId,
+          @RequestParam Role newRole,
+          @RequestParam Long requestingUserId
   );
 }
