@@ -15,4 +15,8 @@ public class UserProfileUpdateDto {
     private String phoneNumber;
     private String address;
     private Long id;
+
+    private String currentPassword;
+    private String newPassword;
+    private String confirmPassword;
 }

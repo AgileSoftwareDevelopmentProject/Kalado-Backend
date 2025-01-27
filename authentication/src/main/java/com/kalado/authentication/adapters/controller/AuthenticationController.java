@@ -78,4 +78,19 @@ public class AuthenticationController implements AuthenticationApi {
   public ResetPasswordResponseDto resetPassword(@RequestBody ResetPasswordRequestDto request) {
     return passwordResetService.resetPassword(request);
   }
+
+  @Override
+  public void updatePassword(Long userId, String currentPassword, String newPassword) {
+    // Get user by ID
+    var user = authService.findUserById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
+
+    // Verify current password matches before allowing update
+    if (!authService.verifyPassword(user, currentPassword)) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Current password is incorrect");
+    }
+
+    // Update the password through authentication service
+    authService.updateUserPassword(userId, newPassword);
+  }
 }

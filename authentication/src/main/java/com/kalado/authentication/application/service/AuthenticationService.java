@@ -17,16 +17,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -241,5 +239,61 @@ public class AuthenticationService {
 
   public String getUsername(Long userId) {
     return authRepository.findById(userId).map(AuthenticationInfo::getUsername).orElse(null);
+  }
+
+  @Transactional
+  public void updatePassword(Long userId, String currentPassword, String newPassword) {
+    AuthenticationInfo authInfo = authRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
+
+    // Verify current password
+    if (!passwordEncoder.matches(currentPassword, authInfo.getPassword())) {
+      throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Current password is incorrect");
+    }
+
+    // Update password
+    authInfo.setPassword(passwordEncoder.encode(newPassword));
+    authRepository.save(authInfo);
+
+    // Invalidate all existing tokens for the user
+    // This forces the user to log in again with the new password
+    redisTemplate.keys("*").stream()
+            .filter(key -> redisTemplate.opsForValue().get(key).equals(userId))
+            .forEach(redisTemplate::delete);
+
+    log.info("Password updated successfully for user ID: {}", userId);
+  }
+
+  public boolean verifyPassword(AuthenticationInfo user, String password) {
+    return passwordEncoder.matches(password, user.getPassword());
+  }
+
+  @Transactional
+  public void updateUserPassword(Long userId, String newPassword) {
+    AuthenticationInfo user = authRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
+
+    // Encode and update the new password
+    user.setPassword(passwordEncoder.encode(newPassword));
+    authRepository.save(user);
+
+    // Invalidate existing tokens for security
+    invalidateUserTokens(userId);
+  }
+
+  private void invalidateUserTokens(Long userId) {
+    // Find and remove all tokens for this user from Redis
+    Set<String> keys = redisTemplate.keys("*");
+    if (keys != null) {
+      keys.stream()
+              .filter(key -> redisTemplate.opsForValue().get(key) != null)
+              .filter(key -> redisTemplate.opsForValue().get(key).equals(userId))
+              .forEach(redisTemplate::delete);
+    }
+  }
+
+  public Optional<AuthenticationInfo> findUserById(Long userId) {
+    // This uses the existing JPA repository's findById method
+    return authRepository.findById(userId);
   }
 }

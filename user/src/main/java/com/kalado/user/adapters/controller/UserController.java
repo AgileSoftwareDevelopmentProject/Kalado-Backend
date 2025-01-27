@@ -1,8 +1,8 @@
 package com.kalado.user.adapters.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kalado.common.dto.AdminDto;
+import com.kalado.common.dto.ProfileUpdateResponseDto;
 import com.kalado.common.dto.UserDto;
 import com.kalado.common.dto.UserProfileUpdateDto;
 import com.kalado.common.enums.ErrorCode;
@@ -35,16 +35,21 @@ public class UserController implements UserApi {
 
   @Override
   @PostMapping(value = "/user/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public Boolean modifyUserProfile(
+  public ProfileUpdateResponseDto modifyUserProfile(
           @RequestPart("profile") String profileJson,
           @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
     try {
       UserProfileUpdateDto profileDto = objectMapper.readValue(profileJson, UserProfileUpdateDto.class);
+
+      // The service now returns ProfileUpdateResponseDto instead of Boolean
       return userService.modifyUserProfile(profileDto, profileImage);
+
     } catch (Exception e) {
       log.error("Error processing profile update: {}", e.getMessage());
-      throw new CustomException(ErrorCode.BAD_REQUEST,
-              "Error processing profile update: " + e.getMessage());
+      throw new CustomException(
+              ErrorCode.BAD_REQUEST,
+              "Error processing profile update: " + e.getMessage()
+      );
     }
   }
 

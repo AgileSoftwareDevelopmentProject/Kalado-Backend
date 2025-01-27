@@ -2,6 +2,7 @@ package com.kalado.gateway.adapters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kalado.common.dto.ProfileUpdateResponseDto;
 import com.kalado.common.dto.UserDto;
 import com.kalado.common.dto.UserProfileUpdateDto;
 import com.kalado.common.enums.ErrorCode;
@@ -10,7 +11,6 @@ import com.kalado.common.feign.user.UserApi;
 import com.kalado.gateway.annotation.Authentication;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ public class UserController {
 
   @PostMapping(value = "/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Authentication(userId = "#userId")
-  public Boolean modifyUserProfile(
+  public ProfileUpdateResponseDto modifyUserProfile(
           Long userId,
           @RequestParam("profile") String profileJson,
           @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) {

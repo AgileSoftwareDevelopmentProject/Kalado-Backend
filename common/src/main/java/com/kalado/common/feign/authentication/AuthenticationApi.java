@@ -30,4 +30,11 @@ public interface AuthenticationApi {
 
   @PostMapping("/auth/reset-password")
   ResetPasswordResponseDto resetPassword(@RequestBody ResetPasswordRequestDto request);
+
+  @PostMapping("/auth/update-password")
+  void updatePassword(
+          @RequestParam Long userId,
+          @RequestParam String currentPassword,
+          @RequestParam String newPassword
+  );
 }

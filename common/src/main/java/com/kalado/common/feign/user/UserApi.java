@@ -1,9 +1,8 @@
 package com.kalado.common.feign.user;
 
-import com.kalado.common.configuration.FeignMultipartConfig;
 import com.kalado.common.dto.AdminDto;
+import com.kalado.common.dto.ProfileUpdateResponseDto;
 import com.kalado.common.dto.UserDto;
-import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -13,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @FeignClient(name = "user-service")
 public interface UserApi {
   @PostMapping(value = "/user/modifyProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  Boolean modifyUserProfile(
+  ProfileUpdateResponseDto modifyUserProfile(
           @RequestPart("profile") String profileJson,
           @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
   );

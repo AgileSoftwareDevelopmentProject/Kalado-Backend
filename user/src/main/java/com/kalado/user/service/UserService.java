@@ -1,6 +1,7 @@
 package com.kalado.user.service;
 
 import com.kalado.common.dto.AdminDto;
+import com.kalado.common.dto.ProfileUpdateResponseDto;
 import com.kalado.common.dto.UserDto;
 import com.kalado.common.dto.UserProfileUpdateDto;
 import com.kalado.common.enums.ErrorCode;
@@ -23,38 +24,82 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
-
   private final UserRepository userRepository;
   private final AuthenticationApi authenticationApi;
   private final AdminRepository adminRepository;
   private final ImageService imageService;
 
-
   @Transactional
-  public Boolean modifyUserProfile(UserProfileUpdateDto profileUpdateDto, MultipartFile profileImage) {
+  public ProfileUpdateResponseDto modifyUserProfile(UserProfileUpdateDto profileUpdateDto, MultipartFile profileImage) {
     User user = userRepository.findById(profileUpdateDto.getId())
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
 
+    boolean passwordChanged = false;
     try {
+      // Handle password update if requested
+      if (shouldUpdatePassword(profileUpdateDto)) {
+        validatePasswordUpdate(profileUpdateDto);
+        // Update password through authentication service
+        authenticationApi.updatePassword(
+                profileUpdateDto.getId(),
+                profileUpdateDto.getCurrentPassword(),
+                profileUpdateDto.getNewPassword()
+        );
+        passwordChanged = true;
+      }
+
+      // Handle profile image
       if (profileImage != null) {
         String imageUrl = imageService.storeProfileImage(profileImage);
         user.setProfileImageUrl(imageUrl);
       }
 
-      user.setFirstName(profileUpdateDto.getFirstName());
-      user.setLastName(profileUpdateDto.getLastName());
-      user.setPhoneNumber(profileUpdateDto.getPhoneNumber());
-      user.setAddress(profileUpdateDto.getAddress());
+      // Update other profile fields
+      updateUserFields(user, profileUpdateDto);
+      User savedUser = userRepository.save(user);
 
-      userRepository.save(user);
-      return true;
+      String username = authenticationApi.getUsername(user.getId());
+      UserDto updatedProfile = UserMapper.INSTANCE.userToDto(savedUser);
+      updatedProfile.setUsername(username);
+
+      return ProfileUpdateResponseDto.builder()
+              .success(true)
+              .message("Profile updated successfully" + (passwordChanged ? " with password change" : ""))
+              .updatedProfile(updatedProfile)
+              .passwordChanged(passwordChanged)
+              .build();
+
     } catch (Exception e) {
       log.error("Failed to modify user profile: {}", e.getMessage(), e);
       throw new CustomException(
               ErrorCode.INTERNAL_SERVER_ERROR,
-              "Failed to modify user profile: " + e.getMessage()
+              "Failed to update profile: " + e.getMessage()
       );
     }
+  }
+
+  private boolean shouldUpdatePassword(UserProfileUpdateDto dto) {
+    return dto.getCurrentPassword() != null && !dto.getCurrentPassword().isEmpty() &&
+            dto.getNewPassword() != null && !dto.getNewPassword().isEmpty() &&
+            dto.getConfirmPassword() != null && !dto.getConfirmPassword().isEmpty();
+  }
+
+  private void validatePasswordUpdate(UserProfileUpdateDto dto) {
+    if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
+      throw new CustomException(ErrorCode.BAD_REQUEST, "New password and confirmation do not match");
+    }
+
+    // Add password strength validation if needed
+    if (dto.getNewPassword().length() < 8) {
+      throw new CustomException(ErrorCode.BAD_REQUEST, "Password must be at least 8 characters long");
+    }
+  }
+
+  private void updateUserFields(User user, UserProfileUpdateDto dto) {
+    if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
+    if (dto.getLastName() != null) user.setLastName(dto.getLastName());
+    if (dto.getPhoneNumber() != null) user.setPhoneNumber(dto.getPhoneNumber());
+    if (dto.getAddress() != null) user.setAddress(dto.getAddress());
   }
 
   public void createUser(UserDto userDto) {
