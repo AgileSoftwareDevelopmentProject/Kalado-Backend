@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/user")
 @RequiredArgsConstructor
@@ -79,5 +81,21 @@ public class UserController {
   @Authentication(userId = "#userId")
   boolean blockUser(Long userId) {
     return userApi.blockUser(userId);
+  }
+
+  @GetMapping("/all")
+  @Authentication(userId = "#userId") // Only authenticated users can access this endpoint
+  public ResponseEntity<List<UserDto>> getAllUsers(Long userId) {
+    try {
+      log.debug("Fetching all users. Request made by user ID: {}", userId);
+      List<UserDto> users = userApi.getAllUsers();
+      return ResponseEntity.ok(users);
+    } catch (Exception e) {
+      log.error("Error fetching all users: {}", e.getMessage());
+      throw new CustomException(
+              ErrorCode.INTERNAL_SERVER_ERROR,
+              "Error retrieving users: " + e.getMessage()
+      );
+    }
   }
 }

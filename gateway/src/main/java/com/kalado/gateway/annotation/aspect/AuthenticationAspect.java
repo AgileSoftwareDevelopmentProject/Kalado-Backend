@@ -40,6 +40,7 @@ public class AuthenticationAspect {
 
                   // User management endpoints
                   entry("/v1/payment", List.of(Role.USER, Role.GOD)),
+                  entry("/v1/user/all", List.of(Role.ADMIN, Role.GOD)),
                   entry("/v1/user", List.of(Role.USER, Role.GOD)),
 
                   // Product management endpoints

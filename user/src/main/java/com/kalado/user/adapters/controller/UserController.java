@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -94,4 +95,18 @@ public class UserController implements UserApi {
     }
   }
 
+  @Override
+  @GetMapping("/user/all")
+  public List<UserDto> getAllUsers() {
+    try {
+      log.debug("Fetching all users");
+      return userService.getAllUsers();
+    } catch (Exception e) {
+      log.error("Error fetching all users: {}", e.getMessage());
+      throw new CustomException(
+              ErrorCode.INTERNAL_SERVER_ERROR,
+              "Error retrieving users: " + e.getMessage()
+      );
+    }
+  }
 }

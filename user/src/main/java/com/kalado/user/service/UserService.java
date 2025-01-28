@@ -8,7 +8,11 @@ import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.exception.CustomException;
 import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.user.domain.mapper.UserMapper;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import com.kalado.user.adapters.repository.UserRepository;
 
 import com.kalado.user.domain.model.Admin;
@@ -169,5 +173,21 @@ public class UserService {
       log.warn("Attempted to block non-existent user with ID: {}", id);
       throw new CustomException(ErrorCode.NOT_FOUND, "User not found");
     }
+  }
+
+  @Transactional(readOnly = true)
+  public List<UserDto> getAllUsers() {
+    log.info("Retrieving all users");
+    List<User> users = userRepository.findAll();
+
+    return users.stream()
+            .map(user -> {
+              UserDto userDto = UserMapper.INSTANCE.userToDto(user);
+              // Get username from authentication service
+              String username = authenticationApi.getUsername(user.getId());
+              userDto.setUsername(username);
+              return userDto;
+            })
+            .collect(Collectors.toList());
   }
 }
