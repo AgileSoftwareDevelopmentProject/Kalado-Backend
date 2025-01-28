@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 public class UserProfileUpdateDto {
     private String firstName;
     private String lastName;
