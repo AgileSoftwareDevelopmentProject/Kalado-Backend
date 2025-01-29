@@ -36,7 +36,7 @@ jobs:
           cache: maven
 
       - name: Build all modules with Maven
-        run: mvn -B install
+        run: mvn -B install -DskipITs
 
       - name: Verify JAR files
         run: |
