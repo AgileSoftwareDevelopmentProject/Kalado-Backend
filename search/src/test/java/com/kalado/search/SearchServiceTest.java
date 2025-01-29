@@ -1,4 +1,4 @@
-package com.kalado.authentication.search;
+package com.kalado.search;
 
 import com.kalado.common.Price;
 import com.kalado.common.dto.ProductDto;
