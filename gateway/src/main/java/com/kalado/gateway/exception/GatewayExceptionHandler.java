@@ -30,7 +30,6 @@ public class GatewayExceptionHandler extends GlobalExceptionHandler {
             String responseBody = ex.contentUTF8();
             errorResponse = objectMapper.readValue(responseBody, ErrorResponse.class);
 
-            // Set the path to the gateway's request path
             errorResponse.setPath(((ServletWebRequest) request).getRequest().getRequestURI());
         } catch (IOException e) {
             log.warn("Could not parse error response, using default", e);

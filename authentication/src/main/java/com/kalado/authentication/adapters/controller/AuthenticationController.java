@@ -82,16 +82,13 @@ public class AuthenticationController implements AuthenticationApi {
 
   @Override
   public void updatePassword(Long userId, String currentPassword, String newPassword) {
-    // Get user by ID
     var user = authService.findUserById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
 
-    // Verify current password matches before allowing update
     if (!authService.verifyPassword(user, currentPassword)) {
       throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Current password is incorrect");
     }
 
-    // Update the password through authentication service
     authService.updateUserPassword(userId, newPassword);
   }
 
@@ -102,24 +99,19 @@ public class AuthenticationController implements AuthenticationApi {
           @RequestParam Role newRole,
           @RequestParam Long requestingUserId) {
 
-    // Get the requesting user's info
     var requestingUser = authService.findUserById(requestingUserId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Requesting user not found"));
 
-    // Get the target user's info
     var targetUser = authService.findUserById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Target user not found"));
 
-    // Validate role change permissions
     validateRoleChange(requestingUser.getRole(), targetUser.getRole(), newRole);
 
-    // Perform the role update
     authService.updateUserRole(userId, newRole, requestingUserId);
   }
 
 
   private void validateRoleChange(Role requestingRole, Role currentRole, Role newRole) {
-    // Only GOD role can modify roles
     if (requestingRole != Role.GOD) {
       throw new CustomException(
               ErrorCode.INSUFFICIENT_PRIVILEGES,
@@ -127,7 +119,6 @@ public class AuthenticationController implements AuthenticationApi {
       );
     }
 
-    // Cannot modify GOD roles
     if (currentRole == Role.GOD) {
       throw new CustomException(
               ErrorCode.GOD_ROLE_MODIFICATION_FORBIDDEN,
@@ -135,11 +126,10 @@ public class AuthenticationController implements AuthenticationApi {
       );
     }
 
-    // Validate allowed role transitions
     boolean isValidTransition = switch (currentRole) {
-      case USER -> newRole == Role.ADMIN;  // Users can only be promoted to ADMIN
-      case ADMIN -> newRole == Role.USER;  // Admins can only be demoted to USER
-      default -> false;  // Other transitions are not allowed
+      case USER -> newRole == Role.ADMIN;
+      case ADMIN -> newRole == Role.USER;
+      default -> false;
     };
 
     if (!isValidTransition) {

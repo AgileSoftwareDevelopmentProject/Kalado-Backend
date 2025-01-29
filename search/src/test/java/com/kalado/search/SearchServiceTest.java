@@ -83,7 +83,6 @@ class SearchServiceTest {
         @Test
         @DisplayName("Search with keyword should return matching products")
         void searchProducts_WithKeyword_ShouldReturnMatchingProducts() {
-            // Arrange
             String keyword = "test";
             SearchHit<ProductDocument> searchHit = mock(SearchHit.class);
             when(searchHit.getContent()).thenReturn(sampleDocument);
@@ -95,12 +94,10 @@ class SearchServiceTest {
             when(elasticsearchOperations.search(any(NativeSearchQuery.class), eq(ProductDocument.class)))
                     .thenReturn(searchHits);
 
-            // Act
             Page<ProductDocument> result = searchService.searchProducts(
                     keyword, null, null, null, "date",
                     SortOrder.DESC, defaultPageable);
 
-            // Assert
             assertNotNull(result);
             assertEquals(1, result.getTotalElements());
             verify(elasticsearchOperations).search(searchQueryCaptor.capture(), eq(ProductDocument.class));
@@ -112,7 +109,6 @@ class SearchServiceTest {
         @Test
         @DisplayName("Search with price range should filter products")
         void searchProducts_WithPriceRange_ShouldFilterProducts() {
-            // Arrange
             Double minPrice = 500.0;
             Double maxPrice = 1500.0;
 
@@ -126,12 +122,10 @@ class SearchServiceTest {
             when(elasticsearchOperations.search(any(NativeSearchQuery.class), eq(ProductDocument.class)))
                     .thenReturn(searchHits);
 
-            // Act
             Page<ProductDocument> result = searchService.searchProducts(
                     null, minPrice, maxPrice, null, "price",
                     SortOrder.ASC, defaultPageable);
 
-            // Assert
             assertNotNull(result);
             assertEquals(1, result.getTotalElements());
             verify(elasticsearchOperations).search(searchQueryCaptor.capture(), eq(ProductDocument.class));
@@ -143,8 +137,7 @@ class SearchServiceTest {
         @Test
         @DisplayName("Search with time filter should return recent products")
         void searchProducts_WithTimeFilter_ShouldReturnRecentProducts() {
-            // Arrange
-            String timeFilter = "1D"; // Last day
+            String timeFilter = "1D";
 
             SearchHit<ProductDocument> searchHit = mock(SearchHit.class);
             when(searchHit.getContent()).thenReturn(sampleDocument);
@@ -156,12 +149,10 @@ class SearchServiceTest {
             when(elasticsearchOperations.search(any(NativeSearchQuery.class), eq(ProductDocument.class)))
                     .thenReturn(searchHits);
 
-            // Act
             Page<ProductDocument> result = searchService.searchProducts(
                     null, null, null, timeFilter, "date",
                     SortOrder.DESC, defaultPageable);
 
-            // Assert
             assertNotNull(result);
             assertEquals(1, result.getTotalElements());
             verify(elasticsearchOperations).search(searchQueryCaptor.capture(), eq(ProductDocument.class));
@@ -170,7 +161,6 @@ class SearchServiceTest {
         @Test
         @DisplayName("Search with invalid time filter should ignore time filter")
         void searchProducts_WithInvalidTimeFilter_ShouldIgnoreTimeFilter() {
-            // Arrange
             String invalidTimeFilter = "INVALID";
 
             SearchHit<ProductDocument> searchHit = mock(SearchHit.class);
@@ -183,12 +173,10 @@ class SearchServiceTest {
             when(elasticsearchOperations.search(any(NativeSearchQuery.class), eq(ProductDocument.class)))
                     .thenReturn(searchHits);
 
-            // Act
             Page<ProductDocument> result = searchService.searchProducts(
                     null, null, null, invalidTimeFilter, "date",
                     SortOrder.DESC, defaultPageable);
 
-            // Assert
             assertNotNull(result);
             verify(elasticsearchOperations).search(searchQueryCaptor.capture(), eq(ProductDocument.class));
 
@@ -199,7 +187,6 @@ class SearchServiceTest {
         @Test
         @DisplayName("Search should exclude deleted products")
         void searchProducts_ShouldExcludeDeletedProducts() {
-            // Arrange
             SearchHit<ProductDocument> searchHit = mock(SearchHit.class);
             when(searchHit.getContent()).thenReturn(sampleDocument);
 
@@ -210,12 +197,10 @@ class SearchServiceTest {
             when(elasticsearchOperations.search(any(NativeSearchQuery.class), eq(ProductDocument.class)))
                     .thenReturn(searchHits);
 
-            // Act
             Page<ProductDocument> result = searchService.searchProducts(
                     null, null, null, null, "date",
                     SortOrder.DESC, defaultPageable);
 
-            // Assert
             assertNotNull(result);
             verify(elasticsearchOperations).search(searchQueryCaptor.capture(), eq(ProductDocument.class));
 
@@ -232,28 +217,22 @@ class SearchServiceTest {
         @Test
         @DisplayName("Index product should save document")
         void indexProduct_ShouldSaveDocument() {
-            // Arrange
             when(productSearchRepository.save(any(ProductDocument.class)))
                     .thenReturn(sampleDocument);
 
-            // Act
             searchService.indexProduct(sampleDocument);
 
-            // Assert
             verify(productSearchRepository).save(sampleDocument);
         }
 
         @Test
         @DisplayName("Delete product should remove document")
         void deleteProduct_ShouldRemoveDocument() {
-            // Arrange
             String productId = "1";
             doNothing().when(productSearchRepository).deleteById(productId);
 
-            // Act
             searchService.deleteProduct(productId);
 
-            // Assert
             verify(productSearchRepository).deleteById(productId);
         }
     }

@@ -31,13 +31,10 @@ class EmailServiceTest {
 
     @Test
     void sendVerificationToken_ShouldSendCorrectEmail() {
-        // Arrange
         String token = "123456";
 
-        // Act
         emailService.sendVerificationToken(TEST_EMAIL, token);
 
-        // Assert
         verify(mailSender).send(emailCaptor.capture());
         SimpleMailMessage capturedEmail = emailCaptor.getValue();
 
@@ -50,13 +47,10 @@ class EmailServiceTest {
 
     @Test
     void sendPasswordResetToken_ShouldSendCorrectEmail() {
-        // Arrange
         String token = "reset-token-123";
 
-        // Act
         emailService.sendPasswordResetToken(TEST_EMAIL, token);
 
-        // Assert
         verify(mailSender).send(emailCaptor.capture());
         SimpleMailMessage capturedEmail = emailCaptor.getValue();
 
@@ -70,10 +64,8 @@ class EmailServiceTest {
 
     @Test
     void sendVerificationToken_ShouldHandleNullToken() {
-        // Act
         assertDoesNotThrow(() -> emailService.sendVerificationToken(TEST_EMAIL, null));
 
-        // Assert
         verify(mailSender).send(emailCaptor.capture());
         SimpleMailMessage capturedEmail = emailCaptor.getValue();
         assertTrue(capturedEmail.getText().contains("null"));
@@ -81,10 +73,8 @@ class EmailServiceTest {
 
     @Test
     void sendPasswordResetToken_ShouldHandleNullToken() {
-        // Act
         assertDoesNotThrow(() -> emailService.sendPasswordResetToken(TEST_EMAIL, null));
 
-        // Assert
         verify(mailSender).send(emailCaptor.capture());
         SimpleMailMessage capturedEmail = emailCaptor.getValue();
         assertTrue(capturedEmail.getText().contains("null"));

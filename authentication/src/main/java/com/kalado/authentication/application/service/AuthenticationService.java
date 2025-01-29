@@ -314,17 +314,13 @@ public class AuthenticationService {
     AuthenticationInfo authInfo = authRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
 
-    // Verify current password
     if (!passwordEncoder.matches(currentPassword, authInfo.getPassword())) {
       throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Current password is incorrect");
     }
 
-    // Update password
     authInfo.setPassword(passwordEncoder.encode(newPassword));
     authRepository.save(authInfo);
 
-    // Invalidate all existing tokens for the user
-    // This forces the user to log in again with the new password
     redisTemplate.keys("*").stream()
             .filter(key -> redisTemplate.opsForValue().get(key).equals(userId))
             .forEach(redisTemplate::delete);
@@ -341,16 +337,13 @@ public class AuthenticationService {
     AuthenticationInfo user = authRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
 
-    // Encode and update the new password
     user.setPassword(passwordEncoder.encode(newPassword));
     authRepository.save(user);
 
-    // Invalidate existing tokens for security
     invalidateUserTokens(userId);
   }
 
   private void invalidateUserTokens(Long userId) {
-    // Find and remove all tokens for this user from Redis
     Set<String> keys = redisTemplate.keys("*");
     if (keys != null) {
       keys.stream()
@@ -361,7 +354,6 @@ public class AuthenticationService {
   }
 
   public Optional<AuthenticationInfo> findUserById(Long userId) {
-    // This uses the existing JPA repository's findById method
     return authRepository.findById(userId);
   }
 }

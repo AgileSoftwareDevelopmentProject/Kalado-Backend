@@ -76,15 +76,12 @@ class ProductEventConsumerTest {
     @Test
     @DisplayName("Handle CREATED event should index new product")
     void handleProductEvent_Created_ShouldIndexProduct() {
-        // Arrange
         ProductEvent event = new ProductEvent("CREATED", sampleProductDto);
         when(productSearchMapper.dtoToDocument(sampleProductDto)).thenReturn(sampleDocument);
         doNothing().when(searchService).indexProduct(any(ProductDocument.class));
 
-        // Act
         productEventConsumer.handleProductEvent(event);
 
-        // Assert
         verify(productSearchMapper).dtoToDocument(sampleProductDto);
         verify(searchService).indexProduct(documentCaptor.capture());
 
@@ -96,14 +93,11 @@ class ProductEventConsumerTest {
     @Test
     @DisplayName("Handle DELETED event should remove product from index")
     void handleProductEvent_Deleted_ShouldRemoveProduct() {
-        // Arrange
         ProductEvent event = new ProductEvent("DELETED", sampleProductDto);
         doNothing().when(searchService).deleteProduct(any(String.class));
 
-        // Act
         productEventConsumer.handleProductEvent(event);
 
-        // Assert
         verify(searchService).deleteProduct(String.valueOf(sampleProductDto.getId()));
         verify(productSearchMapper, never()).dtoToDocument(any());
     }
@@ -111,13 +105,10 @@ class ProductEventConsumerTest {
     @Test
     @DisplayName("Handle unknown event type should log warning")
     void handleProductEvent_UnknownType_ShouldLogWarning() {
-        // Arrange
         ProductEvent event = new ProductEvent("UNKNOWN_TYPE", sampleProductDto);
 
-        // Act
         productEventConsumer.handleProductEvent(event);
 
-        // Assert
         verify(searchService, never()).indexProduct(any());
         verify(searchService, never()).deleteProduct(any());
         verify(productSearchMapper, never()).dtoToDocument(any());
@@ -126,12 +117,10 @@ class ProductEventConsumerTest {
     @Test
     @DisplayName("Handle event with service exception should propagate exception")
     void handleProductEvent_ServiceException_ShouldPropagateException() {
-        // Arrange
         ProductEvent event = new ProductEvent("CREATED", sampleProductDto);
         when(productSearchMapper.dtoToDocument(sampleProductDto)).thenReturn(sampleDocument);
         doThrow(new RuntimeException("Test exception")).when(searchService).indexProduct(any());
 
-        // Act & Assert
         assertThrows(RuntimeException.class, () -> productEventConsumer.handleProductEvent(event));
     }
 }
