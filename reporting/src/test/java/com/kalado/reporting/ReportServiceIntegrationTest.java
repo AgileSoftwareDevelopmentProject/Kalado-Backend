@@ -19,6 +19,8 @@
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.mock.mockito.MockBean;
 //import org.springframework.test.annotation.DirtiesContext;
+//import org.springframework.test.context.ActiveProfiles;
+//import org.springframework.transaction.annotation.Transactional;
 //
 //import javax.persistence.EntityManager;
 //import javax.persistence.PersistenceContext;
@@ -32,6 +34,8 @@
 //import static org.mockito.Mockito.*;
 //
 //@SpringBootTest
+//@ActiveProfiles("test")
+//@Transactional
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 //class ReportServiceIntegrationTest {
 //
@@ -65,6 +69,7 @@
 //    private static final Long REPORTED_USER_ID = 3L;
 //
 //    @BeforeEach
+//    @Transactional
 //    void setUp() {
 //        // Clean database
 //        reportRepository.deleteAll();
@@ -131,6 +136,7 @@
 //    }
 //
 //    @Test
+//    @Transactional
 //    void createAndUpdateReportFlow() {
 //        // Create report
 //        ReportResponseDto createdReport = reportService.createReport(validRequest, REPORTER_ID);
@@ -161,6 +167,7 @@
 //    }
 //
 //    @Test
+//    @Transactional
 //    void getUserReports() {
 //        // Create test reports
 //        Report report1 = createTestReport(REPORTER_ID, ReportStatus.SUBMITTED);
@@ -185,7 +192,8 @@
 //        assertTrue(reports.stream().allMatch(r -> r.getReporterId().equals(REPORTER_ID)));
 //    }
 //
-//    private Report createTestReport(Long reporterId, ReportStatus status) {
+//    @Transactional
+//    protected Report createTestReport(Long reporterId, ReportStatus status) {
 //        Report report = Report.builder()
 //                .reporterId(reporterId)
 //                .reportedUserId(REPORTED_USER_ID)
