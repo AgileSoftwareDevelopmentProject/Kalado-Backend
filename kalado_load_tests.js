@@ -164,17 +164,19 @@ export function adminEndpointsScenario(data) {
         });
 
         const targetUserId = 3;
+        const newRole = "ADMIN";
+
+        const headers = {
+            'Authorization': data.tokens.GOD
+        };
+
         const roleUpdateResponse = http.put(
-            `${BASE_URL}/roles/update/${targetUserId}?newRole=USER`,
-            null,
-            {
-                headers: {
-                    'Authorization': data.tokens.GOD
-                },
-                timeout: REQUEST_TIMEOUT,
-                tags: { endpoint: 'role' }
-            }
+            `${BASE_URL}/roles/update/${targetUserId}?newRole=${newRole}`,
+            null, // No request body
+            { headers }
         );
+
+        console.log(`Role Update Response Status: ${roleUpdateResponse.status}`);
 
         debugResponse('Update role', roleUpdateResponse);
 
@@ -190,37 +192,40 @@ export function productEndpointsScenario(data) {
     group('Product Operations', () => {
         console.log('Starting product operations...');
 
-        // Matching your Postman collection format
-        const requestBody = {
-            product: JSON.stringify({
-                title: `Test Product ${randomIntBetween(1, 10000)}`,
-                description: "Detailed product description",
-                price: {
-                    amount: randomIntBetween(100, 1000),
-                    unit: "TOMAN"
-                },
-                category: "Electronics",
-                productionYear: 2023,
-                brand: "Test Brand"
-            })
+        const productData = JSON.stringify({
+            title: `Test Product ${Math.floor(Math.random() * 10000)}`,
+            description: "Detailed product description",
+            price: {
+                amount: Math.floor(Math.random() * 1000) + 100,
+                unit: "TOMAN"
+            },
+            category: "Electronics",
+            productionYear: 2023,
+            brand: "Test Brand",
+            sellerId: 7
+        });
+
+        // Create multipart form-data manually
+        const boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
+        const body =
+            `--${boundary}\r\n` +
+            `Content-Disposition: form-data; name="product"\r\n\r\n` +
+            `${productData}\r\n` +
+            `--${boundary}--\r\n`;
+
+        const headers = {
+            'Authorization': data.tokens.REGULAR,
+            'Content-Type': `multipart/form-data; boundary=${boundary}`  // Manually specify boundary
         };
 
-        const createResponse = http.post(
-            `${BASE_URL}/product`,
-            requestBody,
-            {
-                headers: {
-                    'Authorization': data.tokens.REGULAR,
-                    'Content-Type': 'multipart/form-data'
-                },
-                timeout: REQUEST_TIMEOUT,
-                tags: { endpoint: 'product' }
-            }
-        );
+        // Send the request
+        const response = http.post(`${BASE_URL}/product`, body, { headers });
 
-        debugResponse('Create product', createResponse);
+        console.log(`Product Response Status: ${response.status}`);
 
-        check(createResponse, {
+        debugResponse('Create product', response);
+
+        check(response, {
             'create product status is 200': (r) => r.status === 200
         });
 
@@ -282,27 +287,30 @@ export function userEndpointsScenario(data) {
             }
         });
 
-        // Matching your Postman collection format for reports
-        const requestBody = {
-            report: JSON.stringify({
-                violationType: "INAPPROPRIATE_CONTENT",
-                description: "Test report description",
-                reportedContentId: 1
-            })
+        const reportData = JSON.stringify({
+            violationType: "INAPPROPRIATE_CONTENT",
+            description: "Test report description",
+            reportedContentId: 7
+        });
+
+        // Simulating multipart/form-data using a boundary (K6 workaround)
+        const boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
+        const body =
+            `--${boundary}\r\n` +
+            `Content-Disposition: form-data; name="report"\r\n\r\n` +
+            `${reportData}\r\n` +
+            `--${boundary}--\r\n`;
+
+        const headers = {
+            'Authorization': data.tokens.REGULAR,
+            'Content-Type': `multipart/form-data; boundary=${boundary}` // Manually set the boundary
         };
 
-        const reportResponse = http.post(
-            `${BASE_URL}/reports`,
-            requestBody,
-            {
-                headers: {
-                    'Authorization': data.tokens.REGULAR,
-                    'Content-Type': 'multipart/form-data'
-                },
-                timeout: REQUEST_TIMEOUT,
-                tags: { endpoint: 'report' }
-            }
-        );
+        // Send request
+        const reportResponse = http.post(`${BASE_URL}/reports`, body, { headers });
+
+        console.log(`Report Response Status: ${reportResponse.status}`);
+
 
         debugResponse('Create report', reportResponse);
 
