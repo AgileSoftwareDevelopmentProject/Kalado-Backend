@@ -69,7 +69,6 @@ class ReportServiceTest {
 
     @Test
     void createReport_Success() {
-        // Arrange
         ProductDto validProduct = ProductDto.builder()
                 .id(REPORTED_CONTENT_ID)
                 .sellerId(REPORTED_USER_ID)
@@ -82,7 +81,6 @@ class ReportServiceTest {
                 .status(ReportStatus.SUBMITTED)
                 .build();
 
-        // Mock all necessary service calls
         when(userApi.getUserProfile(any())).thenReturn(UserDto.builder()
                 .id(REPORTER_ID)
                 .username("test@example.com")
@@ -95,10 +93,8 @@ class ReportServiceTest {
                 .status(ReportStatus.SUBMITTED)
                 .build());
 
-        // Act
         ReportResponseDto response = reportService.createReport(validRequest, REPORTER_ID);
 
-        // Assert
         assertNotNull(response);
         verify(reportRepository).save(reportCaptor.capture());
         verify(emailService).sendReportConfirmation(REPORTER_ID);
@@ -107,7 +103,6 @@ class ReportServiceTest {
         assertEquals(REPORTER_ID, savedReport.getReporterId());
         assertEquals(REPORTED_USER_ID, savedReport.getReportedUserId());
 
-        // Verify the order of service calls
         verify(userApi, times(2)).getUserProfile(any());
         verify(productApi).getProduct(REPORTED_CONTENT_ID);
         verify(reportMapper).toReport(any(), eq(REPORTER_ID));
@@ -116,7 +111,6 @@ class ReportServiceTest {
 
     @Test
     void updateReportStatus_Success() {
-        // Arrange
         Report existingReport = Report.builder()
                 .id(1L)
                 .reporterId(REPORTER_ID)
@@ -136,10 +130,8 @@ class ReportServiceTest {
                 .adminNotes("Test notes")
                 .build();
 
-        // Act
         ReportResponseDto response = reportService.updateReportStatus(1L, updateRequest, 1L);
 
-        // Assert
         assertNotNull(response);
         verify(reportRepository).save(reportCaptor.capture());
         Report savedReport = reportCaptor.getValue();
@@ -149,7 +141,6 @@ class ReportServiceTest {
 
     @Test
     void updateReportStatus_WithUserBlock() {
-        // Arrange
         Report existingReport = Report.builder()
                 .id(1L)
                 .reporterId(REPORTER_ID)
@@ -166,16 +157,13 @@ class ReportServiceTest {
                 .blockUser(true)
                 .build();
 
-        // Act
         reportService.updateReportStatus(1L, updateRequest, 1L);
 
-        // Assert
         verify(userApi).blockUser(REPORTED_USER_ID);
     }
 
     @Test
     void getUserReports_Success() {
-        // Arrange
         when(userApi.getUserProfile(REPORTER_ID)).thenReturn(UserDto.builder().id(REPORTER_ID).build());
         when(reportRepository.findByReporterId(REPORTER_ID))
                 .thenReturn(Arrays.asList(
@@ -184,10 +172,8 @@ class ReportServiceTest {
                 ));
         when(reportMapper.toReportResponse(any())).thenReturn(new ReportResponseDto());
 
-        // Act
         List<ReportResponseDto> reports = reportService.getUserReports(REPORTER_ID);
 
-        // Assert
         assertNotNull(reports);
         assertEquals(2, reports.size());
         verify(reportMapper, times(2)).toReportResponse(any());
@@ -195,10 +181,8 @@ class ReportServiceTest {
 
     @Test
     void getUserReports_UserNotFound() {
-        // Arrange
         when(userApi.getUserProfile(REPORTER_ID)).thenReturn(null);
 
-        // Act & Assert
         CustomException exception = assertThrows(CustomException.class,
                 () -> reportService.getUserReports(REPORTER_ID));
         assertEquals(ErrorCode.NOT_FOUND, exception.getErrorCode());
@@ -206,7 +190,6 @@ class ReportServiceTest {
 
     @Test
     void getStatistics_Success() {
-        // Arrange
         LocalDateTime startDate = LocalDateTime.now().minusDays(7);
         LocalDateTime endDate = LocalDateTime.now();
         List<Report> reports = Arrays.asList(
@@ -225,10 +208,8 @@ class ReportServiceTest {
 
         when(reportRepository.findByCreatedAtBetween(any(), any())).thenReturn(reports);
 
-        // Act
         ReportStatisticsDto stats = reportService.getStatistics(startDate, endDate, null);
 
-        // Assert
         assertNotNull(stats);
         assertEquals(2, stats.getTotalReports());
         assertEquals(1, stats.getPendingReports());

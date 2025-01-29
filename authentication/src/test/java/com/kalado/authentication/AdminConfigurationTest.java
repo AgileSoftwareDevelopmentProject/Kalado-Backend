@@ -83,7 +83,6 @@ class AdminConfigurationTest {
         assertNotNull(emails);
         assertTrue(emails.contains(TEST_ADMIN_EMAIL));
 
-        // Verify that modifying the returned set doesn't affect the original
         emails.add("new@example.com");
         assertFalse(adminConfiguration.isEmailAuthorizedForAdmin("new@example.com"));
     }
@@ -94,7 +93,6 @@ class AdminConfigurationTest {
         assertNotNull(emails);
         assertTrue(emails.contains(TEST_GOD_EMAIL));
 
-        // Verify that modifying the returned set doesn't affect the original
         emails.add("new@example.com");
         assertFalse(adminConfiguration.isEmailAuthorizedForGod("new@example.com"));
     }

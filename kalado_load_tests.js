@@ -2,14 +2,12 @@ import http from 'k6/http';
 import { sleep, check, group } from 'k6';
 import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
-// Configuration
 const BASE_URL = 'http://localhost:8083/v1';
 const RAMP_UP_DURATION = '2m';
 const STEADY_STATE_DURATION = '3m';
 const MAX_VUS = 16;
 const REQUEST_TIMEOUT = '5s';
 
-// Debug logging helper
 const debugResponse = (name, response) => {
     console.log(`${name} status: ${response.status}`);
     console.log(`${name} body: ${response.body}`);
@@ -172,7 +170,7 @@ export function adminEndpointsScenario(data) {
 
         const roleUpdateResponse = http.put(
             `${BASE_URL}/roles/update/${targetUserId}?newRole=${newRole}`,
-            null, // No request body
+            null,
             { headers }
         );
 
@@ -205,7 +203,6 @@ export function productEndpointsScenario(data) {
             sellerId: 7
         });
 
-        // Create multipart form-data manually
         const boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
         const body =
             `--${boundary}\r\n` +
@@ -215,10 +212,9 @@ export function productEndpointsScenario(data) {
 
         const headers = {
             'Authorization': data.tokens.REGULAR,
-            'Content-Type': `multipart/form-data; boundary=${boundary}`  // Manually specify boundary
+            'Content-Type': `multipart/form-data; boundary=${boundary}`
         };
 
-        // Send the request
         const response = http.post(`${BASE_URL}/product`, body, { headers });
 
         console.log(`Product Response Status: ${response.status}`);
@@ -293,7 +289,6 @@ export function userEndpointsScenario(data) {
             reportedContentId: 7
         });
 
-        // Simulating multipart/form-data using a boundary (K6 workaround)
         const boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
         const body =
             `--${boundary}\r\n` +
@@ -303,10 +298,9 @@ export function userEndpointsScenario(data) {
 
         const headers = {
             'Authorization': data.tokens.REGULAR,
-            'Content-Type': `multipart/form-data; boundary=${boundary}` // Manually set the boundary
+            'Content-Type': `multipart/form-data; boundary=${boundary}`
         };
 
-        // Send request
         const reportResponse = http.post(`${BASE_URL}/reports`, body, { headers });
 
         console.log(`Report Response Status: ${reportResponse.status}`);

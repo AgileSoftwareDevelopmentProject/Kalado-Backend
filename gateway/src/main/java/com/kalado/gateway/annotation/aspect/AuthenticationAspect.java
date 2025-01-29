@@ -35,25 +35,20 @@ public class AuthenticationAspect {
   private final AuthenticationApi authenticationApi;
   private static final Map<String, List<Role>> ROLE_PATH_ACCESS =
           Map.ofEntries(
-                  // GOD has access to everything
                   entry("/v1/auth/update-role", List.of(Role.GOD)),
 
-                  // User management endpoints
                   entry("/v1/payment", List.of(Role.USER, Role.GOD)),
                   entry("/v1/user/all", List.of(Role.ADMIN, Role.GOD)),
                   entry("/v1/user", List.of(Role.USER, Role.GOD)),
 
-                  // Product management endpoints
                   entry("/v1/product", List.of(Role.USER, Role.GOD)),
                   entry("/v1/product/seller/*", List.of(Role.USER, Role.GOD)),
                   entry("/v1/product/*", List.of(Role.USER, Role.GOD)),
 
-                  // Report management endpoints
                   entry("/v1/reports", List.of(Role.USER, Role.GOD)),
                   entry("/v1/reports/admin/all", List.of(Role.ADMIN, Role.GOD)),
                   entry("/v1/reports/admin/statistics", List.of(Role.ADMIN, Role.GOD)),
 
-                  // Admin-specific endpoints
                   entry("/v1/reports/admin/*", List.of(Role.ADMIN, Role.GOD))
           );
 

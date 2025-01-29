@@ -40,10 +40,8 @@ public class UserService {
 
     boolean passwordChanged = false;
     try {
-      // Handle password update if requested
       if (shouldUpdatePassword(profileUpdateDto)) {
         validatePasswordUpdate(profileUpdateDto);
-        // Update password through authentication service
         authenticationApi.updatePassword(
                 profileUpdateDto.getId(),
                 profileUpdateDto.getCurrentPassword(),
@@ -52,13 +50,11 @@ public class UserService {
         passwordChanged = true;
       }
 
-      // Handle profile image
       if (profileImage != null) {
         String imageUrl = imageService.storeProfileImage(profileImage);
         user.setProfileImageUrl(imageUrl);
       }
 
-      // Update other profile fields
       updateUserFields(user, profileUpdateDto);
       User savedUser = userRepository.save(user);
 
@@ -93,7 +89,6 @@ public class UserService {
       throw new CustomException(ErrorCode.BAD_REQUEST, "New password and confirmation do not match");
     }
 
-    // Add password strength validation if needed
     if (dto.getNewPassword().length() < 8) {
       throw new CustomException(ErrorCode.BAD_REQUEST, "Password must be at least 8 characters long");
     }
@@ -183,7 +178,6 @@ public class UserService {
     return users.stream()
             .map(user -> {
               UserDto userDto = UserMapper.INSTANCE.userToDto(user);
-              // Get username from authentication service
               String username = authenticationApi.getUsername(user.getId());
               userDto.setUsername(username);
               return userDto;

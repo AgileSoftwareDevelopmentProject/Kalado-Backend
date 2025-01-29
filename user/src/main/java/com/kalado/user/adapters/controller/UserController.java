@@ -42,7 +42,6 @@ public class UserController implements UserApi {
     try {
       UserProfileUpdateDto profileDto = objectMapper.readValue(profileJson, UserProfileUpdateDto.class);
 
-      // The service now returns ProfileUpdateResponseDto instead of Boolean
       return userService.modifyUserProfile(profileDto, profileImage);
 
     } catch (Exception e) {

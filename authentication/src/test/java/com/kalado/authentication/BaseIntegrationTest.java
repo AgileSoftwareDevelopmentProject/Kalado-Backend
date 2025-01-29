@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class BaseIntegrationTest {
 
     protected void clearDatabase(javax.persistence.EntityManager em) {
-        // Execute delete queries in the correct order to respect foreign key constraints
         em.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
         em.createNativeQuery("TRUNCATE TABLE verification_tokens").executeUpdate();
         em.createNativeQuery("TRUNCATE TABLE password_reset_tokens").executeUpdate();

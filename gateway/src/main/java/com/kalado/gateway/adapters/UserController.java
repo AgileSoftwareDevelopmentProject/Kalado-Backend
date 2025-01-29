@@ -55,7 +55,7 @@ public class UserController {
   }
 
   @GetMapping("/profile")
-  @Authentication(userId = "#userId")  // This annotation ensures proper authentication
+  @Authentication(userId = "#userId")
   public ResponseEntity<UserDto> getUserProfile(Long userId) {
     try {
       log.debug("Fetching user profile for userId: {}", userId);
@@ -84,7 +84,7 @@ public class UserController {
   }
 
   @GetMapping("/all")
-  @Authentication(userId = "#userId") // Only authenticated users can access this endpoint
+  @Authentication(userId = "#userId")
   public ResponseEntity<List<UserDto>> getAllUsers(Long userId) {
     try {
       log.debug("Fetching all users. Request made by user ID: {}", userId);

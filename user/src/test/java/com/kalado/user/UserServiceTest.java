@@ -75,15 +75,12 @@ class UserServiceTest {
         @Test
         @DisplayName("Should successfully update profile without image")
         void modifyUserProfile_Success() {
-            // Arrange
             when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
             when(userRepository.save(any(User.class))).thenReturn(testUser);
             when(authenticationApi.getUsername(TEST_USER_ID)).thenReturn(TEST_USERNAME);
 
-            // Act
             ProfileUpdateResponseDto response = userService.modifyUserProfile(validUpdateDto, null);
 
-            // Assert
             assertTrue(response.isSuccess());
             assertNotNull(response.getUpdatedProfile());
             verify(userRepository).save(userCaptor.capture());
@@ -98,10 +95,8 @@ class UserServiceTest {
         @Test
         @DisplayName("Should fail when user not found")
         void modifyUserProfile_UserNotFound() {
-            // Arrange
             when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.empty());
 
-            // Act & Assert
             CustomException exception = assertThrows(CustomException.class,
                     () -> userService.modifyUserProfile(validUpdateDto, null));
 
@@ -112,7 +107,6 @@ class UserServiceTest {
         @Test
         @DisplayName("Should successfully update profile with image")
         void modifyUserProfile_WithImage_Success() {
-            // Arrange
             MultipartFile mockFile = mock(MultipartFile.class);
             String imageUrl = "http://example.com/image.jpg";
 
@@ -121,10 +115,8 @@ class UserServiceTest {
             when(userRepository.save(any(User.class))).thenReturn(testUser);
             when(authenticationApi.getUsername(TEST_USER_ID)).thenReturn(TEST_USERNAME);
 
-            // Act
             ProfileUpdateResponseDto response = userService.modifyUserProfile(validUpdateDto, mockFile);
 
-            // Assert
             assertTrue(response.isSuccess());
             verify(imageService).storeProfileImage(mockFile);
             verify(userRepository).save(userCaptor.capture());
@@ -141,7 +133,6 @@ class UserServiceTest {
         @Test
         @DisplayName("Should successfully create user")
         void createUser_Success() {
-            // Arrange
             UserDto userDto = UserDto.builder()
                     .id(TEST_USER_ID)
                     .username(TEST_USERNAME)
@@ -152,10 +143,8 @@ class UserServiceTest {
 
             when(userRepository.save(any(User.class))).thenReturn(testUser);
 
-            // Act
             assertDoesNotThrow(() -> userService.createUser(userDto));
 
-            // Assert
             verify(userRepository).save(userCaptor.capture());
             User savedUser = userCaptor.getValue();
             assertEquals(userDto.getFirstName(), savedUser.getFirstName());
@@ -171,14 +160,11 @@ class UserServiceTest {
         @Test
         @DisplayName("Should successfully get user profile")
         void getUserProfile_Success() {
-            // Arrange
             when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
             when(authenticationApi.getUsername(TEST_USER_ID)).thenReturn(TEST_USERNAME);
 
-            // Act
             UserDto result = userService.getUserProfile(TEST_USER_ID);
 
-            // Assert
             assertNotNull(result);
             assertEquals(TEST_USERNAME, result.getUsername());
             assertEquals(testUser.getFirstName(), result.getFirstName());
@@ -188,10 +174,8 @@ class UserServiceTest {
         @Test
         @DisplayName("Should throw exception when user not found")
         void getUserProfile_UserNotFound() {
-            // Arrange
             when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.empty());
 
-            // Act & Assert
             CustomException exception = assertThrows(CustomException.class,
                     () -> userService.getUserProfile(TEST_USER_ID));
 
@@ -206,13 +190,10 @@ class UserServiceTest {
         @Test
         @DisplayName("Should successfully block user")
         void blockUser_Success() {
-            // Arrange
             when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
 
-            // Act
             boolean result = userService.blockUser(TEST_USER_ID);
 
-            // Assert
             assertTrue(result);
             verify(userRepository).modify(
                     testUser.getFirstName(),
@@ -227,10 +208,8 @@ class UserServiceTest {
         @Test
         @DisplayName("Should throw exception when blocking non-existent user")
         void blockUser_UserNotFound() {
-            // Arrange
             when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.empty());
 
-            // Act & Assert
             CustomException exception = assertThrows(CustomException.class,
                     () -> userService.blockUser(TEST_USER_ID));
 

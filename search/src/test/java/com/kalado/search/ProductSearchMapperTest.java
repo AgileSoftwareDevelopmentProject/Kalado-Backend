@@ -68,10 +68,8 @@ class ProductSearchMapperTest {
     @Test
     @DisplayName("Map ProductDTO to ProductDocument")
     void dtoToDocument_ShouldMapAllFields() {
-        // Act
         ProductDocument document = mapper.dtoToDocument(sampleProductDto);
 
-        // Assert
         assertNotNull(document);
         assertEquals(String.valueOf(sampleProductDto.getId()), document.getId());
         assertEquals(sampleProductDto.getTitle(), document.getTitle());
@@ -89,10 +87,8 @@ class ProductSearchMapperTest {
     @Test
     @DisplayName("Map ProductDocument to ProductDTO")
     void documentToDto_ShouldMapAllFields() {
-        // Act
         ProductDto dto = mapper.documentToDto(sampleDocument);
 
-        // Assert
         assertNotNull(dto);
         assertEquals(Long.valueOf(sampleDocument.getId()), dto.getId());
         assertEquals(sampleDocument.getTitle(), dto.getTitle());
@@ -110,14 +106,11 @@ class ProductSearchMapperTest {
     @Test
     @DisplayName("Map Page of ProductDocuments to Page of ProductDTOs")
     void toProductDtoPage_ShouldMapPageCorrectly() {
-        // Arrange
         List<ProductDocument> documents = Collections.singletonList(sampleDocument);
         Page<ProductDocument> page = new PageImpl<>(documents, PageRequest.of(0, 10), 1);
 
-        // Act
         Page<ProductDto> dtoPage = mapper.toProductDtoPage(page);
 
-        // Assert
         assertNotNull(dtoPage);
         assertEquals(page.getTotalElements(), dtoPage.getTotalElements());
         assertEquals(page.getSize(), dtoPage.getSize());
@@ -131,16 +124,13 @@ class ProductSearchMapperTest {
     @Test
     @DisplayName("Handle null values in ProductDTO")
     void dtoToDocument_ShouldHandleNullValues() {
-        // Arrange
         ProductDto nullDto = ProductDto.builder()
                 .id(1L)
                 .title("Test Product")
                 .build();
 
-        // Act
         ProductDocument document = mapper.dtoToDocument(nullDto);
 
-        // Assert
         assertNotNull(document);
         assertEquals("1", document.getId());
         assertEquals("Test Product", document.getTitle());
@@ -158,16 +148,13 @@ class ProductSearchMapperTest {
     @Test
     @DisplayName("Handle null values in ProductDocument")
     void documentToDto_ShouldHandleNullValues() {
-        // Arrange
         ProductDocument nullDocument = ProductDocument.builder()
                 .id("1")
                 .title("Test Product")
                 .build();
 
-        // Act
         ProductDto dto = mapper.documentToDto(nullDocument);
 
-        // Assert
         assertNotNull(dto);
         assertEquals(1L, dto.getId());
         assertEquals("Test Product", dto.getTitle());
