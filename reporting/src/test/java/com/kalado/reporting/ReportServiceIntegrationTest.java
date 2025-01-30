@@ -18,6 +18,7 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.mock.mockito.MockBean;
+//import org.springframework.context.annotation.Import;
 //import org.springframework.test.annotation.DirtiesContext;
 //import org.springframework.test.context.ActiveProfiles;
 //import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +38,8 @@
 //@ActiveProfiles("test")
 //@Transactional
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@Import(ReportTestConfig.class)
 //class ReportServiceIntegrationTest {
-//
 //    @Autowired
 //    private ReportService reportService;
 //
@@ -57,26 +58,14 @@
 //    @MockBean
 //    private EvidenceService evidenceService;
 //
-//    @MockBean
-//    private ReportMapper reportMapper;
-//
-//    @PersistenceContext
-//    private EntityManager entityManager;
-//
 //    private ReportCreateRequestDto validRequest;
 //    private static final Long REPORTER_ID = 1L;
 //    private static final Long REPORTED_CONTENT_ID = 2L;
 //    private static final Long REPORTED_USER_ID = 3L;
 //
 //    @BeforeEach
-//    @Transactional
 //    void setUp() {
-//        // Clean database
-//        reportRepository.deleteAll();
-//        entityManager.flush();
-//        entityManager.clear();
-//
-//        // Set up valid request
+//        // Setup test data and mock behaviors
 //        validRequest = ReportCreateRequestDto.builder()
 //                .violationType("INAPPROPRIATE_CONTENT")
 //                .description("Test description")
@@ -84,66 +73,39 @@
 //                .evidenceFiles(Collections.emptyList())
 //                .build();
 //
-//        // Mock UserApi behavior
-//        UserDto mockUser = UserDto.builder()
+//        // Mock User API
+//        UserDto mockReporterUser = UserDto.builder()
 //                .id(REPORTER_ID)
-//                .username("test@example.com")
+//                .username("reporter@example.com")
 //                .blocked(false)
 //                .build();
-//        when(userApi.getUserProfile(REPORTER_ID)).thenReturn(mockUser);
-//        when(userApi.getUserProfile(REPORTED_USER_ID)).thenReturn(UserDto.builder()
+//        UserDto mockReportedUser = UserDto.builder()
 //                .id(REPORTED_USER_ID)
-//                .build());
+//                .build();
+//        when(userApi.getUserProfile(REPORTER_ID)).thenReturn(mockReporterUser);
+//        when(userApi.getUserProfile(REPORTED_USER_ID)).thenReturn(mockReportedUser);
 //
-//        // Mock ProductApi behavior
+//        // Mock Product API
 //        ProductDto mockProduct = ProductDto.builder()
 //                .id(REPORTED_CONTENT_ID)
 //                .sellerId(REPORTED_USER_ID)
 //                .build();
 //        when(productApi.getProduct(REPORTED_CONTENT_ID)).thenReturn(mockProduct);
 //
-//        // Mock Report Mapper behavior
-//        when(reportMapper.toReport(any(ReportCreateRequestDto.class), eq(REPORTER_ID)))
-//                .thenAnswer(invocation -> {
-//                    ReportCreateRequestDto req = invocation.getArgument(0);
-//                    return Report.builder()
-//                            .violationType(req.getViolationType())
-//                            .description(req.getDescription())
-//                            .reporterId(REPORTER_ID)
-//                            .reportedUserId(REPORTED_USER_ID)
-//                            .reportedContentId(req.getReportedContentId())
-//                            .status(ReportStatus.SUBMITTED)
-//                            .createdAt(LocalDateTime.now())
-//                            .lastUpdatedAt(LocalDateTime.now())
-//                            .build();
-//                });
-//
-//        when(reportMapper.toReportResponse(any(Report.class)))
-//                .thenAnswer(invocation -> {
-//                    Report report = invocation.getArgument(0);
-//                    return ReportResponseDto.builder()
-//                            .id(report.getId())
-//                            .violationType(report.getViolationType())
-//                            .description(report.getDescription())
-//                            .reporterId(report.getReporterId())
-//                            .reportedContentId(report.getReportedContentId())
-//                            .status(report.getStatus())
-//                            .build();
-//                });
-//
-//        // Mock EmailService behavior
+//        // Mock Email Service
 //        doNothing().when(emailService).sendReportConfirmation(anyLong());
 //    }
 //
 //    @Test
-//    @Transactional
 //    void createAndUpdateReportFlow() {
 //        // Create report
 //        ReportResponseDto createdReport = reportService.createReport(validRequest, REPORTER_ID);
 //        assertNotNull(createdReport);
 //
 //        // Verify report was created in database
-//        Report savedReport = reportRepository.findById(createdReport.getId()).orElseThrow();
+//        Report savedReport = reportRepository.findById(createdReport.getId())
+//                .orElseThrow(() -> new AssertionError("Report not found"));
+//
 //        assertEquals(REPORTER_ID, savedReport.getReporterId());
 //        assertEquals(REPORTED_USER_ID, savedReport.getReportedUserId());
 //        assertEquals(ReportStatus.SUBMITTED, savedReport.getStatus());
@@ -167,23 +129,11 @@
 //    }
 //
 //    @Test
-//    @Transactional
 //    void getUserReports() {
 //        // Create test reports
 //        Report report1 = createTestReport(REPORTER_ID, ReportStatus.SUBMITTED);
 //        Report report2 = createTestReport(REPORTER_ID, ReportStatus.RESOLVED);
-//        Report report3 = createTestReport(999L, ReportStatus.SUBMITTED);
-//
-//        // Mock mapper for report responses
-//        when(reportMapper.toReportResponse(any(Report.class)))
-//                .thenAnswer(invocation -> {
-//                    Report report = invocation.getArgument(0);
-//                    return ReportResponseDto.builder()
-//                            .id(report.getId())
-//                            .reporterId(report.getReporterId())
-//                            .status(report.getStatus())
-//                            .build();
-//                });
+//        createTestReport(999L, ReportStatus.SUBMITTED); // Different reporter
 //
 //        List<ReportResponseDto> reports = reportService.getUserReports(REPORTER_ID);
 //
@@ -192,8 +142,7 @@
 //        assertTrue(reports.stream().allMatch(r -> r.getReporterId().equals(REPORTER_ID)));
 //    }
 //
-//    @Transactional
-//    protected Report createTestReport(Long reporterId, ReportStatus status) {
+//    private Report createTestReport(Long reporterId, ReportStatus status) {
 //        Report report = Report.builder()
 //                .reporterId(reporterId)
 //                .reportedUserId(REPORTED_USER_ID)

@@ -1,7 +1,12 @@
 package com.kalado.reporting;
 
+import com.kalado.common.feign.product.ProductApi;
 import com.kalado.common.feign.user.UserApi;
 import com.kalado.reporting.application.service.EmailService;
+import com.kalado.reporting.application.service.ReportProductHandler;
+import com.kalado.reporting.application.service.ReportStatusUpdater;
+import com.kalado.reporting.application.service.ReportUserHandler;
+import com.kalado.reporting.domain.model.ReportRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -42,4 +47,14 @@ public class ReportTestConfig {
             Files.createDirectories(uploadPath);
         }
     }
+    @Bean
+    @Primary
+    public ReportStatusUpdater reportStatusUpdater(
+            ReportRepository reportRepository,
+            ReportUserHandler userApi,
+            ReportProductHandler productApi
+    ) {
+        return new ReportStatusUpdater(reportRepository, userApi, productApi);
+    }
+
 }
