@@ -82,20 +82,4 @@ public class ReportController implements ReportApi {
     public ReportStatisticsDto getStatistics(LocalDateTime startDate, LocalDateTime endDate, String violationType, Long adminId) {
         return reportService.getStatistics(startDate, endDate, violationType);
     }
-
-    @Override
-    public byte[] exportStatistics(String format, LocalDateTime startDate, LocalDateTime endDate, Long adminId) {
-        return reportService.exportStatistics(format, startDate, endDate, adminId);
-    }
-
-    private String determineContentType(String filename) {
-        String extension = filename.substring(filename.lastIndexOf(".")).toLowerCase();
-        return switch (extension) {
-            case ".pdf" -> "application/pdf";
-            case ".txt" -> "text/plain";
-            case ".jpg", ".jpeg" -> "image/jpeg";
-            case ".png" -> "image/png";
-            default -> "application/octet-stream";
-        };
-    }
 }

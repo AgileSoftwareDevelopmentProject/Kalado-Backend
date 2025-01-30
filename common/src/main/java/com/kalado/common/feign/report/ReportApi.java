@@ -50,12 +50,4 @@ public interface ReportApi {
             @RequestParam(required = false) String violationType,
             @RequestParam("userId") Long adminId
     );
-
-    @GetMapping("/admin/statistics/export")
-    byte[] exportStatistics(
-            @RequestParam String format,
-            @RequestParam(required = false) LocalDateTime startDate,
-            @RequestParam(required = false) LocalDateTime endDate,
-            @RequestParam("userId") Long adminId
-    );
 }

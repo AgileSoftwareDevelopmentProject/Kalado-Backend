@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import com.kalado.common.enums.Role;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistrationRequestDto {

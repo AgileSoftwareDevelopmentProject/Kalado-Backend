@@ -25,6 +25,7 @@ public class PasswordResetService {
     private final PasswordResetTokenRepository tokenRepository;
     private final EmailService emailService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
     private static final int EXPIRATION_HOURS = 24;
 
@@ -32,16 +33,26 @@ public class PasswordResetService {
     public void createPasswordResetTokenForUser(String email) {
         AuthenticationInfo user = authRepository.findByUsername(email);
         if (user == null) {
+            // For security reasons, we still return success even if the email doesn't exist
             log.warn("Password reset requested for non-existent user: {}", email);
             return;
         }
 
         String token = generateToken();
+        deleteExistingTokens(user);
+        createAndSaveToken(user, token);
+        emailService.sendPasswordResetToken(email, token);
 
+        log.info("Password reset token created for user: {}", email);
+    }
+
+    private void deleteExistingTokens(AuthenticationInfo user) {
         tokenRepository.findAll().stream()
                 .filter(t -> t.getUser().getUserId() == user.getUserId())
                 .forEach(tokenRepository::delete);
+    }
 
+    private void createAndSaveToken(AuthenticationInfo user, String token) {
         PasswordResetToken resetToken = PasswordResetToken.builder()
                 .token(token)
                 .user(user)
@@ -49,9 +60,6 @@ public class PasswordResetService {
                 .build();
 
         tokenRepository.save(resetToken);
-        emailService.sendPasswordResetToken(email, token);
-
-        log.info("Password reset token created for user: {}", email);
     }
 
     @Transactional
@@ -64,18 +72,43 @@ public class PasswordResetService {
             throw new CustomException(ErrorCode.INVALID_TOKEN, "Token has expired");
         }
 
-        AuthenticationInfo user = resetToken.getUser();
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        authRepository.save(user);
-
+        updatePassword(resetToken.getUser(), request.getNewPassword());
         tokenRepository.delete(resetToken);
 
-        log.info("Password successfully reset for user ID: {}", user.getUserId());
+        log.info("Password successfully reset for user ID: {}", resetToken.getUser().getUserId());
 
         return ResetPasswordResponseDto.builder()
                 .success(true)
                 .message("Password has been reset successfully")
                 .build();
+    }
+
+    @Transactional
+    public void updatePassword(Long userId, String currentPassword, String newPassword) {
+        AuthenticationInfo user = authRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
+
+        validateCurrentPassword(user, currentPassword);
+        updatePassword(user, newPassword);
+        tokenService.invalidateUserTokens(userId);
+
+        log.info("Password updated successfully for user ID: {}", userId);
+    }
+
+    private void validateCurrentPassword(AuthenticationInfo user, String currentPassword) {
+        if (!verifyPassword(user, currentPassword)) {
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Current password is incorrect");
+        }
+    }
+
+    @Transactional
+    public void updatePassword(AuthenticationInfo user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        authRepository.save(user);
+    }
+
+    public boolean verifyPassword(AuthenticationInfo user, String password) {
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
     private String generateToken() {

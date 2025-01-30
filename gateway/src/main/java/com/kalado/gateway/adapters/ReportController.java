@@ -24,7 +24,6 @@ import java.util.List;
 @Slf4j
 public class ReportController {
   private final ReportApi reportApi;
-  private final ObjectMapper objectMapper;
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Authentication(userId = "#userId")
@@ -83,15 +82,5 @@ public class ReportController {
           @RequestParam(required = false) String violationType,
           Long userId) {
     return reportApi.getStatistics(startDate, endDate, violationType, userId);
-  }
-
-  @GetMapping("/admin/statistics/export")
-  @Authentication(userId = "#userId")
-  public byte[] exportStatistics(
-          @RequestParam String format,
-          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-          Long userId) {
-    return reportApi.exportStatistics(format, startDate, endDate, userId);
   }
 }

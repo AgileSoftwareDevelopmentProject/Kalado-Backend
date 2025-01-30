@@ -2,6 +2,7 @@ package com.kalado.authentication.adapters.controller;
 
 import com.kalado.authentication.application.service.AuthenticationService;
 import com.kalado.authentication.application.service.PasswordResetService;
+import com.kalado.authentication.application.service.RegistrationService;
 import com.kalado.authentication.application.service.VerificationService;
 import com.kalado.common.dto.*;
 import com.kalado.common.enums.ErrorCode;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController implements AuthenticationApi {
 
   private final AuthenticationService authService;
+  private final RegistrationService registrationService;
   private final VerificationService verificationService;
   private final PasswordResetService passwordResetService;
 
@@ -65,7 +67,7 @@ public class AuthenticationController implements AuthenticationApi {
 
   @Override
   public void register(@RequestBody RegistrationRequestDto registrationRequest) {
-    authService.register(registrationRequest);
+    registrationService.register(registrationRequest);
   }
 
   @Override
@@ -85,11 +87,11 @@ public class AuthenticationController implements AuthenticationApi {
     var user = authService.findUserById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "User not found"));
 
-    if (!authService.verifyPassword(user, currentPassword)) {
+    if (!passwordResetService.verifyPassword(user, currentPassword)) {
       throw new CustomException(ErrorCode.INVALID_CREDENTIALS, "Current password is incorrect");
     }
 
-    authService.updateUserPassword(userId, newPassword);
+    passwordResetService.updatePassword(userId, currentPassword, newPassword);
   }
 
   @Override

@@ -2,6 +2,7 @@
 //
 //import com.kalado.authentication.application.service.AuthenticationService;
 //import com.kalado.authentication.application.service.PasswordResetService;
+//import com.kalado.authentication.application.service.RegistrationService;
 //import com.kalado.authentication.application.service.VerificationService;
 //import com.kalado.authentication.domain.model.AuthenticationInfo;
 //import com.kalado.authentication.domain.model.PasswordResetToken;
@@ -40,6 +41,9 @@
 //
 //    @Autowired
 //    private AuthenticationService authenticationService;
+//
+//    @Autowired
+//    private RegistrationService registrationService;
 //
 //    @Autowired
 //    private AuthenticationRepository authRepository;
@@ -95,7 +99,7 @@
 //                .role(Role.USER)
 //                .build();
 //
-//        AuthenticationInfo registeredUser = authenticationService.register(registrationRequest);
+//        AuthenticationInfo registeredUser = registrationService.register(registrationRequest);
 //        assertNotNull(registeredUser);
 //        assertEquals(TEST_EMAIL, registeredUser.getUsername());
 //
@@ -153,7 +157,7 @@
 //                .role(Role.USER)
 //                .build();
 //
-//        AuthenticationInfo registeredUser = authenticationService.register(registrationRequest);
+//        AuthenticationInfo registeredUser = registrationService.register(registrationRequest);
 //        VerificationToken verificationToken = verificationTokenRepository
 //                .findByUser_UserId(registeredUser.getUserId())
 //                .orElseThrow();
@@ -183,7 +187,7 @@
 //                .role(Role.USER)
 //                .build();
 //
-//        authenticationService.register(registrationRequest);
+//        registrationService.register(registrationRequest);
 //        VerificationToken verificationToken = verificationTokenRepository
 //                .findByUser_UserId(authRepository.findByUsername(TEST_EMAIL).getUserId())
 //                .orElseThrow();
