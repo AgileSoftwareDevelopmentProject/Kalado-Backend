@@ -1,6 +1,5 @@
 package com.kalado.authentication.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ClassPathResource;
@@ -19,30 +18,32 @@ public class AdminConfiguration {
     @PostConstruct
     public void loadAuthorizedEmails() {
         try {
-            Resource resource = new ClassPathResource("admin-emails.properties");
-            Properties properties = new Properties();
-            properties.load(resource.getInputStream());
+            Properties properties = loadProperties("admin-emails.properties");
 
-            String adminEmailsString = properties.getProperty("authorized.admin.emails", "");
-            String[] adminEmails = adminEmailsString.split(",");
-            for (String email : adminEmails) {
-                String trimmedEmail = email.trim();
-                if (!trimmedEmail.isEmpty()) {
-                    authorizedAdminEmails.add(trimmedEmail.toLowerCase());
-                }
-            }
-
-            String godEmailsString = properties.getProperty("authorized.god.emails", "");
-            String[] godEmails = godEmailsString.split(",");
-            for (String email : godEmails) {
-                String trimmedEmail = email.trim();
-                if (!trimmedEmail.isEmpty()) {
-                    authorizedGodEmails.add(trimmedEmail.toLowerCase());
-                }
-            }
+            authorizedAdminEmails = parseEmails(properties.getProperty("authorized.admin.emails", ""));
+            authorizedGodEmails = parseEmails(properties.getProperty("authorized.god.emails", ""));
         } catch (IOException e) {
             throw new RuntimeException("Failed to load authorized emails", e);
         }
+    }
+
+    private Properties loadProperties(String fileName) throws IOException {
+        Resource resource = new ClassPathResource(fileName);
+        Properties properties = new Properties();
+        properties.load(resource.getInputStream());
+        return properties;
+    }
+
+    private Set<String> parseEmails(String emailsString) {
+        Set<String> emails = new HashSet<>();
+        String[] emailsArray = emailsString.split(",");
+        for (String email : emailsArray) {
+            String trimmedEmail = email.trim();
+            if (!trimmedEmail.isEmpty()) {
+                emails.add(trimmedEmail.toLowerCase());
+            }
+        }
+        return emails;
     }
 
     public boolean isEmailAuthorizedForAdmin(String email) {
