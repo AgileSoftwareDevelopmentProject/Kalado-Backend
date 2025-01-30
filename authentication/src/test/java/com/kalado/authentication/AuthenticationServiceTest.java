@@ -1,257 +1,217 @@
 package com.kalado.authentication;
 
-import com.kalado.authentication.application.service.AuthenticationService;
-import com.kalado.authentication.application.service.VerificationService;
-import com.kalado.authentication.domain.model.AuthenticationInfo;
-import com.kalado.authentication.infrastructure.repository.AuthenticationRepository;
 import com.kalado.common.dto.AuthDto;
-import com.kalado.common.dto.RegistrationRequestDto;
 import com.kalado.common.dto.UserDto;
 import com.kalado.common.enums.ErrorCode;
 import com.kalado.common.enums.Role;
 import com.kalado.common.exception.CustomException;
+import com.kalado.common.feign.authentication.AuthenticationApi;
 import com.kalado.common.feign.user.UserApi;
 import com.kalado.common.response.LoginResponse;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import com.kalado.authentication.application.service.*;
+import com.kalado.authentication.domain.model.AuthenticationInfo;
+import com.kalado.authentication.infrastructure.repository.AuthenticationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {
-    private static final String SECRET_KEY = "X71wHJEhg1LQE5DzWcdc/BRAgIvnqHYiZHBbqgrBOZLzwlHlHh/W1ScQGwd1XM8V1c5vtgGlDS8lb64zjZEZXg==";
 
     @Mock
     private AuthenticationRepository authRepository;
-    @Mock
-    private BCryptPasswordEncoder passwordEncoder;
-    @Mock
-    private RedisTemplate<String, Long> redisTemplate;
-    @Mock
-    private ValueOperations<String, Long> valueOperations;
+
     @Mock
     private UserApi userApi;
+
     @Mock
     private VerificationService verificationService;
 
+    @Mock
+    private TokenService tokenService;
+
+    @Mock
+    private PasswordResetService passwordResetService;
+
+    @Mock
+    private RoleService roleService;
+
     @InjectMocks
-    private AuthenticationService authService;
+    private AuthenticationService authenticationService;
 
-    @Test
-    void login_WithValidCredentials_ShouldSucceed() {
-        String username = "testuser";
-        String password = "testpass";
-        String encodedPassword = "encodedpass";
-        AuthenticationInfo user = AuthenticationInfo.builder()
-                .userId(1L)
-                .username(username)
-                .password(encodedPassword)
+    private AuthenticationInfo testUser;
+    private static final String TEST_USERNAME = "test@example.com";
+    private static final String TEST_PASSWORD = "password123";
+    private static final Long TEST_USER_ID = 1L;
+
+    @BeforeEach
+    void setUp() {
+        testUser = AuthenticationInfo.builder()
+                .userId(TEST_USER_ID)
+                .username(TEST_USERNAME)
+                .password("encoded_password")
                 .role(Role.USER)
                 .build();
+    }
 
-        when(authRepository.findByUsername(username)).thenReturn(user);
-        when(passwordEncoder.matches(password, encodedPassword)).thenReturn(true);
-        when(verificationService.isEmailVerified(user)).thenReturn(true);
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+    @Test
+    void login_Success() {
+        // Arrange
+        when(authRepository.findByUsername(TEST_USERNAME)).thenReturn(testUser);
+        when(passwordResetService.verifyPassword(testUser, TEST_PASSWORD)).thenReturn(true);
+        when(verificationService.isEmailVerified(testUser)).thenReturn(true);
+        when(userApi.getUserProfile(TEST_USER_ID))
+                .thenReturn(UserDto.builder().blocked(false).build());
+        when(tokenService.generateToken(TEST_USER_ID)).thenReturn("generated.token");
 
-        LoginResponse response = authService.login(username, password);
+        // Act
+        LoginResponse response = authenticationService.login(TEST_USERNAME, TEST_PASSWORD);
 
+        // Assert
         assertNotNull(response);
-        assertNotNull(response.getToken());
+        assertEquals("generated.token", response.getToken());
         assertEquals(Role.USER, response.getRole());
-        verify(valueOperations).set(anyString(), eq(1L), anyLong(), eq(TimeUnit.MILLISECONDS));
+        verify(verificationService).isEmailVerified(testUser);
+        verify(tokenService).generateToken(TEST_USER_ID);
     }
 
     @Test
-    void login_WithUnverifiedEmail_ShouldThrowException() {
-        String username = "testuser";
-        String password = "testpass";
-        String encodedPassword = "encodedpass";
-        AuthenticationInfo user = AuthenticationInfo.builder()
-                .username(username)
-                .password(encodedPassword)
-                .role(Role.USER)
-                .build();
+    void login_InvalidCredentials() {
+        // Arrange
+        when(authRepository.findByUsername(TEST_USERNAME)).thenReturn(testUser);
+        when(passwordResetService.verifyPassword(testUser, TEST_PASSWORD)).thenReturn(false);
 
-        when(authRepository.findByUsername(username)).thenReturn(user);
-        when(passwordEncoder.matches(password, encodedPassword)).thenReturn(true);
-        when(verificationService.isEmailVerified(user)).thenReturn(false);
-
-        CustomException exception = assertThrows(
-                CustomException.class,
-                () -> authService.login(username, password)
-        );
-        assertEquals(ErrorCode.EMAIL_NOT_VERIFIED, exception.getErrorCode());
-    }
-
-    @Test
-    void register_WithNewUser_ShouldSucceed() {
-        RegistrationRequestDto request = RegistrationRequestDto.builder()
-                .password("password")
-                .firstName("John")
-                .lastName("Doe")
-                .phoneNumber("1234567890")
-                .email("john.doe@example.com")
-                .role(Role.USER)
-                .build();
-
-        String encodedPassword = "encodedpass";
-        AuthenticationInfo savedUser = AuthenticationInfo.builder()
-                .userId(1L)
-                .username(request.getEmail())
-                .password(encodedPassword)
-                .role(Role.USER)
-                .build();
-
-        when(authRepository.findByUsername(request.getEmail())).thenReturn(null);
-        when(passwordEncoder.encode(request.getPassword())).thenReturn(encodedPassword);
-        when(authRepository.save(any(AuthenticationInfo.class))).thenReturn(savedUser);
-
-        AuthenticationInfo result = authService.register(request);
-
-        assertNotNull(result);
-        assertEquals(request.getEmail(), result.getUsername());
-        assertEquals(encodedPassword, result.getPassword());
-        assertEquals(request.getRole(), result.getRole());
-
-        verify(authRepository).save(any(AuthenticationInfo.class));
-
-        ArgumentCaptor<UserDto> userDtoCaptor = ArgumentCaptor.forClass(UserDto.class);
-        verify(userApi).createUser(userDtoCaptor.capture());
-
-        UserDto capturedUserDto = userDtoCaptor.getValue();
-        assertEquals(request.getFirstName(), capturedUserDto.getFirstName());
-        assertEquals(request.getLastName(), capturedUserDto.getLastName());
-        assertEquals(request.getPhoneNumber(), capturedUserDto.getPhoneNumber());
-
-        verify(verificationService).createVerificationToken(any());
-    }
-
-    @Test
-    void register_WithExistingUsername_ShouldThrowException() {
-        RegistrationRequestDto request = RegistrationRequestDto.builder()
-                .password("password")
-                .firstName("John")
-                .lastName("Doe")
-                .phoneNumber("1234567890")
-                .email("john.doe@example.com")
-                .role(Role.USER)
-                .build();
-
-        AuthenticationInfo existingUser = AuthenticationInfo.builder()
-                .username(request.getEmail())
-                .password("encodedpass")
-                .role(Role.USER)
-                .build();
-
-        when(authRepository.findByUsername(request.getEmail())).thenReturn(existingUser);
-
-        CustomException exception = assertThrows(
-                CustomException.class,
-                () -> authService.register(request)
-        );
-
-        assertEquals(ErrorCode.USER_ALREADY_EXISTS, exception.getErrorCode());
-        assertEquals("User already exists", exception.getMessage());
-
-        verify(userApi, never()).createUser(any());
-        verify(verificationService, never()).createVerificationToken(any());
-    }
-
-    @Test
-    void validateToken_WithValidToken_ShouldReturnValidAuthDto() {
-        String validToken = generateValidToken(1L);
-        AuthenticationInfo user = AuthenticationInfo.builder()
-                .userId(1L)
-                .username("testuser")
-                .role(Role.USER)
-                .build();
-
-        when(redisTemplate.hasKey(validToken)).thenReturn(true);
-        when(authRepository.findById(1L)).thenReturn(Optional.of(user));
-
-        AuthDto authDto = authService.validateToken(validToken);
-
-        assertTrue(authDto.isValid());
-        assertEquals(user.getUserId(), authDto.getUserId());
-        assertEquals(user.getRole(), authDto.getRole());
-    }
-
-    @Test
-    void validateToken_WithInvalidToken_ShouldReturnInvalidAuthDto() {
-        String invalidToken = "invalid.token.here";
-        AuthDto authDto = authService.validateToken(invalidToken);
-        assertFalse(authDto.isValid());
-    }
-
-    @Test
-    void invalidateToken_ShouldRemoveFromRedis() {
-        String token = "valid.token.here";
-        when(redisTemplate.hasKey(token)).thenReturn(true);
-
-        authService.invalidateToken(token);
-
-        verify(redisTemplate).delete(token);
-    }
-
-    @Test
-    void register_WithMissingRequiredFields_ShouldThrowException() {
-        RegistrationRequestDto request = RegistrationRequestDto.builder()
-                .password("password")
-                .lastName("Doe")
-                .phoneNumber("1234567890")
-                .email("test@example.com")
-                .role(Role.USER)
-                .build();
-
-        CustomException exception = assertThrows(
-                CustomException.class,
-                () -> authService.register(request)
-        );
+        // Act & Assert
+        CustomException exception = assertThrows(CustomException.class,
+                () -> authenticationService.login(TEST_USERNAME, TEST_PASSWORD));
 
         assertEquals(ErrorCode.INVALID_CREDENTIALS, exception.getErrorCode());
-        assertEquals("First name cannot be empty", exception.getMessage());
-
-        verify(authRepository, never()).save(any());
-        verify(userApi, never()).createUser(any());
-        verify(verificationService, never()).createVerificationToken(any());
+        verify(tokenService, never()).generateToken(anyLong());
     }
 
     @Test
-    void getUsername_WithValidUserId_ShouldReturnUsername() {
-        AuthenticationInfo user = AuthenticationInfo.builder()
-                .userId(1L)
-                .username("testuser")
-                .build();
+    void login_EmailNotVerified() {
+        // Arrange
+        when(authRepository.findByUsername(TEST_USERNAME)).thenReturn(testUser);
+        when(passwordResetService.verifyPassword(testUser, TEST_PASSWORD)).thenReturn(true);
+        when(verificationService.isEmailVerified(testUser)).thenReturn(false);
 
-        when(authRepository.findById(1L)).thenReturn(Optional.of(user));
+        // Act & Assert
+        CustomException exception = assertThrows(CustomException.class,
+                () -> authenticationService.login(TEST_USERNAME, TEST_PASSWORD));
 
-        String username = authService.getUsername(1L);
-
-        assertEquals("testuser", username);
+        assertEquals(ErrorCode.EMAIL_NOT_VERIFIED, exception.getErrorCode());
+        verify(tokenService, never()).generateToken(anyLong());
     }
 
-    private String generateValidToken(long userId) {
-        return Jwts.builder()
-                .setSubject(String.valueOf(userId))
-                .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
-                .setExpiration(new java.util.Date(System.currentTimeMillis() + 3600000))
-                .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY)), io.jsonwebtoken.SignatureAlgorithm.HS256)
-                .compact();
+    @Test
+    void login_BlockedUser() {
+        when(authRepository.findByUsername(TEST_USERNAME)).thenReturn(testUser);
+        when(passwordResetService.verifyPassword(testUser, TEST_PASSWORD)).thenReturn(true);
+        when(verificationService.isEmailVerified(testUser)).thenReturn(true);
+        when(userApi.getUserProfile(TEST_USER_ID))
+                .thenReturn(UserDto.builder().blocked(true).build());
+
+        CustomException exception = assertThrows(CustomException.class,
+                () -> authenticationService.login(TEST_USERNAME, TEST_PASSWORD));
+
+        assertEquals(ErrorCode.UNAUTHORIZED, exception.getErrorCode());
+        verify(tokenService, never()).generateToken(anyLong());
+        verify(authRepository).findByUsername(TEST_USERNAME);
+    }
+
+    @Test
+    void validateToken_Success() {
+        // Arrange
+        String token = "valid.token";
+        AuthDto expectedAuthDto = AuthDto.builder()
+                .isValid(true)
+                .userId(TEST_USER_ID)
+                .role(Role.USER)
+                .build();
+        when(tokenService.validateTokenAndCreateAuthDto(token, authRepository))
+                .thenReturn(expectedAuthDto);
+
+        // Act
+        AuthDto result = authenticationService.validateToken(token);
+
+        // Assert
+        assertTrue(result.isValid());
+        assertEquals(TEST_USER_ID, result.getUserId());
+        assertEquals(Role.USER, result.getRole());
+    }
+
+    @Test
+    void invalidateToken_Success() {
+        // Arrange
+        String token = "token.to.invalidate";
+
+        // Act
+        authenticationService.invalidateToken(token);
+
+        // Assert
+        verify(tokenService).invalidateToken(token);
+    }
+
+    @Test
+    void updateUserRole_Success() {
+        // Arrange
+        Long targetUserId = 2L;
+        Role newRole = Role.ADMIN;
+        Long requestingUserId = 3L;
+
+        // Act
+        authenticationService.updateUserRole(targetUserId, newRole, requestingUserId);
+
+        // Assert
+        verify(roleService).updateUserRole(targetUserId, newRole, requestingUserId);
+    }
+
+    @Test
+    void findUserById_Success() {
+        // Arrange
+        when(authRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
+
+        // Act
+        Optional<AuthenticationInfo> result = authenticationService.findUserById(TEST_USER_ID);
+
+        // Assert
+        assertTrue(result.isPresent());
+        assertEquals(TEST_USER_ID, result.get().getUserId());
+        assertEquals(TEST_USERNAME, result.get().getUsername());
+    }
+
+    @Test
+    void getUsername_Success() {
+        // Arrange
+        when(authRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(testUser));
+
+        // Act
+        String username = authenticationService.getUsername(TEST_USER_ID);
+
+        // Assert
+        assertEquals(TEST_USERNAME, username);
+    }
+
+    @Test
+    void getUsername_UserNotFound() {
+        // Arrange
+        when(authRepository.findById(TEST_USER_ID)).thenReturn(Optional.empty());
+
+        // Act
+        String username = authenticationService.getUsername(TEST_USER_ID);
+
+        // Assert
+        assertNull(username);
     }
 }

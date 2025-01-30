@@ -4,6 +4,7 @@
 //import static org.mockito.ArgumentMatchers.any;
 //import static org.mockito.Mockito.never;
 //
+//import com.kalado.authentication.application.service.RegistrationService;
 //import com.kalado.common.dto.AuthDto;
 //import com.kalado.common.dto.RegistrationRequestDto;
 //import com.kalado.common.dto.UserDto;
@@ -30,6 +31,9 @@
 //
 //  @Autowired
 //  private AuthenticationService authenticationService;
+//
+//  @Autowired
+//  private RegistrationService registrationService;
 //
 //  @Autowired
 //  private AuthenticationRepository authRepository;
@@ -102,7 +106,7 @@
 //    Mockito.doNothing().when(verificationService).createVerificationToken(any());
 //
 //    // Act
-//    AuthenticationInfo savedUser = authenticationService.register(request);
+//    AuthenticationInfo savedUser = registrationService.register(request);
 //
 //    // Assert
 //    assertNotNull(savedUser, "Saved user should not be null");
@@ -146,7 +150,7 @@
 //
 //    CustomException exception = assertThrows(
 //            CustomException.class,
-//            () -> authenticationService.register(request)
+//            () -> registrationService.register(request)
 //    );
 //
 //    assertEquals(ErrorCode.USER_ALREADY_EXISTS, exception.getErrorCode());
