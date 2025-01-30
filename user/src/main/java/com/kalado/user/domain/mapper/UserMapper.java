@@ -6,6 +6,7 @@ import com.kalado.common.dto.UserDto;
 import com.kalado.user.domain.model.Admin;
 import com.kalado.user.domain.model.Location;
 import com.kalado.user.domain.model.User;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
